@@ -85,4 +85,14 @@ public final class GameWindow
             }
         });
     }
+
+    public void toggleMaximized()
+    {
+        // https://stackoverflow.com/a/13721612
+        var wasMaximized = (frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) > 0;
+        frame.dispose();
+        frame.setUndecorated(!wasMaximized);
+        frame.setExtendedState(frame.getExtendedState() ^ JFrame.MAXIMIZED_BOTH);
+        frame.setVisible(true);
+    }
 }

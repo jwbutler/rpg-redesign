@@ -19,7 +19,7 @@ public class Main
         var controller = GameController.create(state);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
-        var inputHandler = new InputHandler(controller);
+        var inputHandler = new InputHandler(controller, window);
         window.addKeyboardListener(inputHandler::handleKeyPress);
 
         var level = LevelFactory.LEVEL_ONE.get();

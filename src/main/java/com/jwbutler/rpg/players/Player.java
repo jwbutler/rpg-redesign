@@ -10,14 +10,18 @@ public interface Player
 {
     @Nonnull
     UUID getId();
+
     @Nonnull
     String getName();
+
     @Nonnull
     Faction getFaction();
 
     void addUnit(@Nonnull Unit unit);
+
     @Nonnull
     Set<Unit> getUnits();
+
     void removeUnit(@Nonnull Unit unit);
 
     @Nonnull

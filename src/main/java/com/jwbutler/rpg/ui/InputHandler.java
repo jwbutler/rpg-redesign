@@ -14,11 +14,14 @@ public final class InputHandler
     @Nonnull
     private final GameController engine;
     @Nonnull
+    private final GameWindow window;
+    @Nonnull
     private final SingletonBlockingQueue<Runnable> queue;
 
-    public InputHandler(@Nonnull GameController engine)
+    public InputHandler(@Nonnull GameController engine, @Nonnull GameWindow window)
     {
         this.engine = engine;
+        this.window = window;
         this.queue = new SingletonBlockingQueue<>();
     }
 
@@ -33,6 +36,14 @@ public final class InputHandler
             case KeyEvent.VK_A, KeyEvent.VK_LEFT  -> _tryMove(unit.getCoordinates().plus(-1, 0));
             case KeyEvent.VK_S, KeyEvent.VK_DOWN  -> _tryMove(unit.getCoordinates().plus(0, 1));
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> _tryMove(unit.getCoordinates().plus(1, 0));
+            case KeyEvent.VK_ENTER ->
+            {
+                if ((e.getModifiersEx() & KeyEvent.ALT_DOWN_MASK) > 0)
+                {
+                    window.toggleMaximized();
+                }
+                yield null;
+            }
             default -> null;
         };
 
