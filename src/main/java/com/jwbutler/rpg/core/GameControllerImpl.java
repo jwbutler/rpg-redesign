@@ -7,12 +7,12 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
-final class GameEngineImpl implements GameEngine
+final class GameControllerImpl implements GameController
 {
     @Nonnull
     private final GameState state;
 
-    GameEngineImpl(@Nonnull GameState state)
+    GameControllerImpl(@Nonnull GameState state)
     {
         this.state = state;
     }

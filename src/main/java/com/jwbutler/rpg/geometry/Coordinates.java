@@ -6,7 +6,7 @@ public record Coordinates
 (
     int x,
     int y
-)
+) implements Point
 {
     private static final Coordinates ZERO = new Coordinates(0, 0);
 

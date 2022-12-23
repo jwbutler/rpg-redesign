@@ -9,9 +9,11 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Dimensions;
+import com.jwbutler.rpg.geometry.Rect;
 import com.jwbutler.rpg.units.Unit;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkArgument;
 
 final class LevelImpl implements Level
 {
@@ -20,12 +22,25 @@ final class LevelImpl implements Level
     @Nonnull
     private final String name;
     @Nonnull
+    private final Dimensions dimensions;
+    @Nonnull
+    private final Map<Coordinates, TileType> coordinatesToTile;
+    @Nonnull
     private final Map<Coordinates, Unit> coordinatesToUnit;
 
-    LevelImpl(@Nonnull String name)
+    LevelImpl(
+        @Nonnull String name,
+        @Nonnull Dimensions dimensions,
+        @Nonnull Map<Coordinates, TileType> coordinatesToTile
+    )
     {
+        checkArgument(!name.isBlank());
+        checkArgument(!coordinatesToTile.isEmpty());
+
         id = UUID.randomUUID();
         this.name = name;
+        this.dimensions = dimensions;
+        this.coordinatesToTile = coordinatesToTile;
         this.coordinatesToUnit = new HashMap<>();
     }
 
@@ -43,19 +58,41 @@ final class LevelImpl implements Level
         return name;
     }
 
-    /**
-     * @throws IllegalStateException if the unit's level pointer doesn't point to this livel,
-     *                               or if the unit is already in this level
-     */
+    @Nonnull
+    @Override
+    public Dimensions getDimensions()
+    {
+        return dimensions;
+    }
+
+    @Override
+    public boolean containsCoordinates(@Nonnull Coordinates coordinates)
+    {
+        return new Rect(0, 0, getDimensions().width(), getDimensions().height()).contains(coordinates);
+    }
+
+    @Nonnull
+    @Override
+    public TileType getTile(@Nonnull Coordinates coordinates)
+    {
+        checkArgument(
+            coordinates.x() >= 0 && coordinates.x() < getDimensions().width(),
+            "Out of bounds"
+        );
+        checkArgument(
+            coordinates.y() >= 0 && coordinates.y() < getDimensions().height(),
+            "Out of bounds"
+        );
+        return coordinatesToTile.get(coordinates);
+    }
+
     @Override
     public void addUnit(@Nonnull Unit unit)
     {
+        checkArgument(containsCoordinates(unit.getCoordinates()));
         coordinatesToUnit.put(unit.getCoordinates(), unit);
     }
 
-    /**
-     * @throws IllegalArgumentException if the coordinates are not in this level's bounds
-     */
     @CheckForNull
     @Override
     public Unit getUnit(@Nonnull Coordinates coordinates)
@@ -70,13 +107,11 @@ final class LevelImpl implements Level
         return new HashSet<>(coordinatesToUnit.values());
     }
 
-    /**
-     * @throws IllegalStateException if the unit is not in this level
-     */
     @Override
     public void removeUnit(@Nonnull Unit unit)
     {
-        var removed = coordinatesToUnit.remove(unit.getCoordinates());
-        checkState(removed == unit);
+        var unitAtCoordinates = coordinatesToUnit.get(unit.getCoordinates());
+        checkArgument(unitAtCoordinates == unit);
+        coordinatesToUnit.remove(unit.getCoordinates());
     }
 }

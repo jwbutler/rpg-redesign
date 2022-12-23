@@ -1,7 +1,7 @@
 package com.jwbutler.rpg.core;
 
 import com.jwbutler.rpg.geometry.Coordinates;
-import com.jwbutler.rpg.levels.Level;
+import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.Faction;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
@@ -12,16 +12,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
-public final class GameEngineTest
+public final class GameControllerTest
 {
     @Test
     public void testAddLevel()
     {
         var state = GameState.create();
-        var engine = GameEngine.create(state);
-        var level = Level.create("test_level");
+        var controller = GameController.create(state);
+        var level = LevelFactory.TEST_LEVEL.get();
 
-        engine.addLevel(level);
+        controller.addLevel(level);
         assertEquals(state.getLevel(level.getId()), level);
     }
 
@@ -29,14 +29,14 @@ public final class GameEngineTest
     public void testAddUnit()
     {
         var state = GameState.create();
-        var engine = GameEngine.create(state);
+        var controller = GameController.create(state);
         var player = Player.create("test_player", Faction.PLAYER);
-        engine.addPlayer(player);
-        var level = Level.create("test_level");
-        engine.addLevel(level);
+        controller.addPlayer(player);
+        var level = LevelFactory.TEST_LEVEL.get();
+        controller.addLevel(level);
         var unit = Unit.create("test_unit", 10, player, level, Coordinates.zero());
 
-        engine.addUnit(unit);
+        controller.addUnit(unit);
         assertEquals(state.getUnit(unit.getId()), unit);
         assertEquals(level.getUnit(unit.getCoordinates()), unit);
         assertTrue(player.getUnits().contains(unit));
@@ -46,19 +46,19 @@ public final class GameEngineTest
     public void testRemoveUnit()
     {
         var state = GameState.create();
-        var engine = GameEngine.create(state);
+        var controller = GameController.create(state);
         var player = Player.create("test_player", Faction.PLAYER);
-        engine.addPlayer(player);
-        var level = Level.create("test_level");
-        engine.addLevel(level);
+        controller.addPlayer(player);
+        var level = LevelFactory.TEST_LEVEL.get();
+        controller.addLevel(level);
         var unit = Unit.create("test_unit", 10, player, level, Coordinates.zero());
 
-        engine.addUnit(unit);
+        controller.addUnit(unit);
         assertEquals(state.getUnit(unit.getId()), unit);
         assertEquals(level.getUnit(unit.getCoordinates()), unit);
         assertTrue(player.getUnits().contains(unit));
 
-        engine.removeUnit(unit);
+        controller.removeUnit(unit);
         assertNull(state.getUnitNullable(unit.getId()));
         assertNull(level.getUnit(unit.getCoordinates()));
         assertFalse(player.getUnits().contains(unit));
@@ -68,20 +68,20 @@ public final class GameEngineTest
     public void testMoveUnit()
     {
         var state = GameState.create();
-        var engine = GameEngine.create(state);
+        var controller = GameController.create(state);
         var player = Player.create("test_player", Faction.PLAYER);
-        engine.addPlayer(player);
-        var level = Level.create("test_level");
-        engine.addLevel(level);
+        controller.addPlayer(player);
+        var level = LevelFactory.TEST_LEVEL.get();
+        controller.addLevel(level);
         var unit = Unit.create("test_unit", 10, player, level, Coordinates.zero());
 
-        engine.addUnit(unit);
+        controller.addUnit(unit);
         assertEquals(state.getUnit(unit.getId()), unit);
         assertEquals(level.getUnit(unit.getCoordinates()), unit);
         assertTrue(player.getUnits().contains(unit));
 
         var newCoordinates = new Coordinates(2, 2);
-        engine.moveUnit(unit, unit.getLevel(), newCoordinates);
+        controller.moveUnit(unit, unit.getLevel(), newCoordinates);
 
         assertEquals(state.getUnit(unit.getId()), unit);
         assertEquals(unit.getLevel(), level);
