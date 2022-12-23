@@ -7,9 +7,9 @@ import java.util.UUID;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Faction;
+import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
@@ -27,15 +27,12 @@ final class GameStateImpl implements GameState
 
     @CheckForNull
     private Level currentLevel;
-    @Nonnull
-    private Coordinates cameraCoordinates;
 
-    GameStateImpl(@Nonnull Coordinates cameraCoordinates)
+    GameStateImpl()
     {
         playersById = new HashMap<>();
         levelsById = new HashMap<>();
         unitsById = new HashMap<>();
-        this.cameraCoordinates = cameraCoordinates;
         currentLevel = null;
     }
 
@@ -59,11 +56,13 @@ final class GameStateImpl implements GameState
 
     @Nonnull
     @Override
-    public Player getHumanPlayer()
+    public HumanPlayer getHumanPlayer()
     {
         return playersById.values()
             .stream()
             .filter(player -> player.getFaction() == Faction.PLAYER)
+            .filter(HumanPlayer.class::isInstance)
+            .map(HumanPlayer.class::cast)
             .findFirst()
             .orElseThrow(IllegalStateException::new);
     }
@@ -137,18 +136,5 @@ final class GameStateImpl implements GameState
     {
         var removed = unitsById.remove(unit.getId());
         checkState(removed == unit);
-    }
-
-    @Nonnull
-    @Override
-    public Coordinates getCameraCoordinates()
-    {
-        return cameraCoordinates;
-    }
-
-    @Override
-    public void setCameraCoordinates(@Nonnull Coordinates coordinates)
-    {
-        cameraCoordinates = coordinates;
     }
 }

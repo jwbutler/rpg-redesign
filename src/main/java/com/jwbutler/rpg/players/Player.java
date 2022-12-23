@@ -23,10 +23,4 @@ public interface Player
     Set<Unit> getUnits();
 
     void removeUnit(@Nonnull Unit unit);
-
-    @Nonnull
-    static Player create(@Nonnull String name, @Nonnull Faction faction)
-    {
-        return new PlayerImpl(name, faction);
-    }
 }

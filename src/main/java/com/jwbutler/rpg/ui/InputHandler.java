@@ -57,7 +57,7 @@ public final class InputHandler
     private Runnable _tryMove(@Nonnull Coordinates coordinates)
     {
         var level = engine.getState().getCurrentLevel();
-        if (level.containsCoordinates(coordinates))
+        if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
         {
             var playerUnit = engine.getState().getPlayerUnit();
             return () -> engine.moveUnit(playerUnit, level, coordinates);

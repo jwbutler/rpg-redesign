@@ -5,8 +5,8 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
+import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
@@ -22,7 +22,7 @@ public interface GameState
 
     @Nonnull
     @Deprecated
-    Player getHumanPlayer();
+    HumanPlayer getHumanPlayer();
 
     /**
      * @throws IllegalArgumentException if we already have a level with the specified id
@@ -73,15 +73,8 @@ public interface GameState
     void removeUnit(@Nonnull Unit unit);
 
     @Nonnull
-    @Deprecated
-    Coordinates getCameraCoordinates();
-
-    @Deprecated
-    void setCameraCoordinates(@Nonnull Coordinates coordinates);
-
-    @Nonnull
-    static GameState create(@Nonnull Coordinates cameraCoordinates)
+    static GameState create()
     {
-        return new GameStateImpl(cameraCoordinates);
+        return new GameStateImpl();
     }
 }

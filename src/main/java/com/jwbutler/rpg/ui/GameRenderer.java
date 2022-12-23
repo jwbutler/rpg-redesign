@@ -42,13 +42,14 @@ public final class GameRenderer
 
     private void _drawGrid(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
+        var humanPlayer = state.getHumanPlayer();
         graphics.setColor(Color.WHITE);
         var level = state.getCurrentLevel();
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
             for (int x = 0; x < level.getDimensions().width(); x++)
             {
-                var topLeft = coordinatesToPixel(new Coordinates(x, y), state.getCameraCoordinates());
+                var topLeft = coordinatesToPixel(new Coordinates(x, y), humanPlayer.getCameraCoordinates());
                 graphics.drawPolygon(
                     new int[] {
                         topLeft.x() + TILE_WIDTH / 2,
@@ -70,6 +71,7 @@ public final class GameRenderer
 
     private void _drawUnits(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
+        var humanPlayer = state.getHumanPlayer();
         var level = state.getCurrentLevel();
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
@@ -86,7 +88,7 @@ public final class GameRenderer
                         case NEUTRAL -> Color.LIGHT_GRAY;
                     };
                     graphics.setColor(color);
-                    var topLeft = coordinatesToPixel(new Coordinates(x, y), state.getCameraCoordinates());
+                    var topLeft = coordinatesToPixel(new Coordinates(x, y), humanPlayer.getCameraCoordinates());
                     graphics.fillOval(
                         topLeft.x() + TILE_WIDTH / 4,
                         topLeft.y() + TILE_HEIGHT / 4,

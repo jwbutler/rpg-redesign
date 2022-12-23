@@ -90,6 +90,7 @@ final class LevelImpl implements Level
     public void addUnit(@Nonnull Unit unit)
     {
         checkArgument(containsCoordinates(unit.getCoordinates()));
+        checkArgument(coordinatesToUnit.get(unit.getCoordinates()) == null);
         coordinatesToUnit.put(unit.getCoordinates(), unit);
     }
 
