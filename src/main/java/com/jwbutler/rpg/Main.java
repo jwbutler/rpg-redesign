@@ -15,7 +15,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        var state = GameState.create();
+        var state = GameState.create(new Coordinates(5, 5));
         var controller = GameController.create(state);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);

@@ -5,6 +5,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
@@ -72,8 +73,15 @@ public interface GameState
     void removeUnit(@Nonnull Unit unit);
 
     @Nonnull
-    static GameState create()
+    @Deprecated
+    Coordinates getCameraCoordinates();
+
+    @Deprecated
+    void setCameraCoordinates(@Nonnull Coordinates coordinates);
+
+    @Nonnull
+    static GameState create(@Nonnull Coordinates cameraCoordinates)
     {
-        return new GameStateImpl();
+        return new GameStateImpl(cameraCoordinates);
     }
 }

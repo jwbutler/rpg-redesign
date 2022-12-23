@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Pixel;
 
 public final class GameRenderer
 {
@@ -47,7 +48,22 @@ public final class GameRenderer
         {
             for (int x = 0; x < level.getDimensions().width(); x++)
             {
-                graphics.drawRect(x * TILE_WIDTH, y * TILE_HEIGHT, TILE_WIDTH, TILE_HEIGHT);
+                var topLeft = coordinatesToPixel(new Coordinates(x, y), state.getCameraCoordinates());
+                graphics.drawPolygon(
+                    new int[] {
+                        topLeft.x() + TILE_WIDTH / 2,
+                        topLeft.x() + TILE_WIDTH,
+                        topLeft.x() + TILE_WIDTH / 2,
+                        topLeft.x()
+                    },
+                    new int[] {
+                        topLeft.y(),
+                        topLeft.y() + TILE_HEIGHT / 2,
+                        topLeft.y() + TILE_HEIGHT,
+                        topLeft.y() + TILE_HEIGHT / 2,
+                    },
+                    4
+                );
             }
         }
     }
@@ -70,15 +86,26 @@ public final class GameRenderer
                         case NEUTRAL -> Color.LIGHT_GRAY;
                     };
                     graphics.setColor(color);
-
+                    var topLeft = coordinatesToPixel(new Coordinates(x, y), state.getCameraCoordinates());
                     graphics.fillOval(
-                        x * TILE_WIDTH + TILE_WIDTH / 4,
-                        y * TILE_HEIGHT + TILE_HEIGHT / 4,
+                        topLeft.x() + TILE_WIDTH / 4,
+                        topLeft.y() + TILE_HEIGHT / 4,
                         TILE_WIDTH / 2,
                         TILE_HEIGHT / 2
                     );
                 }
             }
         }
+    }
+
+    /**
+     * @return the top-left corner of the resulting grid tile
+     */
+    @Nonnull
+    private Pixel coordinatesToPixel(@Nonnull Coordinates coordinates, @Nonnull Coordinates cameraCoordinates)
+    {
+        var x = (coordinates.x() - cameraCoordinates.x() - coordinates.y() + cameraCoordinates.y() - 1) * (TILE_WIDTH / 2) + GameWindow.WIDTH / 2;
+        var y = (coordinates.x() - cameraCoordinates.x() + coordinates.y() - cameraCoordinates.y() - 1) * (TILE_HEIGHT / 2) + GameWindow.HEIGHT / 2;
+        return new Pixel(x, y);
     }
 }

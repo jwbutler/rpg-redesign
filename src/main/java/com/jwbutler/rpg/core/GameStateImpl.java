@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Faction;
 import com.jwbutler.rpg.players.Player;
@@ -26,12 +27,15 @@ final class GameStateImpl implements GameState
 
     @CheckForNull
     private Level currentLevel;
+    @Nonnull
+    private Coordinates cameraCoordinates;
 
-    GameStateImpl()
+    GameStateImpl(@Nonnull Coordinates cameraCoordinates)
     {
         playersById = new HashMap<>();
         levelsById = new HashMap<>();
         unitsById = new HashMap<>();
+        this.cameraCoordinates = cameraCoordinates;
         currentLevel = null;
     }
 
@@ -133,5 +137,18 @@ final class GameStateImpl implements GameState
     {
         var removed = unitsById.remove(unit.getId());
         checkState(removed == unit);
+    }
+
+    @Nonnull
+    @Override
+    public Coordinates getCameraCoordinates()
+    {
+        return cameraCoordinates;
+    }
+
+    @Override
+    public void setCameraCoordinates(@Nonnull Coordinates coordinates)
+    {
+        cameraCoordinates = coordinates;
     }
 }
