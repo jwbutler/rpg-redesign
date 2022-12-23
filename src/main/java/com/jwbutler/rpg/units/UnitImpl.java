@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
+import com.jwbutler.rpg.players.Player;
 
 final class UnitImpl implements Unit
 {
@@ -19,6 +20,8 @@ final class UnitImpl implements Unit
     @Nonnull
     private Command command;
     @Nonnull
+    private Player player;
+    @Nonnull
     private Level level;
     @Nonnull
     private Coordinates coordinates;
@@ -26,6 +29,7 @@ final class UnitImpl implements Unit
     UnitImpl(
         @Nonnull String name,
         int life,
+        @Nonnull Player player,
         @Nonnull Level level,
         @Nonnull Coordinates coordinates
     )
@@ -36,6 +40,7 @@ final class UnitImpl implements Unit
         this.maxLife = life;
         this.activity = Activity.STANDING;
         this.command = Command.STAY;
+        this.player = player;
         this.level = level;
         this.coordinates = coordinates;
     }
@@ -52,32 +57,6 @@ final class UnitImpl implements Unit
     public String getName()
     {
         return name;
-    }
-
-    @Override
-    @Nonnull
-    public Level getLevel()
-    {
-        return level;
-    }
-
-    @Override
-    public void setLevel(@Nonnull Level level)
-    {
-        this.level = level;
-    }
-
-    @Nonnull
-    @Override
-    public Coordinates getCoordinates()
-    {
-        return coordinates;
-    }
-
-    @Override
-    public void setCoordinates(@Nonnull Coordinates coordinates)
-    {
-        this.coordinates = coordinates;
     }
 
     @Override
@@ -116,5 +95,38 @@ final class UnitImpl implements Unit
     public void setCommand(@Nonnull Command command)
     {
         this.command = command;
+    }
+
+    @Nonnull
+    @Override
+    public Player getPlayer()
+    {
+        return player;
+    }
+
+    @Override
+    @Nonnull
+    public Level getLevel()
+    {
+        return level;
+    }
+
+    @Override
+    public void setLevel(@Nonnull Level level)
+    {
+        this.level = level;
+    }
+
+    @Nonnull
+    @Override
+    public Coordinates getCoordinates()
+    {
+        return coordinates;
+    }
+
+    @Override
+    public void setCoordinates(@Nonnull Coordinates coordinates)
+    {
+        this.coordinates = coordinates;
     }
 }

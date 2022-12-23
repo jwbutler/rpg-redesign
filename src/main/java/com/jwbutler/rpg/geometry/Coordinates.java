@@ -11,6 +11,12 @@ public record Coordinates
     private static final Coordinates ZERO = new Coordinates(0, 0);
 
     @Nonnull
+    public Coordinates plus(int dx, int dy)
+    {
+        return new Coordinates(x + dx, y + dy);
+    }
+
+    @Nonnull
     @Override
     public String toString()
     {

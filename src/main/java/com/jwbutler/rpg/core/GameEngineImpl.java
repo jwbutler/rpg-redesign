@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
+import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
 final class GameEngineImpl implements GameEngine
@@ -21,6 +22,7 @@ final class GameEngineImpl implements GameEngine
     {
         state.addUnit(unit);
         unit.getLevel().addUnit(unit);
+        unit.getPlayer().addUnit(unit);
     }
 
     @Override
@@ -28,16 +30,15 @@ final class GameEngineImpl implements GameEngine
     {
         state.removeUnit(unit);
         unit.getLevel().removeUnit(unit);
+        unit.getPlayer().removeUnit(unit);
     }
 
     @Override
     public void moveUnit(@Nonnull Unit unit, @Nonnull Level level, @Nonnull Coordinates coordinates)
     {
-        if (level != unit.getLevel())
-        {
-            unit.getLevel().removeUnit(unit);
-        }
+        unit.getLevel().removeUnit(unit);
         unit.setLevel(level);
+        unit.setCoordinates(coordinates);
         level.addUnit(unit);
     }
 
@@ -45,5 +46,18 @@ final class GameEngineImpl implements GameEngine
     public void addLevel(@Nonnull Level level)
     {
         state.addLevel(level);
+    }
+
+    @Override
+    public void addPlayer(@Nonnull Player player)
+    {
+        state.addPlayer(player);
+    }
+
+    @Nonnull
+    @Override
+    public GameState getState()
+    {
+        return state;
     }
 }

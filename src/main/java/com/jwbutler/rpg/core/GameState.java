@@ -6,26 +6,22 @@ import javax.annotation.Nonnull;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.jwbutler.rpg.levels.Level;
+import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
 public interface GameState
 {
-    /**
-     * @throws IllegalArgumentException if we already have a unit with the specified id
-     */
-    void addUnit(@Nonnull Unit unit);
+    void addPlayer(@Nonnull Player player);
 
     /**
-     * @throws IllegalArgumentException if there is no unit with the specified id
+     * @throws IllegalArgumentException if there is no player with the specified id
      */
     @Nonnull
-    Unit getUnit(@Nonnull UUID id);
+    Player getPlayer(@Nonnull UUID id);
 
-    @CheckForNull
-    @VisibleForTesting
-    Unit getUnitNullable(@Nonnull UUID id);
-
-    void removeUnit(@Nonnull Unit unit);
+    @Nonnull
+    @Deprecated
+    Player getHumanPlayer();
 
     /**
      * @throws IllegalArgumentException if we already have a level with the specified id
@@ -37,6 +33,43 @@ public interface GameState
      */
     @Nonnull
     Level getLevel(@Nonnull UUID id);
+
+    /**
+     * @deprecated - this should be per-player, not global
+     */
+    @Deprecated
+    void setCurrentLevel(@Nonnull Level currentLevel);
+
+    /**
+     * @deprecated - this should be per-player, not global
+     */
+    @Nonnull
+    @Deprecated
+    Level getCurrentLevel();
+
+    /**
+     * @throws IllegalArgumentException if we already have a unit with the specified id
+     */
+    void addUnit(@Nonnull Unit unit);
+
+    /**
+     * @throws IllegalArgumentException if there is no unit with the specified id
+     */
+    @Nonnull
+    Unit getUnit(@Nonnull UUID id);
+
+    /**
+     * @deprecated - this should be per-player, not global
+     */
+    @Nonnull
+    @Deprecated
+    Unit getPlayerUnit();
+
+    @CheckForNull
+    @VisibleForTesting
+    Unit getUnitNullable(@Nonnull UUID id);
+
+    void removeUnit(@Nonnull Unit unit);
 
     @Nonnull
     static GameState create()
