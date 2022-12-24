@@ -87,14 +87,8 @@ public final class GameRenderer
                         case ENEMY -> Color.RED;
                         case NEUTRAL -> Color.LIGHT_GRAY;
                     };
-                    graphics.setColor(color);
                     var topLeft = coordinatesToPixel(new Coordinates(x, y), humanPlayer.getCameraCoordinates());
-                    graphics.fillOval(
-                        topLeft.x() + TILE_WIDTH / 4,
-                        topLeft.y() + TILE_HEIGHT / 4,
-                        TILE_WIDTH / 2,
-                        TILE_HEIGHT / 2
-                    );
+                    graphics.drawImage(unit.getSprite().getImage(unit), topLeft.x(), topLeft.y(), null);
                 }
             }
         }

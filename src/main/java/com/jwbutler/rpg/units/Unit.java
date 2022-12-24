@@ -8,6 +8,7 @@ import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
+import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
 
 public interface Unit
@@ -43,6 +44,9 @@ public interface Unit
     @Nonnull
     Level getLevel();
 
+    @Nonnull
+    Sprite<Unit> getSprite();
+
     void setLevel(@Nonnull Level level);
 
     @Nonnull
@@ -50,16 +54,4 @@ public interface Unit
     void setCoordinates(@Nonnull Coordinates coordinates);
 
     void update();
-
-    @Nonnull
-    static Unit create(
-        @Nonnull String name,
-        int life,
-        @Nonnull Player player,
-        @Nonnull Level level,
-        @Nonnull Coordinates coordinates
-    )
-    {
-        return new UnitImpl(name, life, player, level, coordinates);
-    }
 }

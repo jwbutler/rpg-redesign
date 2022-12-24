@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.units.commands.MoveCommand;
 import com.jwbutler.rpg.util.Blocking;
 import com.jwbutler.rpg.util.SingletonBlockingQueue;
 
@@ -60,15 +61,23 @@ public final class InputHandler
         if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
         {
             var playerUnit = engine.getState().getPlayerUnit();
-            return () -> engine.moveUnit(playerUnit, level, coordinates);
+            return () -> playerUnit.setNextCommand(new MoveCommand(coordinates));
+            // return () -> engine.moveUnit(playerUnit, level, coordinates);
         }
         return null;
     }
 
     @Nonnull
     @Blocking
-    public Runnable poll()
+    public Runnable pollBlocking()
     {
         return queue.take();
+    }
+
+    @CheckForNull
+    @Blocking
+    public Runnable poll()
+    {
+        return queue.poll();
     }
 }

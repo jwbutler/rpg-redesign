@@ -1,5 +1,7 @@
 package com.jwbutler.rpg;
 
+import java.util.concurrent.TimeUnit;
+
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -9,7 +11,9 @@ import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
-import com.jwbutler.rpg.units.Unit;
+import com.jwbutler.rpg.units.UnitFactory;
+
+import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
 
 public class Main
 {
@@ -17,6 +21,7 @@ public class Main
     {
         var state = GameState.create();
         var controller = GameController.create(state);
+        GameController.setInstance(controller);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
         var inputHandler = new InputHandler(controller, window);
@@ -30,7 +35,7 @@ public class Main
         controller.addPlayer(humanPlayer);
         var enemyPlayer = new EnemyPlayer("enemy_player");
         controller.addPlayer(enemyPlayer);
-        var playerUnit = Unit.create(
+        var playerUnit = UnitFactory.createPlayerUnit(
             "test_unit",
             100,
             humanPlayer,
@@ -38,7 +43,7 @@ public class Main
             Coordinates.zero()
         );
         controller.addUnit(playerUnit);
-        var enemyUnit = Unit.create(
+        var enemyUnit = UnitFactory.createPlayerUnit(
             "enemy_unit",
             100,
             enemyPlayer,
@@ -51,8 +56,16 @@ public class Main
         while (true)
         {
             var runnable = inputHandler.poll();
-            runnable.run();
+            if (runnable != null)
+            {
+                runnable.run();
+            }
+            for (var unit : state.getCurrentLevel().getUnits())
+            {
+                unit.update();
+            }
             renderer.render(state);
+            sleepUninterruptibly(200, TimeUnit.MILLISECONDS);
         }
     }
 }

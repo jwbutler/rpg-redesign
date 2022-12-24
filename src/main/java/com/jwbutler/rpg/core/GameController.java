@@ -7,6 +7,8 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
+import static com.google.common.base.Preconditions.checkState;
+
 public interface GameController
 {
     /**
@@ -34,5 +36,18 @@ public interface GameController
     static GameController create(@Nonnull GameState state)
     {
         return new GameControllerImpl(state);
+    }
+
+    @Nonnull
+    static GameController getInstance()
+    {
+        var instance = GameControllerImpl.INSTANCE;
+        checkState(instance != null);
+        return instance;
+    }
+
+    static void setInstance(@Nonnull GameController instance)
+    {
+        GameControllerImpl.INSTANCE = (GameControllerImpl) instance;
     }
 }

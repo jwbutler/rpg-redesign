@@ -8,6 +8,9 @@ import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
+import com.jwbutler.rpg.sprites.AnimatedSprite;
+import com.jwbutler.rpg.sprites.Sprite;
+import com.jwbutler.rpg.sprites.UnitSprite;
 import com.jwbutler.rpg.units.commands.Command;
 import com.jwbutler.rpg.units.commands.StayCommand;
 
@@ -19,6 +22,8 @@ final class UnitImpl implements Unit
     private final String name;
     private int life;
     private int maxLife;
+    @Nonnull
+    private final AnimatedSprite<Unit> sprite;
     @Nonnull
     private Activity activity;
     @Nonnull
@@ -38,6 +43,7 @@ final class UnitImpl implements Unit
     UnitImpl(
         @Nonnull String name,
         int life,
+        @Nonnull AnimatedSprite<Unit> sprite,
         @Nonnull Player player,
         @Nonnull Level level,
         @Nonnull Coordinates coordinates
@@ -47,6 +53,7 @@ final class UnitImpl implements Unit
         this.name = name;
         this.life = life;
         this.maxLife = life;
+        this.sprite = sprite;
         activity = Activity.STANDING;
         direction = Direction.SE;
         frameNumber = 0;
@@ -151,6 +158,13 @@ final class UnitImpl implements Unit
         return level;
     }
 
+    @Nonnull
+    @Override
+    public Sprite<Unit> getSprite()
+    {
+        return sprite;
+    }
+
     @Override
     public void setLevel(@Nonnull Level level)
     {
@@ -183,8 +197,8 @@ final class UnitImpl implements Unit
         }
     }
 
-    private static int _getMaxFrameNumber()
+    private int _getMaxFrameNumber()
     {
-        return 3;
+        return sprite.getAnimation(this).getFilenames().size() - 1;
     }
 }

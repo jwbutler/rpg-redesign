@@ -20,7 +20,7 @@ implements Point
     @Nonnull
     public Coordinates plus(@Nonnull Direction direction)
     {
-        return new Coordinates(x + direction.dx(), direction.dy());
+        return new Coordinates(x + direction.dx(), y + direction.dy());
     }
 
     @Nonnull
