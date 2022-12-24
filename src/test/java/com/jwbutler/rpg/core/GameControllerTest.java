@@ -2,8 +2,7 @@ package com.jwbutler.rpg.core;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
-import com.jwbutler.rpg.players.Faction;
-import com.jwbutler.rpg.players.Player;
+import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Unit;
 import org.testng.annotations.Test;
 
@@ -30,7 +29,7 @@ public final class GameControllerTest
     {
         var state = GameState.create();
         var controller = GameController.create(state);
-        var player = Player.create("test_player", Faction.PLAYER);
+        var player = new HumanPlayer("test_player", Coordinates.zero());
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
@@ -47,7 +46,7 @@ public final class GameControllerTest
     {
         var state = GameState.create();
         var controller = GameController.create(state);
-        var player = Player.create("test_player", Faction.PLAYER);
+        var player = new HumanPlayer("test_player", Coordinates.zero());
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
@@ -69,7 +68,7 @@ public final class GameControllerTest
     {
         var state = GameState.create();
         var controller = GameController.create(state);
-        var player = Player.create("test_player", Faction.PLAYER);
+        var player = new HumanPlayer("test_player", Coordinates.zero());
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
