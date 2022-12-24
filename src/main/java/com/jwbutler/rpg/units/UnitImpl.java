@@ -1,11 +1,15 @@
 package com.jwbutler.rpg.units;
 
 import java.util.UUID;
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
+import com.jwbutler.rpg.units.commands.Command;
+import com.jwbutler.rpg.units.commands.StayCommand;
 
 final class UnitImpl implements Unit
 {
@@ -18,7 +22,12 @@ final class UnitImpl implements Unit
     @Nonnull
     private Activity activity;
     @Nonnull
+    private Direction direction;
+    private int frameNumber;
+    @Nonnull
     private Command command;
+    @CheckForNull
+    private Command nextCommand;
     @Nonnull
     private Player player;
     @Nonnull
@@ -38,8 +47,11 @@ final class UnitImpl implements Unit
         this.name = name;
         this.life = life;
         this.maxLife = life;
-        this.activity = Activity.STANDING;
-        this.command = Command.STAY;
+        activity = Activity.STANDING;
+        direction = Direction.SE;
+        frameNumber = 0;
+        command = new StayCommand();
+        nextCommand = null;
         this.player = player;
         this.level = level;
         this.coordinates = coordinates;
@@ -79,9 +91,24 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    public void setActivity(@Nonnull Activity activity)
+    @Nonnull
+    public Direction getDirection()
+    {
+        return direction;
+    }
+
+    @Override
+    public int getFrameNumber()
+    {
+        return frameNumber;
+    }
+
+    @Override
+    public void startActivity(@Nonnull Activity activity, @Nonnull Direction direction)
     {
         this.activity = activity;
+        this.direction = direction;
+        this.frameNumber = 0;
     }
 
     @Override
@@ -95,6 +122,19 @@ final class UnitImpl implements Unit
     public void setCommand(@Nonnull Command command)
     {
         this.command = command;
+    }
+
+    @CheckForNull
+    @Override
+    public Command getNextCommand()
+    {
+        return nextCommand;
+    }
+
+    @Override
+    public void setNextCommand(@CheckForNull Command command)
+    {
+        nextCommand = command;
     }
 
     @Nonnull
@@ -128,5 +168,23 @@ final class UnitImpl implements Unit
     public void setCoordinates(@Nonnull Coordinates coordinates)
     {
         this.coordinates = coordinates;
+    }
+
+    @Override
+    public void update()
+    {
+        frameNumber++;
+        if (frameNumber > _getMaxFrameNumber())
+        {
+            command.endActivity(this);
+            command = (nextCommand != null) ? nextCommand : command;
+            nextCommand = null;
+            command.startNextActivity(this);
+        }
+    }
+
+    private static int _getMaxFrameNumber()
+    {
+        return 3;
     }
 }

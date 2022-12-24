@@ -1,27 +1,55 @@
 package com.jwbutler.rpg.units;
 
 import java.util.UUID;
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
+import com.jwbutler.rpg.units.commands.Command;
 
 public interface Unit
 {
-    @Nonnull UUID getId();
-    @Nonnull String getName();
+    @Nonnull
+    UUID getId();
+
+    @Nonnull
+    String getName();
+
     int getLife();
     int getMaxLife();
-    @Nonnull Activity getActivity();
-    void setActivity(@Nonnull Activity activity);
-    @Nonnull Command getCommand();
+
+    @Nonnull
+    Activity getActivity();
+    @Nonnull
+    Direction getDirection();
+    int getFrameNumber();
+
+    void startActivity(@Nonnull Activity activity, @Nonnull Direction direction);
+
+
+    @Nonnull
+    Command getCommand();
     void setCommand(@Nonnull Command command);
-    @Nonnull Player getPlayer();
-    @Nonnull Level getLevel();
+    @CheckForNull
+    Command getNextCommand();
+    void setNextCommand(@CheckForNull Command command);
+
+    @Nonnull
+    Player getPlayer();
+
+    @Nonnull
+    Level getLevel();
+
     void setLevel(@Nonnull Level level);
-    @Nonnull Coordinates getCoordinates();
+
+    @Nonnull
+    Coordinates getCoordinates();
     void setCoordinates(@Nonnull Coordinates coordinates);
+
+    void update();
 
     @Nonnull
     static Unit create(
