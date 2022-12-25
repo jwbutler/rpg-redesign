@@ -1,11 +1,13 @@
 package com.jwbutler.rpg.ui;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
-import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Direction;
+import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import com.jwbutler.rpg.util.Blocking;
 import com.jwbutler.rpg.util.SingletonBlockingQueue;
@@ -26,17 +28,16 @@ public final class InputHandler
         this.queue = new SingletonBlockingQueue<>();
     }
 
-    public void handleKeyPress(@Nonnull KeyEvent e)
+    public void handleKeyDown(@Nonnull KeyEvent e)
     {
-        var unit = controller.getState().getPlayerUnit();
         int keyCode = e.getKeyCode();
 
         @CheckForNull Runnable runnable = switch (keyCode)
         {
-            case KeyEvent.VK_W, KeyEvent.VK_UP    -> _tryMove(unit.getCoordinates().plus(0, -1));
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT  -> _tryMove(unit.getCoordinates().plus(-1, 0));
-            case KeyEvent.VK_S, KeyEvent.VK_DOWN  -> _tryMove(unit.getCoordinates().plus(0, 1));
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> _tryMove(unit.getCoordinates().plus(1, 0));
+            case KeyEvent.VK_W, KeyEvent.VK_UP    -> _tryMove(Direction.N);
+            case KeyEvent.VK_A, KeyEvent.VK_LEFT  -> _tryMove(Direction.W);
+            case KeyEvent.VK_S, KeyEvent.VK_DOWN  -> _tryMove(Direction.S);
+            case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> _tryMove(Direction.E);
             case KeyEvent.VK_ENTER ->
             {
                 if ((e.getModifiersEx() & KeyEvent.ALT_DOWN_MASK) > 0)
@@ -54,17 +55,26 @@ public final class InputHandler
         }
     }
 
-    @CheckForNull
-    private Runnable _tryMove(@Nonnull Coordinates coordinates)
+    public void handleMouseDown(@Nonnull MouseEvent event)
     {
-        var level = controller.getState().getCurrentLevel();
-        if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
+        var pixel = new Pixel(event.getX(), event.getY());
+        System.out.println(pixel);
+        System.out.println(pixel.toCoordinates(controller.getState().getHumanPlayer().getCameraCoordinates()));
+    }
+
+    @Nonnull
+    private Runnable _tryMove(@Nonnull Direction direction)
+    {
+        return () ->
         {
             var playerUnit = controller.getState().getPlayerUnit();
-            return () -> playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
-            // return () -> engine.moveUnit(playerUnit, level, coordinates);
-        }
-        return null;
+            var level = controller.getState().getCurrentLevel();
+            var coordinates = playerUnit.getCoordinates().plus(direction);
+            if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
+            {
+                playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+            }
+        };
     }
 
     @Nonnull

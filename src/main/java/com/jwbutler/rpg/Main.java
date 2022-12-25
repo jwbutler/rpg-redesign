@@ -24,7 +24,8 @@ public class Main
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
         var inputHandler = new InputHandler(controller, window);
-        window.addKeyboardListener(inputHandler::handleKeyPress);
+        window.addKeyboardListener(inputHandler::handleKeyDown);
+        window.addMouseListener(inputHandler::handleMouseDown);
 
         var level = LevelFactory.LEVEL_ONE.get();
 

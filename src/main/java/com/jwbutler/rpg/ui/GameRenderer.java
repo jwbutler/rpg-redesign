@@ -8,7 +8,9 @@ import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
-import com.jwbutler.rpg.geometry.Pixel;
+
+import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
+import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
 
 public final class GameRenderer
 {
@@ -28,8 +30,7 @@ public final class GameRenderer
         window.render(graphics ->
         {
             graphics.setColor(Color.BLACK);
-            graphics.fillRect(0, 0, GameWindow.WIDTH, GameWindow.HEIGHT);
-            var level = state.getCurrentLevel();
+            graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             var playerUnit = state.getPlayerUnit();
             graphics.setColor(Color.WHITE);
             graphics.drawString(playerUnit.getName(), 10, 10);
@@ -49,20 +50,11 @@ public final class GameRenderer
         {
             for (int x = 0; x < level.getDimensions().width(); x++)
             {
-                var topLeft = coordinatesToPixel(new Coordinates(x, y), humanPlayer.getCameraCoordinates());
+                var coordinates = new Coordinates(x, y);
+                var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
                 graphics.drawPolygon(
-                    new int[] {
-                        topLeft.x() + TILE_WIDTH / 2,
-                        topLeft.x() + TILE_WIDTH,
-                        topLeft.x() + TILE_WIDTH / 2,
-                        topLeft.x()
-                    },
-                    new int[] {
-                        topLeft.y(),
-                        topLeft.y() + TILE_HEIGHT / 2,
-                        topLeft.y() + TILE_HEIGHT,
-                        topLeft.y() + TILE_HEIGHT / 2,
-                    },
+                    new int[]{ topLeft.x() + TILE_WIDTH / 2, topLeft.x() + TILE_WIDTH, topLeft.x() + TILE_WIDTH / 2, topLeft.x() },
+                    new int[]{ topLeft.y(), topLeft.y() + TILE_HEIGHT / 2, topLeft.y() + TILE_HEIGHT, topLeft.y() + TILE_HEIGHT / 2, },
                     4
                 );
             }
@@ -81,25 +73,13 @@ public final class GameRenderer
                 if (unit != null)
                 {
                     var image = unit.getSprite().getImage(unit);
-                    var topLeft = coordinatesToPixel(new Coordinates(x, y), humanPlayer.getCameraCoordinates());
-                    topLeft = topLeft.plus(
-                        (TILE_WIDTH - image.getWidth()) / 2,
-                        (TILE_WIDTH / 2) - image.getHeight()
-                    );
+                    var coordinates = new Coordinates(x, y);
+                    var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
+                    // TODO generalize these
+                    topLeft = topLeft.plus((TILE_WIDTH - image.getWidth()) / 2, (TILE_WIDTH / 2) - image.getHeight());
                     graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
                 }
             }
         }
-    }
-
-    /**
-     * @return the top-left corner of the resulting grid tile
-     */
-    @Nonnull
-    private Pixel coordinatesToPixel(@Nonnull Coordinates coordinates, @Nonnull Coordinates cameraCoordinates)
-    {
-        var x = (coordinates.x() - cameraCoordinates.x() - coordinates.y() + cameraCoordinates.y() - 1) * (TILE_WIDTH / 2) + GameWindow.WIDTH / 2;
-        var y = (coordinates.x() - cameraCoordinates.x() + coordinates.y() - cameraCoordinates.y() - 1) * (TILE_HEIGHT / 2) + GameWindow.HEIGHT / 2;
-        return new Pixel(x, y);
     }
 }
