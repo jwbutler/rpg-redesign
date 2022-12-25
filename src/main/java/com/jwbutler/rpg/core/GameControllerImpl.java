@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.core;
 
-import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -10,9 +9,6 @@ import com.jwbutler.rpg.units.Unit;
 
 final class GameControllerImpl implements GameController
 {
-    @CheckForNull
-    static GameControllerImpl INSTANCE = null;
-
     @Nonnull
     private final GameState state;
 

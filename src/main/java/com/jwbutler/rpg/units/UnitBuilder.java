@@ -2,22 +2,29 @@ package com.jwbutler.rpg.units;
 
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.sprites.AnimatedSprite;
-import com.jwbutler.rpg.sprites.Sprite;
 
 import static com.google.common.base.Preconditions.checkState;
 
 final class UnitBuilder
 {
+    private GameController controller;
     private String name;
     private Integer life;
     private AnimatedSprite<Unit> sprite;
     private Player player;
     private Level level;
     private Coordinates coordinates;
+
+    UnitBuilder controller(GameController controller)
+    {
+        this.controller = controller;
+        return this;
+    }
 
     UnitBuilder name(String name)
     {
@@ -58,6 +65,7 @@ final class UnitBuilder
     @Nonnull
     Unit build()
     {
+        checkState(controller != null);
         checkState(name != null);
         checkState(life != null);
         checkState(sprite != null);
@@ -66,6 +74,7 @@ final class UnitBuilder
         checkState(coordinates != null);
 
         return new UnitImpl(
+            controller,
             name,
             life,
             sprite,

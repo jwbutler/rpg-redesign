@@ -5,7 +5,6 @@ import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Activity;
-import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.UnitFactory;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import com.jwbutler.rpg.units.commands.StayCommand;
@@ -24,19 +23,18 @@ public final class UnitTest
     {
         var state = GameState.create();
         var controller = GameController.create(state);
-        GameController.setInstance(controller);
         var player = new HumanPlayer("test_player", Coordinates.zero());
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
 
-        var unit = UnitFactory.createPlayerUnit("test_unit", 10, player, level, Coordinates.zero());
+        var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
         controller.addUnit(unit);
 
         assertEquals(unit.getActivity(), Activity.STANDING);
         assertEquals(unit.getDirection(), Direction.SE);
         assertEquals(unit.getFrameNumber(), 0);
-        assertEquals(unit.getCommand(), new StayCommand());
+        assertEquals(unit.getCommand(), new StayCommand(controller));
         assertNull(unit.getNextCommand());
 
         for (int i = 1; i <= 3; i++)
@@ -46,11 +44,11 @@ public final class UnitTest
             assertEquals(unit.getActivity(), Activity.STANDING);
             assertEquals(unit.getDirection(), Direction.SE);
             assertEquals(unit.getFrameNumber(), 0);
-            assertEquals(unit.getCommand(), new StayCommand());
+            assertEquals(unit.getCommand(), new StayCommand(controller));
             assertNull(unit.getNextCommand());
         }
 
-        var moveCommand = new MoveCommand(new Coordinates(0, 2));
+        var moveCommand = new MoveCommand(controller, new Coordinates(0, 2));
         unit.setNextCommand(moveCommand);
 
         for (int i = 0; i <= 1; i++)

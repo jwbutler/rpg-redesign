@@ -10,8 +10,6 @@ import com.jwbutler.rpg.sprites.animations.Animation;
 import com.jwbutler.rpg.sprites.animations.UnitAnimations;
 import com.jwbutler.rpg.units.Unit;
 
-import static com.google.common.base.Preconditions.checkState;
-
 public final class UnitSprite implements AnimatedSprite<Unit>
 {
     @Nonnull
@@ -39,7 +37,6 @@ public final class UnitSprite implements AnimatedSprite<Unit>
         var animation = getAnimation(target);
         var filename = animation.getFilenames().get(target.getFrameNumber());
         graphics.drawString(filename, 0, 10);
-        System.out.println(filename);
         return image;
     }
 

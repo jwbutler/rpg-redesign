@@ -2,6 +2,7 @@ package com.jwbutler.rpg.units;
 
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
@@ -16,6 +17,7 @@ public final class UnitFactory
 
     @Nonnull
     public static Unit createPlayerUnit(
+        @Nonnull GameController controller,
         @Nonnull String name,
         int life,
         @Nonnull Player player,
@@ -24,6 +26,7 @@ public final class UnitFactory
     )
     {
         return new UnitBuilder()
+            .controller(controller)
             .name(name)
             .life(life)
             .sprite(new UnitSprite(new PlayerAnimations(), emptyMap()))

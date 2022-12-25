@@ -4,18 +4,20 @@ import java.util.UUID;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
-import com.jwbutler.rpg.sprites.UnitSprite;
 import com.jwbutler.rpg.units.commands.Command;
 import com.jwbutler.rpg.units.commands.StayCommand;
 
 final class UnitImpl implements Unit
 {
+    @Nonnull
+    private final GameController controller;
     @Nonnull
     private final UUID id;
     @Nonnull
@@ -41,6 +43,7 @@ final class UnitImpl implements Unit
     private Coordinates coordinates;
 
     UnitImpl(
+        @Nonnull GameController controller,
         @Nonnull String name,
         int life,
         @Nonnull AnimatedSprite<Unit> sprite,
@@ -49,6 +52,7 @@ final class UnitImpl implements Unit
         @Nonnull Coordinates coordinates
     )
     {
+        this.controller = controller;
         this.id = UUID.randomUUID();
         this.name = name;
         this.life = life;
@@ -57,7 +61,7 @@ final class UnitImpl implements Unit
         activity = Activity.STANDING;
         direction = Direction.SE;
         frameNumber = 0;
-        command = new StayCommand();
+        command = new StayCommand(controller);
         nextCommand = null;
         this.player = player;
         this.level = level;

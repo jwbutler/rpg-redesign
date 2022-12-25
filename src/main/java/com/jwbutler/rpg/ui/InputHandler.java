@@ -13,22 +13,22 @@ import com.jwbutler.rpg.util.SingletonBlockingQueue;
 public final class InputHandler
 {
     @Nonnull
-    private final GameController engine;
+    private final GameController controller;
     @Nonnull
     private final GameWindow window;
     @Nonnull
     private final SingletonBlockingQueue<Runnable> queue;
 
-    public InputHandler(@Nonnull GameController engine, @Nonnull GameWindow window)
+    public InputHandler(@Nonnull GameController controller, @Nonnull GameWindow window)
     {
-        this.engine = engine;
+        this.controller = controller;
         this.window = window;
         this.queue = new SingletonBlockingQueue<>();
     }
 
     public void handleKeyPress(@Nonnull KeyEvent e)
     {
-        var unit = engine.getState().getPlayerUnit();
+        var unit = controller.getState().getPlayerUnit();
         int keyCode = e.getKeyCode();
 
         @CheckForNull Runnable runnable = switch (keyCode)
@@ -57,11 +57,11 @@ public final class InputHandler
     @CheckForNull
     private Runnable _tryMove(@Nonnull Coordinates coordinates)
     {
-        var level = engine.getState().getCurrentLevel();
+        var level = controller.getState().getCurrentLevel();
         if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
         {
-            var playerUnit = engine.getState().getPlayerUnit();
-            return () -> playerUnit.setNextCommand(new MoveCommand(coordinates));
+            var playerUnit = controller.getState().getPlayerUnit();
+            return () -> playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
             // return () -> engine.moveUnit(playerUnit, level, coordinates);
         }
         return null;

@@ -21,7 +21,6 @@ public class Main
     {
         var state = GameState.create();
         var controller = GameController.create(state);
-        GameController.setInstance(controller);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
         var inputHandler = new InputHandler(controller, window);
@@ -36,6 +35,7 @@ public class Main
         var enemyPlayer = new EnemyPlayer("enemy_player");
         controller.addPlayer(enemyPlayer);
         var playerUnit = UnitFactory.createPlayerUnit(
+            controller,
             "test_unit",
             100,
             humanPlayer,
@@ -44,6 +44,7 @@ public class Main
         );
         controller.addUnit(playerUnit);
         var enemyUnit = UnitFactory.createPlayerUnit(
+            controller,
             "enemy_unit",
             100,
             enemyPlayer,

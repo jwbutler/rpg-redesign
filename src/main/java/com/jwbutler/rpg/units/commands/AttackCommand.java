@@ -8,6 +8,7 @@ import com.jwbutler.rpg.units.Unit;
 
 public record AttackCommand
 (
+    @Nonnull GameController controller,
     @Nonnull Unit target
 )
 implements Command
@@ -36,7 +37,7 @@ implements Command
             {
                 var coordinates = unit.getCoordinates().plus(unit.getDirection());
                 // TODO check if it's legal and unblocked
-                GameController.getInstance().moveUnit(unit, unit.getLevel(), coordinates);
+                controller.moveUnit(unit, unit.getLevel(), coordinates);
             }
         }
     }

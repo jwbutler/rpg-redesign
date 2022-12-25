@@ -10,6 +10,7 @@ import com.jwbutler.rpg.units.Unit;
 
 public record MoveCommand
 (
+    @Nonnull GameController controller,
     @Nonnull Coordinates target
 )
 implements Command
@@ -38,7 +39,7 @@ implements Command
             {
                 var coordinates = unit.getCoordinates().plus(unit.getDirection());
                 // TODO check if it's legal and unblocked
-                GameController.getInstance().moveUnit(unit, unit.getLevel(), coordinates);
+                controller.moveUnit(unit, unit.getLevel(), coordinates);
             }
         }
     }
