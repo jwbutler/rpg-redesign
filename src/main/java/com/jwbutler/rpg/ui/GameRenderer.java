@@ -80,15 +80,13 @@ public final class GameRenderer
                 var unit = level.getUnit(new Coordinates(x, y));
                 if (unit != null)
                 {
-                    var faction = unit.getPlayer().getFaction();
-                    var color = switch (faction)
-                    {
-                        case PLAYER -> Color.GREEN;
-                        case ENEMY -> Color.RED;
-                        case NEUTRAL -> Color.LIGHT_GRAY;
-                    };
+                    var image = unit.getSprite().getImage(unit);
                     var topLeft = coordinatesToPixel(new Coordinates(x, y), humanPlayer.getCameraCoordinates());
-                    graphics.drawImage(unit.getSprite().getImage(unit), topLeft.x(), topLeft.y(), null);
+                    topLeft = topLeft.plus(
+                        (TILE_WIDTH - image.getWidth()) / 2,
+                        (TILE_WIDTH / 2) - image.getHeight()
+                    );
+                    graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
                 }
             }
         }

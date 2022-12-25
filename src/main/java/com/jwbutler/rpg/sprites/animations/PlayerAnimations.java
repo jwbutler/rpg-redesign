@@ -30,6 +30,6 @@ public final class PlayerAnimations implements UnitAnimations
     @Nonnull
     private static String _formatFilename(@Nonnull Activity activity, @Nonnull Direction direction, @Nonnull String number)
     {
-        return String.format("player_%s_%s_%s", activity, direction, number);
+        return String.format("units/player/player_%s_%s_%s", activity, direction, number);
     }
 }

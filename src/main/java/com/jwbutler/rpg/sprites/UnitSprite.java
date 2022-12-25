@@ -1,14 +1,18 @@
 package com.jwbutler.rpg.sprites;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.imageio.ImageIO;
 
 import com.jwbutler.rpg.sprites.animations.Animation;
 import com.jwbutler.rpg.sprites.animations.UnitAnimations;
 import com.jwbutler.rpg.units.Unit;
+
+import static com.google.common.base.Preconditions.checkState;
 
 public final class UnitSprite implements AnimatedSprite<Unit>
 {
@@ -30,14 +34,33 @@ public final class UnitSprite implements AnimatedSprite<Unit>
     @Override
     public BufferedImage getImage(@Nonnull Unit target)
     {
-        var image = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
-        var graphics = image.getGraphics();
-        graphics.setColor(Color.WHITE);
-        graphics.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 6));
         var animation = getAnimation(target);
         var filename = animation.getFilenames().get(target.getFrameNumber());
-        graphics.drawString(filename, 0, 10);
-        return image;
+        try
+        {
+            var url = getClass().getResource("/png/" + filename + ".png");
+            checkState(url != null);
+            var image = ImageIO.read(url);
+            var argb = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            argb.getGraphics().drawImage(image, 0, 0, null);
+            var TRANSPARENT = new Color(0, 0, 0, 0).getRGB();
+            for (int y = 0; y < argb.getHeight(); y++)
+            {
+                for (int x = 0; x < argb.getWidth(); x++)
+                {
+                    var rgb = argb.getRGB(x, y);
+                    if (rgb == Color.WHITE.getRGB())
+                    {
+                        argb.setRGB(x, y, TRANSPARENT);
+                    }
+                }
+            }
+            return argb;
+        }
+        catch (IOException e)
+        {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Nonnull
