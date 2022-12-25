@@ -43,7 +43,6 @@ public final class GameRenderer
 
     private void _drawGrid(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
-        var humanPlayer = state.getHumanPlayer();
         graphics.setColor(Color.WHITE);
         var level = state.getCurrentLevel();
         for (int y = 0; y < level.getDimensions().height(); y++)
@@ -51,14 +50,20 @@ public final class GameRenderer
             for (int x = 0; x < level.getDimensions().width(); x++)
             {
                 var coordinates = new Coordinates(x, y);
-                var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-                graphics.drawPolygon(
-                    new int[]{ topLeft.x() + TILE_WIDTH / 2, topLeft.x() + TILE_WIDTH, topLeft.x() + TILE_WIDTH / 2, topLeft.x() },
-                    new int[]{ topLeft.y(), topLeft.y() + TILE_HEIGHT / 2, topLeft.y() + TILE_HEIGHT, topLeft.y() + TILE_HEIGHT / 2, },
-                    4
-                );
+                _drawGridTile(state, graphics, coordinates);
             }
         }
+    }
+
+    private void _drawGridTile(@Nonnull GameState state, @Nonnull Graphics graphics, @Nonnull Coordinates coordinates)
+    {
+        var humanPlayer = state.getHumanPlayer();
+        var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
+        graphics.drawPolygon(
+            new int[]{ topLeft.x() + TILE_WIDTH / 2, topLeft.x() + TILE_WIDTH, topLeft.x() + TILE_WIDTH / 2, topLeft.x() },
+            new int[]{ topLeft.y(), topLeft.y() + TILE_HEIGHT / 2, topLeft.y() + TILE_HEIGHT, topLeft.y() + TILE_HEIGHT / 2, },
+            4
+        );
     }
 
     private void _drawUnits(@Nonnull GameState state, @Nonnull Graphics graphics)
@@ -74,6 +79,14 @@ public final class GameRenderer
                 {
                     var image = unit.getSprite().getImage(unit);
                     var coordinates = new Coordinates(x, y);
+                    var color = switch (unit.getPlayer().getFaction())
+                    {
+                        case PLAYER -> Color.GREEN;
+                        case ENEMY -> Color.RED;
+                        case NEUTRAL -> Color.GRAY;
+                    };
+                    graphics.setColor(color);
+                    _drawGridTile(state, graphics, coordinates);
                     var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
                     // TODO generalize these
                     topLeft = topLeft.plus((TILE_WIDTH - image.getWidth()) / 2, (TILE_WIDTH / 2) - image.getHeight());

@@ -6,6 +6,7 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
+import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.units.commands.MoveCommand;
@@ -58,8 +59,17 @@ public final class InputHandler
     public void handleMouseDown(@Nonnull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
-        System.out.println(pixel);
-        System.out.println(pixel.toCoordinates(controller.getState().getHumanPlayer().getCameraCoordinates()));
+        var state = controller.getState();
+        var humanPlayer = state.getHumanPlayer();
+        var playerUnit = state.getPlayerUnit();
+        var level = state.getCurrentLevel();
+        var cameraCoordinates = humanPlayer.getCameraCoordinates();
+        var coordinates = pixel.toCoordinates(cameraCoordinates);
+
+        if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
+        {
+            playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+        }
     }
 
     @Nonnull
