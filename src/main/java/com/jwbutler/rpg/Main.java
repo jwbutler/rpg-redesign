@@ -19,13 +19,20 @@ public class Main
 {
     public static void main(String[] args)
     {
+        Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
+            System.out.println("Fatal exception occurred");
+            e.printStackTrace();
+            System.exit(0);
+        });
+
         var state = GameState.create();
         var controller = GameController.create(state);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
         var inputHandler = new InputHandler(controller, window);
         window.addKeyboardListener(inputHandler::handleKeyDown);
-        window.addMouseListener(inputHandler::handleMouseDown);
+        window.addMouseDownListener(inputHandler::handleMouseDown);
+        window.addMouseMoveListener(inputHandler::handleMouseMove);
 
         var level = LevelFactory.LEVEL_ONE.get();
 

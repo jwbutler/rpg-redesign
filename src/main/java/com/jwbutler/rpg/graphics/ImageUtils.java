@@ -17,9 +17,10 @@ public final class ImageUtils
     @Nonnull
     public static BufferedImage loadImage(@Nonnull String filename, @Nonnull Color transparentColor)
     {
+        var fullFilename = "/png/" + filename + ".png";
         try
         {
-            var url = ImageUtils.class.getResource(filename);
+            var url = ImageUtils.class.getResource(fullFilename);
             checkState(url != null);
             var image = ImageIO.read(url);
             var argb = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);

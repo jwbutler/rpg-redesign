@@ -2,12 +2,15 @@ package com.jwbutler.rpg.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.graphics.ImageUtils;
+import com.jwbutler.rpg.levels.TileType;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
@@ -16,6 +19,8 @@ public final class GameRenderer
 {
     @Nonnull
     private final GameWindow window;
+    @Nonnull
+    private final BufferedImage grassImage;
 
     private static final int TILE_WIDTH = 32;
     private static final int TILE_HEIGHT = 24;
@@ -23,6 +28,7 @@ public final class GameRenderer
     public GameRenderer(@Nonnull GameWindow window)
     {
         this.window = window;
+        this.grassImage = ImageUtils.loadImage("tiles/green_32x24", Color.WHITE);
     }
 
     public void render(@Nonnull GameState state)
@@ -31,11 +37,7 @@ public final class GameRenderer
         {
             graphics.setColor(Color.BLACK);
             graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            var playerUnit = state.getPlayerUnit();
             graphics.setColor(Color.WHITE);
-            graphics.drawString(playerUnit.getName(), 10, 10);
-            graphics.drawString(playerUnit.getCoordinates().toString(), 10, 30);
-            graphics.drawString(LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME), 10, 50);
             _drawGrid(state, graphics);
             _drawUnits(state, graphics);
         });
@@ -50,7 +52,23 @@ public final class GameRenderer
             for (int x = 0; x < level.getDimensions().width(); x++)
             {
                 var coordinates = new Coordinates(x, y);
-                _drawGridTile(state, graphics, coordinates);
+                var tile = level.getTile(coordinates);
+                if (tile == TileType.GRASS)
+                {
+                    var humanPlayer = state.getHumanPlayer();
+                    var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
+                    graphics.drawImage(grassImage, topLeft.x(), topLeft.y(), null);
+                }
+                else
+                {
+                    graphics.setColor(Color.WHITE);
+                    _drawGridTile(state, graphics, coordinates);
+                }
+                if (coordinates.equals(state.getHumanPlayer().getMouseCoordinates()))
+                {
+                    graphics.setColor(Color.BLUE);
+                    _drawGridTile(state, graphics, coordinates);
+                }
             }
         }
     }

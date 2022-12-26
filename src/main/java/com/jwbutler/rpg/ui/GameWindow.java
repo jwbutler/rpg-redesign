@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -84,7 +85,7 @@ public final class GameWindow
         });
     }
 
-    public void addMouseListener(@Nonnull Consumer<MouseEvent> mouseListener)
+    public void addMouseDownListener(@Nonnull Consumer<MouseEvent> handler)
     {
         frame.addMouseListener(new MouseAdapter()
         {
@@ -98,7 +99,26 @@ public final class GameWindow
                     (int) (e.getX() * (-1.0 / ZOOM_RATIO)),
                     (int) (e.getY() * (-1.0 / ZOOM_RATIO))
                 );
-                mouseListener.accept(e);
+                handler.accept(e);
+            }
+        });
+    }
+
+    public void addMouseMoveListener(@Nonnull Consumer<MouseEvent> handler)
+    {
+        frame.addMouseMotionListener(new MouseMotionAdapter()
+        {
+            @Override
+            public void mouseMoved(@Nonnull MouseEvent e)
+            {
+                // First, subtract the frame's insets;
+                // then, scale it down to the original pixels
+                e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
+                e.translatePoint(
+                    (int) (e.getX() * (-1.0 / ZOOM_RATIO)),
+                    (int) (e.getY() * (-1.0 / ZOOM_RATIO))
+                );
+                handler.accept(e);
             }
         });
     }

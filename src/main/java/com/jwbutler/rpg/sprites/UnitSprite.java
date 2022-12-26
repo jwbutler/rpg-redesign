@@ -36,8 +36,7 @@ public final class UnitSprite implements AnimatedSprite<Unit>
     {
         var animation = getAnimation(target);
         var filename = animation.getFilenames().get(target.getFrameNumber());
-        var fullFilename = "/png/" + filename + ".png";
-        return loadImage(fullFilename, Color.WHITE);
+        return loadImage(filename, Color.WHITE);
     }
 
     @Nonnull

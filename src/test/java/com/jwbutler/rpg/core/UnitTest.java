@@ -27,6 +27,7 @@ public final class UnitTest
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
+        state.setCurrentLevel(level);
 
         var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
         controller.addUnit(unit);

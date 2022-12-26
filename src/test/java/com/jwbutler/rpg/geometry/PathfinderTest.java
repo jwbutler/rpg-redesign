@@ -18,9 +18,7 @@ public final class PathfinderTest
         var candidates = Set.of(
             new Coordinates(0, 0),
             new Coordinates(0, 1),
-            new Coordinates(0, 2),
-            new Coordinates(1, 2),
-            new Coordinates(2, 2),
+            new Coordinates(1, 1),
             new Coordinates(2, 1),
             new Coordinates(2, 0)
         );
@@ -28,9 +26,7 @@ public final class PathfinderTest
         var expectedPath = List.of(
             new Coordinates(0, 0),
             new Coordinates(0, 1),
-            new Coordinates(0, 2),
-            new Coordinates(1, 2),
-            new Coordinates(2, 2),
+            new Coordinates(1, 1),
             new Coordinates(2, 1),
             new Coordinates(2, 0)
         );
