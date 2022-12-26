@@ -1,5 +1,7 @@
 package com.jwbutler.rpg;
 
+import java.util.concurrent.TimeUnit;
+
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -9,18 +11,28 @@ import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
-import com.jwbutler.rpg.units.Unit;
+import com.jwbutler.rpg.units.UnitFactory;
+
+import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
 
 public class Main
 {
     public static void main(String[] args)
     {
+        Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
+            System.out.println("Fatal exception occurred");
+            e.printStackTrace();
+            System.exit(0);
+        });
+
         var state = GameState.create();
         var controller = GameController.create(state);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
         var inputHandler = new InputHandler(controller, window);
-        window.addKeyboardListener(inputHandler::handleKeyPress);
+        window.addKeyboardListener(inputHandler::handleKeyDown);
+        window.addMouseDownListener(inputHandler::handleMouseDown);
+        window.addMouseMoveListener(inputHandler::handleMouseMove);
 
         var level = LevelFactory.LEVEL_ONE.get();
 
@@ -30,7 +42,8 @@ public class Main
         controller.addPlayer(humanPlayer);
         var enemyPlayer = new EnemyPlayer("enemy_player");
         controller.addPlayer(enemyPlayer);
-        var playerUnit = Unit.create(
+        var playerUnit = UnitFactory.createPlayerUnit(
+            controller,
             "test_unit",
             100,
             humanPlayer,
@@ -38,7 +51,8 @@ public class Main
             Coordinates.zero()
         );
         controller.addUnit(playerUnit);
-        var enemyUnit = Unit.create(
+        var enemyUnit = UnitFactory.createPlayerUnit(
+            controller,
             "enemy_unit",
             100,
             enemyPlayer,
@@ -46,13 +60,22 @@ public class Main
             new Coordinates(3, 3)
         );
         controller.addUnit(enemyUnit);
+        humanPlayer.setState(HumanPlayer.State.GAME);
         renderer.render(state);
 
         while (true)
         {
             var runnable = inputHandler.poll();
-            runnable.run();
+            if (runnable != null)
+            {
+                runnable.run();
+            }
+            for (var unit : state.getCurrentLevel().getUnits())
+            {
+                unit.update();
+            }
             renderer.render(state);
+            sleepUninterruptibly(200, TimeUnit.MILLISECONDS);
         }
     }
 }

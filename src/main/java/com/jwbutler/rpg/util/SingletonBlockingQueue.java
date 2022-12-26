@@ -2,6 +2,7 @@ package com.jwbutler.rpg.util;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.google.common.util.concurrent.Uninterruptibles;
@@ -30,5 +31,11 @@ public final class SingletonBlockingQueue<T>
     public T take()
     {
         return Uninterruptibles.takeUninterruptibly(queue);
+    }
+
+    @CheckForNull
+    public T poll()
+    {
+        return queue.poll();
     }
 }

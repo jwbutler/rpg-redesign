@@ -5,6 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
@@ -12,20 +15,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
+import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
+
 /**
  * Wrapper for Swing components, e.g. {@link JFrame}, which handles both rendering and input handling.
  */
 public final class GameWindow
 {
-    /**
-     * internal width, since the {@link JFrame}'s computed width includes insets
-     */
-    public static final int WIDTH = 640;
-    /**
-     * internal height, since the {@link JFrame}'s computed height includes insets
-     */
-    public static final int HEIGHT = 360;
-
     @Nonnull
     private final JFrame frame;
     @Nonnull
@@ -33,9 +30,11 @@ public final class GameWindow
     @Nonnull
     private final BufferedImage image;
 
+    private final double ZOOM_RATIO = 2.0;
+
     public GameWindow()
     {
-        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(GAME_WIDTH, GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         panel = new JPanel()
         {
             @Override
@@ -54,8 +53,8 @@ public final class GameWindow
         frame.setVisible(true);
         var insets = frame.getInsets();
         frame.setSize(
-            2 * (WIDTH + insets.left + insets.right),
-            2 * (HEIGHT + insets.top + insets.bottom)
+            (int) Math.round(GAME_WIDTH * ZOOM_RATIO) + insets.left + insets.right,
+            (int) Math.round(GAME_HEIGHT * ZOOM_RATIO) + insets.top + insets.bottom
         );
         //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -82,6 +81,44 @@ public final class GameWindow
             public void keyPressed(@Nonnull KeyEvent e)
             {
                 keyListener.accept(e);
+            }
+        });
+    }
+
+    public void addMouseDownListener(@Nonnull Consumer<MouseEvent> handler)
+    {
+        frame.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mousePressed(@Nonnull MouseEvent e)
+            {
+                // First, subtract the frame's insets;
+                // then, scale it down to the original pixels
+                e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
+                e.translatePoint(
+                    (int) (e.getX() * (-1.0 / ZOOM_RATIO)),
+                    (int) (e.getY() * (-1.0 / ZOOM_RATIO))
+                );
+                handler.accept(e);
+            }
+        });
+    }
+
+    public void addMouseMoveListener(@Nonnull Consumer<MouseEvent> handler)
+    {
+        frame.addMouseMotionListener(new MouseMotionAdapter()
+        {
+            @Override
+            public void mouseMoved(@Nonnull MouseEvent e)
+            {
+                // First, subtract the frame's insets;
+                // then, scale it down to the original pixels
+                e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
+                e.translatePoint(
+                    (int) (e.getX() * (-1.0 / ZOOM_RATIO)),
+                    (int) (e.getY() * (-1.0 / ZOOM_RATIO))
+                );
+                handler.accept(e);
             }
         });
     }

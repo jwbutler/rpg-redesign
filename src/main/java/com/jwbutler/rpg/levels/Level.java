@@ -12,20 +12,28 @@ import com.jwbutler.rpg.units.Unit;
 
 public interface Level
 {
-    @Nonnull UUID getId();
+    @Nonnull
+    UUID getId();
 
-    @Nonnull String getName();
+    @Nonnull
+    String getName();
 
-    @Nonnull Dimensions getDimensions();
+    @Nonnull
+    Dimensions getDimensions();
 
     /**
      * @return whether the specified coordinates are in-bounds
      */
     boolean containsCoordinates(@Nonnull Coordinates coordinates);
+
+    @Nonnull
+    Set<Coordinates> getAllCoordinates();
+
     /**
      * @throws IllegalArgumentException if the specified coordinates are out of bounds
      */
-    @Nonnull TileType getTile(@Nonnull Coordinates coordinates);
+    @Nonnull
+    TileType getTile(@Nonnull Coordinates coordinates);
 
     /**
      * @throws IllegalStateException if the unit's level pointer doesn't point to this livel,

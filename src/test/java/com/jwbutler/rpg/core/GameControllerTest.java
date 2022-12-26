@@ -3,7 +3,7 @@ package com.jwbutler.rpg.core;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.HumanPlayer;
-import com.jwbutler.rpg.units.Unit;
+import com.jwbutler.rpg.units.UnitFactory;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -33,7 +33,7 @@ public final class GameControllerTest
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
-        var unit = Unit.create("test_unit", 10, player, level, Coordinates.zero());
+        var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
 
         controller.addUnit(unit);
         assertEquals(state.getUnit(unit.getId()), unit);
@@ -50,7 +50,7 @@ public final class GameControllerTest
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
-        var unit = Unit.create("test_unit", 10, player, level, Coordinates.zero());
+        var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
 
         controller.addUnit(unit);
         assertEquals(state.getUnit(unit.getId()), unit);
@@ -72,7 +72,7 @@ public final class GameControllerTest
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);
-        var unit = Unit.create("test_unit", 10, player, level, Coordinates.zero());
+        var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
 
         controller.addUnit(unit);
         assertEquals(state.getUnit(unit.getId()), unit);
