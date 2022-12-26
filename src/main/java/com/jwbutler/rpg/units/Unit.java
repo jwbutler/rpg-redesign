@@ -30,7 +30,6 @@ public interface Unit
 
     void startActivity(@Nonnull Activity activity, @Nonnull Direction direction);
 
-
     @Nonnull
     Command getCommand();
     void setCommand(@Nonnull Command command);

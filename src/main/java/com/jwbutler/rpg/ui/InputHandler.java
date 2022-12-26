@@ -8,6 +8,9 @@ import javax.annotation.Nonnull;
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.players.Faction;
+import com.jwbutler.rpg.players.HumanPlayer;
+import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import com.jwbutler.rpg.util.Blocking;
 import com.jwbutler.rpg.util.SingletonBlockingQueue;
@@ -57,17 +60,30 @@ public final class InputHandler
 
     public void handleMouseDown(@Nonnull MouseEvent event)
     {
-        var pixel = new Pixel(event.getX(), event.getY());
         var state = controller.getState();
         var humanPlayer = state.getHumanPlayer();
+        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        {
+            return;
+        }
+
+        var pixel = new Pixel(event.getX(), event.getY());
         var playerUnit = state.getPlayerUnit();
         var level = state.getCurrentLevel();
         var cameraCoordinates = humanPlayer.getCameraCoordinates();
         var coordinates = pixel.toCoordinates(cameraCoordinates);
 
-        if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
+        if (level.containsCoordinates(coordinates))
         {
-            playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+            var unit = level.getUnit(coordinates);
+            if (unit != null && unit.getPlayer().getFaction() == Faction.ENEMY)
+            {
+                playerUnit.setNextCommand(new AttackCommand(controller, unit));
+            }
+            else if (unit == null)
+            {
+                playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+            }
         }
     }
 

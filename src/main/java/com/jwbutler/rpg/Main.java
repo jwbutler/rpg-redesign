@@ -60,6 +60,7 @@ public class Main
             new Coordinates(3, 3)
         );
         controller.addUnit(enemyUnit);
+        humanPlayer.setState(HumanPlayer.State.GAME);
         renderer.render(state);
 
         while (true)

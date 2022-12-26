@@ -8,7 +8,6 @@ import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.AStarPathfinder;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
-import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 
@@ -29,15 +28,18 @@ implements Command
         else
         {
             var level = controller.getState().getCurrentLevel();
-            var unblockedCoordinates = level
+            var candidates = level
                 .getAllCoordinates()
                 .stream()
                 .filter(coordinates -> level.getUnit(coordinates) == null && !level.getTile(coordinates).isBlocking())
                 .collect(Collectors.toSet());
+
+            candidates.add(unit.getCoordinates());
+            candidates.add(target);
             @CheckForNull var path = new AStarPathfinder().findPath(
                 unit.getCoordinates(),
-                target(),
-                unblockedCoordinates
+                target,
+                candidates
             );
             if (path != null)
             {
