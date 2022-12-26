@@ -29,18 +29,14 @@ public class Main
         var controller = GameController.create(state);
         var window = new GameWindow();
         var renderer = new GameRenderer(window);
-        var inputHandler = new InputHandler(controller, window);
-        window.addKeyboardListener(inputHandler::handleKeyDown);
-        window.addMouseDownListener(inputHandler::handleMouseDown);
-        window.addMouseMoveListener(inputHandler::handleMouseMove);
 
         var level = LevelFactory.LEVEL_ONE.get();
 
         controller.addLevel(level);
         state.setCurrentLevel(level);
-        var humanPlayer = new HumanPlayer("human_player", new Coordinates(5, 5));
+        var humanPlayer = new HumanPlayer(controller, "human_player", new Coordinates(5, 5));
         controller.addPlayer(humanPlayer);
-        var enemyPlayer = new EnemyPlayer("enemy_player");
+        var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
         controller.addPlayer(enemyPlayer);
         var playerUnit = UnitFactory.createPlayerUnit(
             controller,
@@ -63,13 +59,13 @@ public class Main
         humanPlayer.setState(HumanPlayer.State.GAME);
         renderer.render(state);
 
+        var inputHandler = new InputHandler(controller, window);
+        window.addKeyboardListener(inputHandler::handleKeyDown);
+        window.addMouseDownListener(inputHandler::handleMouseDown);
+        window.addMouseMoveListener(inputHandler::handleMouseMove);
+
         while (true)
         {
-            var runnable = inputHandler.poll();
-            if (runnable != null)
-            {
-                runnable.run();
-            }
             for (var unit : state.getCurrentLevel().getUnits())
             {
                 unit.update();

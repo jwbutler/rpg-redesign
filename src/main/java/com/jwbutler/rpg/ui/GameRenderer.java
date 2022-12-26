@@ -1,15 +1,15 @@
 package com.jwbutler.rpg.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
-import com.jwbutler.rpg.graphics.ImageUtils;
+import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.graphics.Colors;
+import com.jwbutler.rpg.graphics.ImageBuilder;
+import com.jwbutler.rpg.graphics.Overlay;
 import com.jwbutler.rpg.levels.TileType;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
@@ -28,16 +28,19 @@ public final class GameRenderer
     public GameRenderer(@Nonnull GameWindow window)
     {
         this.window = window;
-        this.grassImage = ImageUtils.loadImage("tiles/green_32x24", Color.WHITE);
+        this.grassImage = new ImageBuilder()
+            .filename("tiles/green_32x24")
+            .transparentColor(Colors.WHITE)
+            .build();
     }
 
     public void render(@Nonnull GameState state)
     {
         window.render(graphics ->
         {
-            graphics.setColor(Color.BLACK);
+            graphics.setColor(Colors.BLACK);
             graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            graphics.setColor(Color.WHITE);
+            graphics.setColor(Colors.WHITE);
             _drawGrid(state, graphics);
             _drawUnits(state, graphics);
         });
@@ -45,7 +48,7 @@ public final class GameRenderer
 
     private void _drawGrid(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(Colors.WHITE);
         var level = state.getCurrentLevel();
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
@@ -56,42 +59,28 @@ public final class GameRenderer
                 if (tile == TileType.GRASS)
                 {
                     var humanPlayer = state.getHumanPlayer();
-                    var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-                    graphics.drawImage(grassImage, topLeft.x(), topLeft.y(), null);
-                }
-                else
-                {
-                    graphics.setColor(Color.WHITE);
-                    _drawGridTile(state, graphics, coordinates);
+                    var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+                    graphics.drawImage(grassImage, tileRect.left(), tileRect.top(), null);
                 }
                 if (coordinates.equals(state.getHumanPlayer().getMouseCoordinates()))
                 {
-                    graphics.setColor(Color.BLUE);
-                    _drawGridTile(state, graphics, coordinates);
+                    _drawOverlay(Overlay.PLAYER_ACTIVE, state, graphics, coordinates);
                 }
             }
         }
     }
 
-    private void _drawGridTile(@Nonnull GameState state, @Nonnull Graphics graphics, @Nonnull Coordinates coordinates)
+    private void _drawOverlay(
+        @Nonnull Overlay overlay,
+        @Nonnull GameState state,
+        @Nonnull Graphics graphics,
+        @Nonnull Coordinates coordinates
+    )
     {
         var humanPlayer = state.getHumanPlayer();
-        var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-        graphics.drawPolygon(
-            new int[] {
-                topLeft.x() + TILE_WIDTH / 2,
-                topLeft.x() + TILE_WIDTH,
-                topLeft.x() + TILE_WIDTH / 2,
-                topLeft.x()
-            },
-            new int[] {
-                topLeft.y(),
-                topLeft.y() + TILE_HEIGHT / 2,
-                topLeft.y() + TILE_HEIGHT,
-                topLeft.y() + TILE_HEIGHT / 2
-            },
-            4
-        );
+        var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+        var image = overlay.getImage();
+        graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
     }
 
     private void _drawUnits(@Nonnull GameState state, @Nonnull Graphics graphics)
@@ -107,17 +96,18 @@ public final class GameRenderer
                 {
                     var image = unit.getSprite().getImage(unit);
                     var coordinates = new Coordinates(x, y);
-                    var color = switch (unit.getPlayer().getFaction())
+                    var overlay = switch (unit.getPlayer().getFaction())
                     {
-                        case PLAYER -> Color.GREEN;
-                        case ENEMY -> Color.RED;
-                        case NEUTRAL -> Color.GRAY;
+                        case PLAYER -> Overlay.PLAYER_ACTIVE;
+                        case ENEMY -> Overlay.ENEMY_ACTIVE;
+                        case NEUTRAL -> Overlay.TILE_ACTIVE;
                     };
-                    graphics.setColor(color);
-                    _drawGridTile(state, graphics, coordinates);
-                    var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-                    // TODO generalize these
-                    topLeft = topLeft.plus((TILE_WIDTH - image.getWidth()) / 2, (TILE_WIDTH / 2) - image.getHeight());
+                    _drawOverlay(overlay, state, graphics, coordinates);
+                    var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+                    var topLeft = new Pixel(
+                        tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
+                        tileRect.top() + (TILE_WIDTH / 2) - image.getHeight()
+                    );
                     graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
                 }
             }

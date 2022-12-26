@@ -3,6 +3,8 @@ package com.jwbutler.rpg.players;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
+import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 
 public final class HumanPlayer extends AbstractPlayer implements Player
@@ -14,29 +16,24 @@ public final class HumanPlayer extends AbstractPlayer implements Player
     }
 
     @Nonnull
-    private Coordinates cameraCoordinates;
+    private final Camera camera;
     @CheckForNull
     private Coordinates mouseCoordinates;
     @Nonnull
     private State state;
 
-    public HumanPlayer(@Nonnull String name, @Nonnull Coordinates cameraCoordinates)
+    public HumanPlayer(@Nonnull GameController controller, @Nonnull String name, @Nonnull Coordinates cameraCoordinates)
     {
-        super(name, Faction.PLAYER);
-        this.cameraCoordinates = cameraCoordinates;
+        super(controller, name, Faction.PLAYER);
+        this.camera = new Camera(controller, cameraCoordinates);
         this.mouseCoordinates = null;
         this.state = State.TITLE_SCREEN;
     }
 
     @Nonnull
-    public Coordinates getCameraCoordinates()
+    public Camera getCamera()
     {
-        return cameraCoordinates;
-    }
-
-    public void setCameraCoordinates(@Nonnull Coordinates coordinates)
-    {
-        cameraCoordinates = coordinates;
+        return camera;
     }
 
     @CheckForNull
