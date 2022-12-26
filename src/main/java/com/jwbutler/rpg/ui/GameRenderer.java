@@ -60,8 +60,18 @@ public final class GameRenderer
         var humanPlayer = state.getHumanPlayer();
         var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
         graphics.drawPolygon(
-            new int[]{ topLeft.x() + TILE_WIDTH / 2, topLeft.x() + TILE_WIDTH, topLeft.x() + TILE_WIDTH / 2, topLeft.x() },
-            new int[]{ topLeft.y(), topLeft.y() + TILE_HEIGHT / 2, topLeft.y() + TILE_HEIGHT, topLeft.y() + TILE_HEIGHT / 2, },
+            new int[] {
+                topLeft.x() + TILE_WIDTH / 2,
+                topLeft.x() + TILE_WIDTH,
+                topLeft.x() + TILE_WIDTH / 2,
+                topLeft.x()
+            },
+            new int[] {
+                topLeft.y(),
+                topLeft.y() + TILE_HEIGHT / 2,
+                topLeft.y() + TILE_HEIGHT,
+                topLeft.y() + TILE_HEIGHT / 2
+            },
             4
         );
     }

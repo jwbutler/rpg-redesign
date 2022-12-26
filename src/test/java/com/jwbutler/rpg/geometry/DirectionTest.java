@@ -1,4 +1,4 @@
-package com.jwbutler.rpg.core;
+package com.jwbutler.rpg.geometry;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;

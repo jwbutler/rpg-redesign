@@ -73,6 +73,13 @@ final class LevelImpl implements Level
 
     @Nonnull
     @Override
+    public Set<Coordinates> getAllCoordinates()
+    {
+        return coordinatesToTile.keySet();
+    }
+
+    @Nonnull
+    @Override
     public TileType getTile(@Nonnull Coordinates coordinates)
     {
         checkArgument(
