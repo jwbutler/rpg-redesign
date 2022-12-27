@@ -34,7 +34,7 @@ public final class UnitSprite implements AnimatedSprite<Unit>
     public BufferedImage getImage(@Nonnull Unit target)
     {
         var animation = getAnimation(target);
-        var filename = animation.getFilenames().get(target.getFrameNumber());
+        var filename = animation.filenames().get(target.getFrameNumber());
         return new ImageBuilder()
             .filename(filename)
             .transparentColor(Colors.WHITE)

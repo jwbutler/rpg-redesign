@@ -148,6 +148,13 @@ final class UnitImpl implements Unit
         nextCommand = command;
     }
 
+    @Override
+    @Nonnull
+    public Command getLatestCommand()
+    {
+        return (nextCommand != null) ? nextCommand : command;
+    }
+
     @Nonnull
     @Override
     public Player getPlayer()
@@ -203,6 +210,6 @@ final class UnitImpl implements Unit
 
     private int _getMaxFrameNumber()
     {
-        return sprite.getAnimation(this).getFilenames().size() - 1;
+        return sprite.getAnimation(this).filenames().size() - 1;
     }
 }

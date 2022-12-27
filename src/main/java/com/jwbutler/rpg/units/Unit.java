@@ -37,6 +37,12 @@ public interface Unit
     Command getNextCommand();
     void setNextCommand(@CheckForNull Command command);
 
+    /**
+     * @return "next command" if it exists, else "current command"
+     */
+    @Nonnull
+    Command getLatestCommand();
+
     @Nonnull
     Player getPlayer();
 

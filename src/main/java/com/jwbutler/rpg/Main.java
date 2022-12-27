@@ -71,7 +71,7 @@ public class Main
                 unit.update();
             }
             renderer.render(state);
-            sleepUninterruptibly(200, TimeUnit.MILLISECONDS);
+            sleepUninterruptibly(20, TimeUnit.MILLISECONDS);
         }
     }
 }

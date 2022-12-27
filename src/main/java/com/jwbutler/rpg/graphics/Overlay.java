@@ -9,10 +9,11 @@ public enum Overlay
 {
     PLAYER_ACTIVE(Colors.DARK_GREEN, Colors.GREEN),
     PLAYER_INACTIVE(Colors.DARK_GREEN, Colors.DARK_GREEN),
-    ENEMY_ACTIVE(Colors.DARK_RED, Colors.RED),
+    ENEMY_TARGETED(Colors.DARK_RED, Colors.RED),
+    ENEMY_MOUSEOVER(Colors.RED, Colors.YELLOW),
     ENEMY_INACTIVE(Colors.DARK_RED, Colors.DARK_RED),
-    TILE_ACTIVE(Colors.DARK_BLUE, Colors.BLUE),
-    TILE_INACTIVE(Colors.DARK_BLUE, Colors.DARK_BLUE);
+    TILE_TARGETED(Colors.DARK_BLUE, Colors.BLUE),
+    TILE_MOUSEOVER(Colors.DARK_BLUE, Colors.DARK_BLUE);
 
     @Nonnull
     private final Color outerColor;

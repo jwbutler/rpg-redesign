@@ -14,6 +14,7 @@ public final class Colors
     public static final Color GREEN = Color.GREEN;
     public static final Color RED = Color.RED;
     public static final Color TRANSPARENT_BLACK = new Color(0, 0, 0, 0);
+    public static final Color YELLOW = Color.YELLOW;
     public static final Color WHITE = Color.WHITE;
 
 }
