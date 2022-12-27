@@ -23,7 +23,7 @@ public final class UnitTest
     {
         var state = GameState.create();
         var controller = GameController.create(state);
-        var player = new HumanPlayer("test_player", Coordinates.zero());
+        var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
         controller.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         controller.addLevel(level);

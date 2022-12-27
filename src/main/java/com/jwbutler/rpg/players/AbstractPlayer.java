@@ -5,12 +5,15 @@ import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.units.Unit;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
 abstract class AbstractPlayer implements Player
 {
+    @Nonnull
+    private final GameController controller;
     @Nonnull
     private final UUID id;
     @Nonnull
@@ -20,8 +23,9 @@ abstract class AbstractPlayer implements Player
     @Nonnull
     private final Set<Unit> units;
 
-    protected AbstractPlayer(@Nonnull String name, @Nonnull Faction faction)
+    protected AbstractPlayer(@Nonnull GameController controller, @Nonnull String name, @Nonnull Faction faction)
     {
+        this.controller = controller;
         this.id = UUID.randomUUID();
         this.name = name;
         this.faction = faction;

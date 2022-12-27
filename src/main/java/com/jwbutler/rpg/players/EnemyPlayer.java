@@ -2,10 +2,12 @@ package com.jwbutler.rpg.players;
 
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
+
 public final class EnemyPlayer extends AbstractPlayer implements Player
 {
-    public EnemyPlayer(@Nonnull String name)
+    public EnemyPlayer(@Nonnull GameController controller, @Nonnull String name)
     {
-        super(name, Faction.ENEMY);
+        super(controller, name, Faction.ENEMY);
     }
 }

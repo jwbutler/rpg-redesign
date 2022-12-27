@@ -2,17 +2,14 @@ package com.jwbutler.rpg.sprites;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.imageio.ImageIO;
 
+import com.jwbutler.rpg.graphics.Colors;
+import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.sprites.animations.Animation;
 import com.jwbutler.rpg.sprites.animations.UnitAnimations;
 import com.jwbutler.rpg.units.Unit;
-
-import static com.jwbutler.rpg.graphics.ImageUtils.loadImage;
 
 public final class UnitSprite implements AnimatedSprite<Unit>
 {
@@ -35,8 +32,11 @@ public final class UnitSprite implements AnimatedSprite<Unit>
     public BufferedImage getImage(@Nonnull Unit target)
     {
         var animation = getAnimation(target);
-        var filename = animation.getFilenames().get(target.getFrameNumber());
-        return loadImage(filename, Color.WHITE);
+        var filename = animation.filenames().get(target.getFrameNumber());
+        return new ImageBuilder()
+            .filename(filename)
+            .transparentColor(Colors.WHITE)
+            .build();
     }
 
     @Nonnull

@@ -40,15 +40,4 @@ implements Point
     {
         return ZERO;
     }
-
-    /**
-     * @return the top-left corner of the resulting grid tile
-     */
-    @Nonnull
-    public Pixel toPixel(@Nonnull Coordinates cameraCoordinates)
-    {
-        var x = (x() - cameraCoordinates.x() - y() + cameraCoordinates.y() - 1) * (TILE_WIDTH / 2) + GAME_WIDTH / 2;
-        var y = (x() - cameraCoordinates.x() + y() - cameraCoordinates.y() - 1) * (TILE_HEIGHT / 2) + GAME_HEIGHT / 2;
-        return new Pixel(x, y);
-    }
 }

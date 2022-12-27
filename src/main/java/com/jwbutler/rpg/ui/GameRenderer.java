@@ -1,16 +1,19 @@
 package com.jwbutler.rpg.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.geometry.Coordinates;
-import com.jwbutler.rpg.graphics.ImageUtils;
+import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.graphics.Colors;
+import com.jwbutler.rpg.graphics.ImageBuilder;
+import com.jwbutler.rpg.graphics.Overlay;
 import com.jwbutler.rpg.levels.TileType;
+import com.jwbutler.rpg.units.commands.AttackCommand;
+import com.jwbutler.rpg.units.commands.MoveCommand;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
@@ -28,25 +31,30 @@ public final class GameRenderer
     public GameRenderer(@Nonnull GameWindow window)
     {
         this.window = window;
-        this.grassImage = ImageUtils.loadImage("tiles/green_32x24", Color.WHITE);
+        this.grassImage = new ImageBuilder()
+            .filename("tiles/green_32x24")
+            .transparentColor(Colors.WHITE)
+            .build();
     }
 
     public void render(@Nonnull GameState state)
     {
         window.render(graphics ->
         {
-            graphics.setColor(Color.BLACK);
+            graphics.setColor(Colors.BLACK);
             graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            graphics.setColor(Color.WHITE);
+            graphics.setColor(Colors.WHITE);
             _drawGrid(state, graphics);
+            _drawTileOverlays(state, graphics);
             _drawUnits(state, graphics);
         });
     }
 
-    private void _drawGrid(@Nonnull GameState state, @Nonnull Graphics graphics)
+    private void _drawGrid(@Nonnull GameState state, @Nonnull Graphics2D graphics)
     {
-        graphics.setColor(Color.WHITE);
         var level = state.getCurrentLevel();
+        var humanPlayer = state.getHumanPlayer();
+
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
             for (int x = 0; x < level.getDimensions().width(); x++)
@@ -55,72 +63,83 @@ public final class GameRenderer
                 var tile = level.getTile(coordinates);
                 if (tile == TileType.GRASS)
                 {
-                    var humanPlayer = state.getHumanPlayer();
-                    var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-                    graphics.drawImage(grassImage, topLeft.x(), topLeft.y(), null);
-                }
-                else
-                {
-                    graphics.setColor(Color.WHITE);
-                    _drawGridTile(state, graphics, coordinates);
-                }
-                if (coordinates.equals(state.getHumanPlayer().getMouseCoordinates()))
-                {
-                    graphics.setColor(Color.BLUE);
-                    _drawGridTile(state, graphics, coordinates);
+                    var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+                    graphics.drawImage(grassImage, tileRect.left(), tileRect.top(), null);
                 }
             }
         }
     }
 
-    private void _drawGridTile(@Nonnull GameState state, @Nonnull Graphics graphics, @Nonnull Coordinates coordinates)
+    private void _drawTileOverlays(
+        @Nonnull GameState state,
+        @Nonnull Graphics2D graphics
+    )
     {
         var humanPlayer = state.getHumanPlayer();
-        var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-        graphics.drawPolygon(
-            new int[] {
-                topLeft.x() + TILE_WIDTH / 2,
-                topLeft.x() + TILE_WIDTH,
-                topLeft.x() + TILE_WIDTH / 2,
-                topLeft.x()
-            },
-            new int[] {
-                topLeft.y(),
-                topLeft.y() + TILE_HEIGHT / 2,
-                topLeft.y() + TILE_HEIGHT,
-                topLeft.y() + TILE_HEIGHT / 2
-            },
-            4
-        );
+        var playerUnit = state.getPlayerUnit();
+
+        if (humanPlayer.getMouseCoordinates() != null)
+        {
+            _drawOverlay(Overlay.TILE_MOUSEOVER, state, graphics, humanPlayer.getMouseCoordinates());
+        }
+
+        switch (playerUnit.getLatestCommand())
+        {
+            case MoveCommand mc -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, mc.target());
+            case AttackCommand ac -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, ac.target().getCoordinates());
+            default -> {}
+        }
     }
 
-    private void _drawUnits(@Nonnull GameState state, @Nonnull Graphics graphics)
+    private void _drawUnits(@Nonnull GameState state, @Nonnull Graphics2D graphics)
     {
         var humanPlayer = state.getHumanPlayer();
+        var playerUnit = state.getPlayerUnit();
         var level = state.getCurrentLevel();
+
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
             for (int x = 0; x < level.getDimensions().width(); x++)
             {
-                var unit = level.getUnit(new Coordinates(x, y));
+                var coordinates = new Coordinates(x, y);
+                var unit = level.getUnit(coordinates);
                 if (unit != null)
                 {
                     var image = unit.getSprite().getImage(unit);
-                    var coordinates = new Coordinates(x, y);
-                    var color = switch (unit.getPlayer().getFaction())
+                    var overlay = switch (unit.getPlayer().getFaction())
                     {
-                        case PLAYER -> Color.GREEN;
-                        case ENEMY -> Color.RED;
-                        case NEUTRAL -> Color.GRAY;
+                        case PLAYER -> Overlay.PLAYER_ACTIVE;
+                        case ENEMY, NEUTRAL -> // NEUTRAL doesn't really make sense, oh well
+                        {
+                            if (playerUnit.getCommand() instanceof AttackCommand ac && ac.target() == unit)
+                            {
+                                yield Overlay.ENEMY_TARGETED;
+                            }
+                            yield Overlay.ENEMY_INACTIVE;
+                        }
                     };
-                    graphics.setColor(color);
-                    _drawGridTile(state, graphics, coordinates);
-                    var topLeft = coordinates.toPixel(humanPlayer.getCameraCoordinates());
-                    // TODO generalize these
-                    topLeft = topLeft.plus((TILE_WIDTH - image.getWidth()) / 2, (TILE_WIDTH / 2) - image.getHeight());
+                    _drawOverlay(overlay, state, graphics, coordinates);
+                    var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+                    var topLeft = new Pixel(
+                        tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
+                        tileRect.top() + (TILE_WIDTH / 2) - image.getHeight()
+                    );
                     graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
                 }
             }
         }
+    }
+
+    private void _drawOverlay(
+        @Nonnull Overlay overlay,
+        @Nonnull GameState state,
+        @Nonnull Graphics2D graphics,
+        @Nonnull Coordinates coordinates
+    )
+    {
+        var humanPlayer = state.getHumanPlayer();
+        var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+        var image = overlay.getImage();
+        graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
     }
 }
