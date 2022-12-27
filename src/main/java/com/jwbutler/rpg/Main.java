@@ -70,8 +70,11 @@ public class Main
             {
                 unit.update();
             }
-            renderer.render(state);
-            sleepUninterruptibly(20, TimeUnit.MILLISECONDS);
+            for (int i = 0; i < 4; i++)
+            {
+                renderer.render(state);
+                sleepUninterruptibly(50, TimeUnit.MILLISECONDS);
+            }
         }
     }
 }

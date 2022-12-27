@@ -11,8 +11,6 @@ import com.jwbutler.rpg.sprites.animations.Animation;
 import com.jwbutler.rpg.sprites.animations.UnitAnimations;
 import com.jwbutler.rpg.units.Unit;
 
-import static com.jwbutler.rpg.graphics.ImageUtils.loadImage;
-
 public final class UnitSprite implements AnimatedSprite<Unit>
 {
     @Nonnull

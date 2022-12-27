@@ -20,15 +20,15 @@ public final class PlayerAnimations implements UnitAnimations
             case STANDING -> List.of(_formatFilename(activity, direction, "1"));
             case WALKING  -> Stream.of("1", "2")
                 .map(number -> _formatFilename(activity, direction, number))
-                .flatMap(_stretch(8))
+                //.flatMap(_stretch(8))
                 .toList();
             case ATTACKING -> Stream.of("1", "2", "2", "1")
                 .map(number -> _formatFilename(activity, direction, number))
-                .flatMap(_stretch(8))
+                //.flatMap(_stretch(8))
                 .toList();
             case FALLING -> Stream.of("1", "2", "3", "4")
                 .map(number -> _formatFilename(activity, direction, number))
-                .flatMap(_stretch(8))
+                //.flatMap(_stretch(8))
                 .toList();
         };
         return new Animation(filenames);

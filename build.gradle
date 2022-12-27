@@ -26,10 +26,12 @@ tasks.named('test') {
     useTestNG()
 }
 
+// This is specifically for JEP 406, "Enhanced Switch"
 tasks.withType(JavaCompile).each {
     it.options.compilerArgs.add('--enable-preview')
 }
 
+// This is specifically for JEP 406, "Enhanced Switch"
 tasks.withType(JavaExec).each {
     it.jvmArgs.add('--enable-preview')
 }

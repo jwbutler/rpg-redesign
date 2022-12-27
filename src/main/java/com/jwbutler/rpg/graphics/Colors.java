@@ -8,6 +8,7 @@ public final class Colors
 
     public static final Color BLACK = Color.BLACK;
     public static final Color BLUE = Color.BLUE;
+    public static final Color CYAN = Color.CYAN;
     public static final Color DARK_BLUE = new Color(0, 0, 128);
     public static final Color DARK_GREEN = new Color(0, 128, 0);
     public static final Color DARK_RED = new Color(128, 0, 0);

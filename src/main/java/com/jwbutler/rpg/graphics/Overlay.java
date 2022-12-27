@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 
 public enum Overlay
 {
-    PLAYER_ACTIVE(Colors.DARK_GREEN, Colors.GREEN),
+    PLAYER_ACTIVE(Colors.DARK_GREEN, Colors.CYAN),
     PLAYER_INACTIVE(Colors.DARK_GREEN, Colors.DARK_GREEN),
     ENEMY_TARGETED(Colors.DARK_RED, Colors.RED),
     ENEMY_MOUSEOVER(Colors.RED, Colors.YELLOW),
