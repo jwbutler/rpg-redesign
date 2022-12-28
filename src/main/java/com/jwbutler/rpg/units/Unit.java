@@ -1,9 +1,11 @@
 package com.jwbutler.rpg.units;
 
+import java.util.Set;
 import java.util.UUID;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
@@ -57,6 +59,10 @@ public interface Unit
     @Nonnull
     Coordinates getCoordinates();
     void setCoordinates(@Nonnull Coordinates coordinates);
+
+    void addEquipment(@Nonnull Equipment equipment);
+    @Nonnull
+    Set<Equipment> getEquipment();
 
     void update();
 }

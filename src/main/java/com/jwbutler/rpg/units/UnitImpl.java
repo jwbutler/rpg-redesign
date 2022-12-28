@@ -1,10 +1,16 @@
 package com.jwbutler.rpg.units;
 
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
+import com.jwbutler.rpg.equipment.Equipment;
+import com.jwbutler.rpg.equipment.Slot;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
@@ -13,6 +19,8 @@ import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
 import com.jwbutler.rpg.units.commands.StayCommand;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 final class UnitImpl implements Unit
 {
@@ -41,6 +49,8 @@ final class UnitImpl implements Unit
     private Level level;
     @Nonnull
     private Coordinates coordinates;
+    @Nonnull
+    private final Map<Slot, Equipment> slotToEquipment;
 
     UnitImpl(
         @Nonnull GameController controller,
@@ -66,6 +76,7 @@ final class UnitImpl implements Unit
         this.player = player;
         this.level = level;
         this.coordinates = coordinates;
+        this.slotToEquipment = new EnumMap<>(Slot.class);
     }
 
     @Override
@@ -196,6 +207,20 @@ final class UnitImpl implements Unit
     }
 
     @Override
+    public void addEquipment(@Nonnull Equipment equipment)
+    {
+        checkArgument(slotToEquipment.get(equipment.getSlot()) == null);
+        slotToEquipment.put(equipment.getSlot(), equipment);
+    }
+
+    @Nonnull
+    @Override
+    public Set<Equipment> getEquipment()
+    {
+        return new HashSet<>(slotToEquipment.values());
+    }
+
+    @Override
     public void update()
     {
         frameNumber++;
@@ -210,6 +235,6 @@ final class UnitImpl implements Unit
 
     private int _getMaxFrameNumber()
     {
-        return sprite.getAnimation(this).filenames().size() - 1;
+        return sprite.getAnimation(this).frames().size() - 1;
     }
 }

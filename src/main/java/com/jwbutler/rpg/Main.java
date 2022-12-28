@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.core.GameState;
+import com.jwbutler.rpg.equipment.EquipmentFactory;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.EnemyPlayer;
@@ -47,6 +48,9 @@ public class Main
             Coordinates.zero()
         );
         controller.addUnit(playerUnit);
+        var sword = EquipmentFactory.createNoobSword(controller, playerUnit);
+        playerUnit.addEquipment(sword);
+
         var enemyUnit = UnitFactory.createPlayerUnit(
             controller,
             "enemy_unit",

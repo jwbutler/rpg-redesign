@@ -1,22 +1,23 @@
 package com.jwbutler.rpg.sprites;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.sprites.animations.Animation;
 import com.jwbutler.rpg.sprites.animations.AnimationPack;
 import com.jwbutler.rpg.sprites.animations.Frame;
-import com.jwbutler.rpg.units.Unit;
 
-public final class UnitSprite implements AnimatedSprite<Unit>
+public final class EquipmentSprite implements AnimatedSprite<Equipment>
 {
     @Nonnull
     private final AnimationPack animations;
     @Nonnull
     private final Map<Color, Color> paletteSwaps;
 
-    public UnitSprite(
+    public EquipmentSprite(
         @Nonnull AnimationPack animations,
         @Nonnull Map<Color, Color> paletteSwaps
     )
@@ -27,16 +28,18 @@ public final class UnitSprite implements AnimatedSprite<Unit>
 
     @Nonnull
     @Override
-    public Frame getFrame(@Nonnull Unit target)
+    public Frame getFrame(@Nonnull Equipment target)
     {
         var animation = getAnimation(target);
-        return animation.frames().get(target.getFrameNumber());
+        var unit = target.getUnit();
+        return animation.frames().get(unit.getFrameNumber());
     }
 
     @Nonnull
     @Override
-    public Animation getAnimation(@Nonnull Unit target)
+    public Animation getAnimation(@Nonnull Equipment target)
     {
-        return animations.getAnimation(target.getActivity(), target.getDirection());
+        var unit = target.getUnit();
+        return animations.getAnimation(unit.getActivity(), unit.getDirection());
     }
 }
