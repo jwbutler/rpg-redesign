@@ -26,12 +26,14 @@ tasks.named('test') {
     useTestNG()
 }
 
+// https://docs.gradle.org/current/userguide/building_java_projects.html#sec:feature_preview
 // This is specifically for JEP 406, "Enhanced Switch"
-tasks.withType(JavaCompile).each {
-    it.options.compilerArgs.add('--enable-preview')
+tasks.withType(JavaCompile) {
+    options.compilerArgs += "--enable-preview"
 }
-
-// This is specifically for JEP 406, "Enhanced Switch"
-tasks.withType(JavaExec).each {
-    it.jvmArgs.add('--enable-preview')
+tasks.withType(Test) {
+    jvmArgs += "--enable-preview"
+}
+tasks.withType(JavaExec) {
+    jvmArgs += "--enable-preview"
 }
