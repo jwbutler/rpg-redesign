@@ -25,7 +25,7 @@ public final class SwordAnimations implements AnimationPack
                 .map(number -> _formatFilename(activity, direction, number))
                 .map(SpriteUtils::substituteBehindFilename)
                 .toList();
-            case WALKING  -> Stream.of("1", "2")
+            case WALKING  -> Stream.of("2", "1")
                 .map(number -> _formatFilename(activity, direction, number))
                 .map(SpriteUtils::substituteBehindFilename)
                 .toList();

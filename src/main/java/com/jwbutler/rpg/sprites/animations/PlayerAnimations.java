@@ -21,7 +21,7 @@ public final class PlayerAnimations implements AnimationPack
         List<String> filenames = switch (activity)
         {
             case STANDING -> List.of(_formatFilename(activity, direction, "1"));
-            case WALKING  -> Stream.of("1", "2")
+            case WALKING  -> Stream.of("2", "1")
                 .map(number -> _formatFilename(activity, direction, number))
                 .toList();
             case ATTACKING -> Stream.of("1", "2", "2", "1")

@@ -48,7 +48,6 @@ public final class GameWindow
         frame.add(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        //frame.setUndecorated(true);
 
         frame.setVisible(true);
         var insets = frame.getInsets();
@@ -56,7 +55,6 @@ public final class GameWindow
             (int) Math.round(GAME_WIDTH * ZOOM_RATIO) + insets.left + insets.right,
             (int) Math.round(GAME_HEIGHT * ZOOM_RATIO) + insets.top + insets.bottom
         );
-        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         // https://stackoverflow.com/a/144950
         {

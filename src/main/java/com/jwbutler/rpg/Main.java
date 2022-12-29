@@ -1,5 +1,6 @@
 package com.jwbutler.rpg;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import com.jwbutler.rpg.core.GameController;
@@ -70,14 +71,15 @@ public class Main
 
         while (true)
         {
+            long startTime = System.nanoTime();
             for (var unit : state.getCurrentLevel().getUnits())
             {
                 unit.update();
             }
-            for (int i = 0; i < 4; i++)
+            while (System.nanoTime() < startTime + (Duration.ofMillis(200).toNanos()))
             {
                 renderer.render(state);
-                sleepUninterruptibly(50, TimeUnit.MILLISECONDS);
+                sleepUninterruptibly(10, TimeUnit.MILLISECONDS);
             }
         }
     }

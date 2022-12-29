@@ -30,7 +30,7 @@ public enum Overlay
     public BufferedImage getImage()
     {
         return new ImageBuilder()
-            .filename("tiles/overlay_32x24")
+            .filename("tiles/overlay_24x12")
             .transparentColor(Color.WHITE)
             .paletteSwaps(Map.of(
                 Color.RED, outerColor,

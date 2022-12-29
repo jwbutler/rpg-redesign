@@ -19,24 +19,16 @@ import com.jwbutler.rpg.units.commands.MoveCommand;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
+import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
 
 public final class GameRenderer
 {
     @Nonnull
     private final GameWindow window;
-    @Nonnull
-    private final BufferedImage grassImage;
-
-    private static final int TILE_WIDTH = 32;
-    private static final int TILE_HEIGHT = 24;
 
     public GameRenderer(@Nonnull GameWindow window)
     {
         this.window = window;
-        this.grassImage = new ImageBuilder()
-            .filename("tiles/green_32x24")
-            .transparentColor(Colors.WHITE)
-            .build();
     }
 
     public void render(@Nonnull GameState state)
@@ -63,11 +55,9 @@ public final class GameRenderer
             {
                 var coordinates = new Coordinates(x, y);
                 var tile = level.getTile(coordinates);
-                if (tile == TileType.GRASS)
-                {
-                    var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
-                    graphics.drawImage(grassImage, tileRect.left(), tileRect.top(), null);
-                }
+                var frame = tile.getFrame();
+                var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+                graphics.drawImage(frame.image(), tileRect.left(), tileRect.top(), null);
             }
         }
     }
