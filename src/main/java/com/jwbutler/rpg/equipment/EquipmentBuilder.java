@@ -13,6 +13,7 @@ public final class EquipmentBuilder
     private Unit unit;
     private Slot slot;
     private AnimatedSprite<Equipment> sprite;
+    private Integer damage;
 
     public EquipmentBuilder name(String name)
     {
@@ -38,6 +39,12 @@ public final class EquipmentBuilder
         return this;
     }
 
+    public EquipmentBuilder damage(Integer damage)
+    {
+        this.damage = damage;
+        return this;
+    }
+
     @Nonnull
     public Equipment build()
     {
@@ -45,12 +52,14 @@ public final class EquipmentBuilder
         checkState(unit != null);
         checkState(slot != null);
         checkState(sprite != null);
+        checkState(damage != null);
 
         return new EquipmentImpl(
             name,
             unit,
             slot,
-            sprite
+            sprite,
+            damage
         );
     }
 }

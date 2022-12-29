@@ -61,6 +61,16 @@ implements Command
     {
         switch (unit.getActivity())
         {
+            case ATTACKING ->
+            {
+                var damage = unit.getAttackDamage();
+                controller.dealDamage(unit, target, damage);
+                if (target.getLife() <= 0)
+                {
+                    target.setCommand(new DieCommand(controller));
+                    unit.setCommand(new StayCommand(controller));
+                }
+            }
             case WALKING ->
             {
                 var coordinates = unit.getCoordinates().plus(unit.getDirection());
@@ -68,5 +78,12 @@ implements Command
                 controller.moveUnit(unit, unit.getLevel(), coordinates);
             }
         }
+    }
+
+    @Nonnull
+    @Override
+    public Unit getTargetUnit()
+    {
+        return target;
     }
 }

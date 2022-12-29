@@ -27,6 +27,8 @@ public interface GameController
 
     void addPlayer(@Nonnull Player player);
 
+    void dealDamage(@Nonnull Unit source, @Nonnull Unit target, int amount);
+
     @Nonnull
     GameState getState();
 

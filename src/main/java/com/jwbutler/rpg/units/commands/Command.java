@@ -1,5 +1,6 @@
 package com.jwbutler.rpg.units.commands;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.units.Unit;
@@ -9,4 +10,5 @@ permits StayCommand, MoveCommand, AttackCommand, DieCommand
 {
     void startNextActivity(@Nonnull Unit unit);
     void endActivity(@Nonnull Unit unit);
+    @CheckForNull Unit getTargetUnit();
 }

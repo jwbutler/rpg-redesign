@@ -19,12 +19,14 @@ final class EquipmentImpl implements Equipment
     private final Slot slot;
     @Nonnull
     private final AnimatedSprite<Equipment> sprite;
+    private final int damage;
 
     EquipmentImpl(
         @Nonnull String name,
         @Nonnull Unit unit,
         @Nonnull Slot slot,
-        @Nonnull AnimatedSprite<Equipment> sprite
+        @Nonnull AnimatedSprite<Equipment> sprite,
+        int damage
     )
     {
         id = UUID.randomUUID();
@@ -32,6 +34,7 @@ final class EquipmentImpl implements Equipment
         this.unit = unit;
         this.slot = slot;
         this.sprite = sprite;
+        this.damage = damage;
     }
 
     @Nonnull
@@ -67,5 +70,11 @@ final class EquipmentImpl implements Equipment
     public Sprite<Equipment> getSprite()
     {
         return sprite;
+    }
+
+    @Override
+    public int getDamage()
+    {
+        return damage;
     }
 }

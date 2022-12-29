@@ -64,4 +64,11 @@ implements Command
             }
         }
     }
+
+    @CheckForNull
+    @Override
+    public Unit getTargetUnit()
+    {
+        return null;
+    }
 }

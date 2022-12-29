@@ -28,7 +28,14 @@ public final class PlayerAnimations implements AnimationPack
                 .map(number -> _formatFilename(activity, direction, number))
                 .toList();
             case FALLING -> Stream.of("1", "2", "3", "4")
-                .map(number -> _formatFilename(activity, direction, number))
+                .map(number ->
+                {
+                    var frameDirection = switch (direction) {
+                        case NW, N, NE, E -> Direction.NE;
+                        case SE, S, SW, W -> Direction.S;
+                    };
+                    return _formatFilename(activity, frameDirection, number);
+                })
                 .toList();
         };
 
