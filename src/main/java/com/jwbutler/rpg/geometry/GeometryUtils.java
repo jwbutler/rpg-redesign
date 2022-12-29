@@ -21,6 +21,16 @@ public final class GeometryUtils
         return Math.abs(dx) + Math.abs(dy);
     }
 
+    /**
+     * https://en.wikipedia.org/wiki/Chebyshev_distance
+     */
+    public static double chebyshevDistance(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    {
+        var dx = second.x() - first.x();
+        var dy = second.y() - first.y();
+        return Math.max(Math.abs(dx), Math.abs(dy));
+    }
+
     public static boolean isDirectlyAdjacent(@Nonnull Coordinates first, @Nonnull Coordinates second)
     {
         var dx = second.x() - first.x();

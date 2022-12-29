@@ -1,10 +1,11 @@
 package com.jwbutler.rpg.sprites;
 
-import java.awt.image.BufferedImage;
 import javax.annotation.Nonnull;
+
+import com.jwbutler.rpg.sprites.animations.Frame;
 
 public interface Sprite<T>
 {
     @Nonnull
-    BufferedImage getImage(@Nonnull T target);
+    Frame getFrame(@Nonnull T target);
 }

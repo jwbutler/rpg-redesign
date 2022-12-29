@@ -21,7 +21,7 @@ public final class ImageUtils
         try
         {
             var url = ImageUtils.class.getResource(fullFilename);
-            checkState(url != null);
+            checkState(url != null, "Could not find image " + fullFilename);
             var image = ImageIO.read(url);
             var argb = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
             argb.getGraphics().drawImage(image, 0, 0, null);
@@ -31,6 +31,13 @@ public final class ImageUtils
         {
             throw new UncheckedIOException(e);
         }
+    }
+
+    public static boolean imageFileExists(@Nonnull String filename)
+    {
+        var fullFilename = "/png/" + filename + ".png";
+        var url = ImageUtils.class.getResource(fullFilename);
+        return url != null;
     }
 
     public static void setTransparentColor(@Nonnull BufferedImage image, @Nonnull Color transparentColor)

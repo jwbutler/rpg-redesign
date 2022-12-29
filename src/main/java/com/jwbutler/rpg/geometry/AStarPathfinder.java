@@ -12,7 +12,6 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import static com.jwbutler.rpg.geometry.GeometryUtils.hypotenuse;
-import static com.jwbutler.rpg.geometry.GeometryUtils.manhattanDistance;
 
 /**
  * Ported from rpg-js
@@ -20,7 +19,8 @@ import static com.jwbutler.rpg.geometry.GeometryUtils.manhattanDistance;
 public final class AStarPathfinder implements Pathfinder
 {
     /**
-     * @param estimatedCost Exact cost from start => node + heuristic cost from node => goal
+     * @param cost Exact cost from start => node
+     * @param estimatedCost Heuristic cost from node => goal
      */
     private record Node
     (
@@ -45,6 +45,8 @@ public final class AStarPathfinder implements Pathfinder
 
     /**
      * @param candidates Expected to include {@code start} and {@code end}
+     * http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
+     * http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html#sketch
      */
     @CheckForNull
     @Override
@@ -83,14 +85,15 @@ public final class AStarPathfinder implements Pathfinder
             {
                 if (!closed.contains(neighbor))
                 {
-                    var cost = current.cost() + manhattanDistance(current.getCoordinates(), neighbor);
-                    var estimatedCost = cost + _getHeuristicCost(neighbor, end);
+                    var cost = current.cost() + 1;
+                    var estimatedCost = _getHeuristicCost(neighbor, end);
+                    var totalCost = cost + estimatedCost;
                     var existing = open.stream()
                         .filter(node -> node.getCoordinates().equals(neighbor))
                         .findFirst()
                         .orElse(null);
 
-                    if (existing != null && existing.estimatedCost() < estimatedCost)
+                    if (existing != null && existing.totalCost() < totalCost)
                     {
                         // leave it
                     }
@@ -100,13 +103,14 @@ public final class AStarPathfinder implements Pathfinder
                         {
                             open.remove(existing);
                         }
-                        open.add(new Node(
+                        var node = new Node(
                             neighbor.x(),
                             neighbor.y(),
                             cost,
                             estimatedCost,
                             current
-                        ));
+                        );
+                        open.add(node);
                     }
                 }
             }

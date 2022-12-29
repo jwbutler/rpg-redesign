@@ -1,25 +1,23 @@
 package com.jwbutler.rpg.sprites;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
-import com.jwbutler.rpg.graphics.Colors;
-import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.sprites.animations.Animation;
-import com.jwbutler.rpg.sprites.animations.UnitAnimations;
+import com.jwbutler.rpg.sprites.animations.AnimationPack;
+import com.jwbutler.rpg.sprites.animations.Frame;
 import com.jwbutler.rpg.units.Unit;
 
 public final class UnitSprite implements AnimatedSprite<Unit>
 {
     @Nonnull
-    private final UnitAnimations animations;
+    private final AnimationPack animations;
     @Nonnull
     private final Map<Color, Color> paletteSwaps;
 
     public UnitSprite(
-        @Nonnull UnitAnimations animations,
+        @Nonnull AnimationPack animations,
         @Nonnull Map<Color, Color> paletteSwaps
     )
     {
@@ -29,14 +27,10 @@ public final class UnitSprite implements AnimatedSprite<Unit>
 
     @Nonnull
     @Override
-    public BufferedImage getImage(@Nonnull Unit target)
+    public Frame getFrame(@Nonnull Unit target)
     {
         var animation = getAnimation(target);
-        var filename = animation.filenames().get(target.getFrameNumber());
-        return new ImageBuilder()
-            .filename(filename)
-            .transparentColor(Colors.WHITE)
-            .build();
+        return animation.frames().get(target.getFrameNumber());
     }
 
     @Nonnull

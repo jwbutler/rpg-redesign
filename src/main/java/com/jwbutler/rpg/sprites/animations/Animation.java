@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 
 public record Animation
 (
-    @Nonnull List<String> filenames
+    @Nonnull List<Frame> frames
 )
 {
 }
