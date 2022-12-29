@@ -59,13 +59,6 @@ public interface GameState
     @Nonnull
     Unit getUnit(@Nonnull UUID id);
 
-    /**
-     * @deprecated - this should be per-player, not global
-     */
-    @Nonnull
-    @Deprecated
-    Unit getPlayerUnit();
-
     @CheckForNull
     @VisibleForTesting
     Unit getUnitNullable(@Nonnull UUID id);

@@ -59,8 +59,11 @@ implements Command
             case WALKING ->
             {
                 var coordinates = unit.getCoordinates().plus(unit.getDirection());
-                // TODO check if it's legal and unblocked
-                controller.moveUnit(unit, unit.getLevel(), coordinates);
+                var level = unit.getLevel();
+                if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
+                {
+                    controller.moveUnit(unit, level, coordinates);
+                }
             }
         }
     }

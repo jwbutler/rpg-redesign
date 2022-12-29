@@ -68,18 +68,20 @@ public final class GameRenderer
     )
     {
         var humanPlayer = state.getHumanPlayer();
-        var playerUnit = state.getPlayerUnit();
 
         if (humanPlayer.getMouseCoordinates() != null)
         {
             _drawOverlay(Overlay.TILE_MOUSEOVER, state, graphics, humanPlayer.getMouseCoordinates());
         }
 
-        switch (playerUnit.getLatestCommand())
+        for (var playerUnit : humanPlayer.getUnits())
         {
-            case MoveCommand mc -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, mc.target());
-            case AttackCommand ac -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, ac.target().getCoordinates());
-            default -> {}
+            switch (playerUnit.getLatestCommand())
+            {
+                case MoveCommand mc -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, mc.target());
+                case AttackCommand ac -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, ac.target().getCoordinates());
+                default -> {}
+            }
         }
     }
 
@@ -108,7 +110,6 @@ public final class GameRenderer
     )
     {
         var humanPlayer = state.getHumanPlayer();
-        var playerUnit = state.getPlayerUnit();
         var coordinates = unit.getCoordinates();
         var frame = unit.getSprite().getFrame(unit);
         var image = frame.image();
@@ -117,7 +118,9 @@ public final class GameRenderer
             case PLAYER -> Overlay.PLAYER_ACTIVE;
             case ENEMY, NEUTRAL -> // NEUTRAL doesn't really make sense, oh well
             {
-                if (playerUnit.getCommand() instanceof AttackCommand ac && ac.target() == unit)
+                if (humanPlayer.getUnits()
+                    .stream()
+                    .anyMatch(playerUnit -> playerUnit.getCommand() instanceof AttackCommand ac && ac.target() == unit))
                 {
                     yield Overlay.ENEMY_TARGETED;
                 }
