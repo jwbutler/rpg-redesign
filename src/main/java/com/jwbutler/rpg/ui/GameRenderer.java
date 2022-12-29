@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.ui;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nonnull;
@@ -14,7 +13,6 @@ import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.graphics.Overlay;
 import com.jwbutler.rpg.levels.TileType;
-import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;

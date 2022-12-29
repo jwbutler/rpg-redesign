@@ -1,7 +1,6 @@
 package com.jwbutler.rpg.sprites;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.annotation.Nonnull;
 

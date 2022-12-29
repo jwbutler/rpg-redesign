@@ -2,11 +2,6 @@ package com.jwbutler.rpg.geometry;
 
 import javax.annotation.Nonnull;
 
-import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
-import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
-import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_HEIGHT;
-import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
-
 public record Pixel
 (
     int x,

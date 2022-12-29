@@ -1,18 +1,15 @@
 package com.jwbutler.rpg.sprites.animations;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.graphics.Layer;
+import com.jwbutler.rpg.sprites.SpriteUtils;
 import com.jwbutler.rpg.units.Activity;
 
-import static com.jwbutler.rpg.graphics.ImageUtils.imageFileExists;
 import static com.jwbutler.rpg.graphics.ImageUtils.loadImage;
 import static com.jwbutler.rpg.graphics.ImageUtils.setTransparentColor;
 
@@ -25,20 +22,20 @@ public final class SwordAnimations implements AnimationPack
         List<String> filenames = switch (activity)
         {
             case STANDING -> Stream.of("1")
-                .map(number -> _formatFilename(activity, direction, "1"))
-                .map(SwordAnimations::_substituteBehindFilename)
+                .map(number -> _formatFilename(activity, direction, number))
+                .map(SpriteUtils::substituteBehindFilename)
                 .toList();
             case WALKING  -> Stream.of("1", "2")
                 .map(number -> _formatFilename(activity, direction, number))
-                .map(SwordAnimations::_substituteBehindFilename)
+                .map(SpriteUtils::substituteBehindFilename)
                 .toList();
             case ATTACKING -> Stream.of("1", "2", "2", "1")
                 .map(number -> _formatFilename(activity, direction, number))
-                .map(SwordAnimations::_substituteBehindFilename)
+                .map(SpriteUtils::substituteBehindFilename)
                 .toList();
             case FALLING -> Stream.of("1", "2", "3", "4")
                 .map(number -> _formatFilename(activity, direction, number))
-                .map(SwordAnimations::_substituteBehindFilename)
+                .map(SpriteUtils::substituteBehindFilename)
                 .toList();
         };
         List<Frame> frames = filenames.stream()
@@ -49,7 +46,7 @@ public final class SwordAnimations implements AnimationPack
                 return new Frame(
                     image,
                     filename,
-                    filename.endsWith("_B") ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
+                    filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
                 );
             })
             .toList();
@@ -60,16 +57,5 @@ public final class SwordAnimations implements AnimationPack
     private static String _formatFilename(@Nonnull Activity activity, @Nonnull Direction direction, @Nonnull String number)
     {
         return String.format("equipment/sword/sword_%s_%s_%s", activity, direction, number);
-    }
-
-    @Nonnull
-    private static String _substituteBehindFilename(@Nonnull String filename)
-    {
-        String behindFilename = filename + "_B";
-        if (imageFileExists(behindFilename))
-        {
-            return behindFilename;
-        }
-        return filename;
     }
 }
