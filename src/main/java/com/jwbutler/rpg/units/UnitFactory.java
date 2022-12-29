@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.sprites.UnitSprite;
@@ -48,13 +49,14 @@ public final class UnitFactory
     )
     {
         var paletteSwaps = Map.of(
-
+            Colors.PURPLE, Colors.RED,
+            Colors.DARK_PURPLE, Colors.RED
         );
         return new UnitBuilder()
             .controller(controller)
             .name(name)
             .life(life)
-            .sprite(new UnitSprite(new PlayerAnimations(), emptyMap()))
+            .sprite(new UnitSprite(new PlayerAnimations(), paletteSwaps))
             .player(player)
             .level(level)
             .coordinates(coordinates)

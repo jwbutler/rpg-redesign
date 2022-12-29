@@ -11,8 +11,10 @@ public final class Colors
     public static final Color CYAN = Color.CYAN;
     public static final Color DARK_BLUE = new Color(0, 0, 128);
     public static final Color DARK_GREEN = new Color(0, 128, 0);
+    public static final Color DARK_PURPLE = new Color(128, 0, 128);
     public static final Color DARK_RED = new Color(128, 0, 0);
     public static final Color GREEN = Color.GREEN;
+    public static final Color PURPLE = Color.MAGENTA;
     public static final Color RED = Color.RED;
     public static final Color TRANSPARENT_BLACK = new Color(0, 0, 0, 0);
     public static final Color YELLOW = Color.YELLOW;
