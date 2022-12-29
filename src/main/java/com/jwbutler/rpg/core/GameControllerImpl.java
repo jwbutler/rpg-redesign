@@ -6,6 +6,8 @@ import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
+import com.jwbutler.rpg.units.commands.DieCommand;
+import com.jwbutler.rpg.units.commands.StayCommand;
 
 final class GameControllerImpl implements GameController
 {
@@ -31,6 +33,14 @@ final class GameControllerImpl implements GameController
         state.removeUnit(unit);
         unit.getLevel().removeUnit(unit);
         unit.getPlayer().removeUnit(unit);
+
+        for (Unit other : unit.getLevel().getUnits())
+        {
+            if (other.getCommand().getTargetUnit() == unit)
+            {
+                other.setCommand(new StayCommand(this));
+            }
+        }
     }
 
     @Override
@@ -52,6 +62,16 @@ final class GameControllerImpl implements GameController
     public void addPlayer(@Nonnull Player player)
     {
         state.addPlayer(player);
+    }
+
+    @Override
+    public void dealDamage(@Nonnull Unit source, @Nonnull Unit target, int amount)
+    {
+        target.takeDamage(amount);
+        if (target.getLife() <= 0)
+        {
+            target.setCommand(new DieCommand(this));
+        }
     }
 
     @Nonnull

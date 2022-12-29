@@ -113,17 +113,6 @@ final class GameStateImpl implements GameState
         return unit;
     }
 
-    @Nonnull
-    @Override
-    public Unit getPlayerUnit()
-    {
-        return unitsById.values()
-            .stream()
-            .filter(unit -> unit.getPlayer().getFaction() == Faction.PLAYER)
-            .findFirst()
-            .orElseThrow(IllegalStateException::new);
-    }
-
     @Override
     @CheckForNull
     public Unit getUnitNullable(@Nonnull UUID id)

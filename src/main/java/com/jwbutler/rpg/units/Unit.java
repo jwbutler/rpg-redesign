@@ -64,5 +64,8 @@ public interface Unit
     @Nonnull
     Set<Equipment> getEquipment();
 
+    int getAttackDamage();
+    void takeDamage(int amount);
+
     void update();
 }

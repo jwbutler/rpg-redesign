@@ -1,5 +1,6 @@
 package com.jwbutler.rpg.units.commands;
 
+import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
@@ -21,5 +22,12 @@ implements Command
     @Override
     public void endActivity(@Nonnull Unit unit)
     {
+    }
+
+    @CheckForNull
+    @Override
+    public Unit getTargetUnit()
+    {
+        return null;
     }
 }

@@ -18,4 +18,5 @@ public interface Equipment
     Slot getSlot();
     @Nonnull
     Sprite<Equipment> getSprite();
+    int getDamage();
 }

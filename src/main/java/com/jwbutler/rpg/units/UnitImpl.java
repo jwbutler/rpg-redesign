@@ -221,6 +221,22 @@ final class UnitImpl implements Unit
     }
 
     @Override
+    public int getAttackDamage()
+    {
+        return slotToEquipment.values()
+            .stream()
+            .mapToInt(Equipment::getDamage)
+            .sum()
+            + 10;
+    }
+
+    @Override
+    public void takeDamage(int amount)
+    {
+        life = Math.max(life - amount, 0);
+    }
+
+    @Override
     public void update()
     {
         frameNumber++;

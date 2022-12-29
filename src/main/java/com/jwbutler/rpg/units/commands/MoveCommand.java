@@ -45,8 +45,16 @@ implements Command
             {
                 // first entry in path is equal to the current node, I think
                 path.remove(0);
-                var direction = Direction.between(unit.getCoordinates(), path.get(0));
-                unit.startActivity(Activity.WALKING, direction);
+                var nextCoordinates = path.get(0);
+                if (level.containsCoordinates(nextCoordinates) && level.getUnit(nextCoordinates) == null)
+                {
+                    var direction = Direction.between(unit.getCoordinates(), nextCoordinates);
+                    unit.startActivity(Activity.WALKING, direction);
+                }
+                else
+                {
+                    unit.startActivity(Activity.STANDING, unit.getDirection());
+                }
             }
         }
     }
@@ -59,9 +67,19 @@ implements Command
             case WALKING ->
             {
                 var coordinates = unit.getCoordinates().plus(unit.getDirection());
-                // TODO check if it's legal and unblocked
-                controller.moveUnit(unit, unit.getLevel(), coordinates);
+                var level = unit.getLevel();
+                if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
+                {
+                    controller.moveUnit(unit, level, coordinates);
+                }
             }
         }
+    }
+
+    @CheckForNull
+    @Override
+    public Unit getTargetUnit()
+    {
+        return null;
     }
 }

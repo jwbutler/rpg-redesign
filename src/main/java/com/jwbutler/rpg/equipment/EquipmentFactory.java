@@ -22,7 +22,8 @@ public class EquipmentFactory
             .unit(unit)
             .name("Noob Sword")
             .slot(Slot.MAIN_HAND)
-            .sprite(new EquipmentSprite(new SwordAnimations(), emptyMap()))
+            .sprite(new EquipmentSprite(new SwordAnimations(emptyMap())))
+            .damage(10)
             .build();
     }
 
@@ -36,7 +37,8 @@ public class EquipmentFactory
             .unit(unit)
             .name("Noob Shield")
             .slot(Slot.OFF_HAND)
-            .sprite(new EquipmentSprite(new ShieldAnimations(), emptyMap()))
+            .sprite(new EquipmentSprite(new ShieldAnimations(emptyMap())))
+            .damage(0)
             .build();
     }
 }

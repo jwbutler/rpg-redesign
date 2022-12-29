@@ -40,21 +40,24 @@ public class Main
         controller.addPlayer(humanPlayer);
         var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
         controller.addPlayer(enemyPlayer);
-        var playerUnit = UnitFactory.createPlayerUnit(
-            controller,
-            "test_unit",
-            100,
-            humanPlayer,
-            level,
-            Coordinates.zero()
-        );
-        controller.addUnit(playerUnit);
-        var sword = EquipmentFactory.createNoobSword(controller, playerUnit);
-        playerUnit.addEquipment(sword);
-        var shield = EquipmentFactory.createShield(controller, playerUnit);
-        playerUnit.addEquipment(shield);
+        for (int i = 1; i <= 3; i++)
+        {
+            var playerUnit = UnitFactory.createPlayerUnit(
+                controller,
+                "test_unit_" + i,
+                100,
+                humanPlayer,
+                level,
+                new Coordinates(i - 1, 0)
+            );
+            controller.addUnit(playerUnit);
+            var sword = EquipmentFactory.createNoobSword(controller, playerUnit);
+            playerUnit.addEquipment(sword);
+            var shield = EquipmentFactory.createShield(controller, playerUnit);
+            playerUnit.addEquipment(shield);
+        }
 
-        var enemyUnit = UnitFactory.createPlayerUnit(
+        var enemyUnit = UnitFactory.createEvilPlayerUnit(
             controller,
             "enemy_unit",
             100,

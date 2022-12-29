@@ -57,7 +57,6 @@ public final class InputHandler
         }
 
         var pixel = new Pixel(event.getX(), event.getY());
-        var playerUnit = state.getPlayerUnit();
         var level = state.getCurrentLevel();
         var coordinates = humanPlayer.getCamera().pixelToCoordinates(pixel);
 
@@ -66,11 +65,17 @@ public final class InputHandler
             var unit = level.getUnit(coordinates);
             if (unit != null && unit.getPlayer().getFaction() == Faction.ENEMY)
             {
-                playerUnit.setNextCommand(new AttackCommand(controller, unit));
+                for (var playerUnit : humanPlayer.getUnits())
+                {
+                    playerUnit.setNextCommand(new AttackCommand(controller, unit));
+                }
             }
             else if (unit == null)
             {
-                playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+                for (var playerUnit : humanPlayer.getUnits())
+                {
+                    playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+                }
             }
         }
     }
