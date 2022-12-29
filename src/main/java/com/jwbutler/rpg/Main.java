@@ -51,6 +51,8 @@ public class Main
         controller.addUnit(playerUnit);
         var sword = EquipmentFactory.createNoobSword(controller, playerUnit);
         playerUnit.addEquipment(sword);
+        var shield = EquipmentFactory.createShield(controller, playerUnit);
+        playerUnit.addEquipment(shield);
 
         var enemyUnit = UnitFactory.createPlayerUnit(
             controller,

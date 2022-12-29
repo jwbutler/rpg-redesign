@@ -1,5 +1,6 @@
 package com.jwbutler.rpg.units;
 
+import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
@@ -25,6 +26,30 @@ public final class UnitFactory
         @Nonnull Coordinates coordinates
     )
     {
+        return new UnitBuilder()
+            .controller(controller)
+            .name(name)
+            .life(life)
+            .sprite(new UnitSprite(new PlayerAnimations(), emptyMap()))
+            .player(player)
+            .level(level)
+            .coordinates(coordinates)
+            .build();
+    }
+
+    @Nonnull
+    public static Unit createEvilPlayerUnit(
+        @Nonnull GameController controller,
+        @Nonnull String name,
+        int life,
+        @Nonnull Player player,
+        @Nonnull Level level,
+        @Nonnull Coordinates coordinates
+    )
+    {
+        var paletteSwaps = Map.of(
+
+        );
         return new UnitBuilder()
             .controller(controller)
             .name(name)

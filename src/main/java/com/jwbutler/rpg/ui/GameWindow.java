@@ -90,13 +90,7 @@ public final class GameWindow
             @Override
             public void mousePressed(@Nonnull MouseEvent e)
             {
-                // First, subtract the frame's insets;
-                // then, scale it down to the original pixels
-                e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
-                e.translatePoint(
-                    (int) (e.getX() * (-1.0 / ZOOM_RATIO)),
-                    (int) (e.getY() * (-1.0 / ZOOM_RATIO))
-                );
+                _fixMousePosition(e);
                 handler.accept(e);
             }
         });
@@ -109,16 +103,22 @@ public final class GameWindow
             @Override
             public void mouseMoved(@Nonnull MouseEvent e)
             {
-                // First, subtract the frame's insets;
-                // then, scale it down to the original pixels
-                e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
-                e.translatePoint(
-                    (int) (e.getX() * (-1.0 / ZOOM_RATIO)),
-                    (int) (e.getY() * (-1.0 / ZOOM_RATIO))
-                );
+                _fixMousePosition(e);
                 handler.accept(e);
             }
         });
+    }
+
+    private void _fixMousePosition(@Nonnull MouseEvent e)
+    {
+        var zoomRatio = 1.0 * frame.getWidth() / GAME_WIDTH;
+        // First, subtract the frame's insets;
+        // then, scale it down to the original pixels
+        e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
+        e.translatePoint(
+            -e.getX() + (int) (e.getX() * (1.0 / zoomRatio)),
+            -e.getY() + (int) (e.getY() * (1.0 / zoomRatio))
+        );
     }
 
     public void toggleMaximized()
