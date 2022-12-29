@@ -1,7 +1,5 @@
 package com.jwbutler.rpg.sprites;
 
-import java.awt.Color;
-import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.equipment.Equipment;
@@ -13,16 +11,12 @@ public final class EquipmentSprite implements AnimatedSprite<Equipment>
 {
     @Nonnull
     private final AnimationPack animations;
-    @Nonnull
-    private final Map<Color, Color> paletteSwaps;
 
     public EquipmentSprite(
-        @Nonnull AnimationPack animations,
-        @Nonnull Map<Color, Color> paletteSwaps
+        @Nonnull AnimationPack animations
     )
     {
         this.animations = animations;
-        this.paletteSwaps = paletteSwaps;
     }
 
     @Nonnull

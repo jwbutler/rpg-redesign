@@ -2,6 +2,7 @@ package com.jwbutler.rpg.sprites.animations;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
@@ -10,10 +11,15 @@ import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.sprites.SpriteUtils;
 import com.jwbutler.rpg.units.Activity;
 
+import static com.jwbutler.rpg.graphics.ImageUtils.applyPaletteSwaps;
 import static com.jwbutler.rpg.graphics.ImageUtils.loadImage;
 import static com.jwbutler.rpg.graphics.ImageUtils.setTransparentColor;
 
-public final class ShieldAnimations implements AnimationPack
+public record ShieldAnimations
+(
+    @Nonnull Map<Color, Color> paletteSwaps
+)
+implements AnimationPack
 {
     @Nonnull
     @Override
@@ -43,6 +49,7 @@ public final class ShieldAnimations implements AnimationPack
             {
                 var image = loadImage(filename);
                 setTransparentColor(image, Color.WHITE);
+                applyPaletteSwaps(image, paletteSwaps);
                 return new Frame(
                     image,
                     filename,

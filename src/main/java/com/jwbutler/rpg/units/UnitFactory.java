@@ -31,7 +31,7 @@ public final class UnitFactory
             .controller(controller)
             .name(name)
             .life(life)
-            .sprite(new UnitSprite(new PlayerAnimations(), emptyMap()))
+            .sprite(new UnitSprite(new PlayerAnimations(emptyMap())))
             .player(player)
             .level(level)
             .coordinates(coordinates)
@@ -49,14 +49,15 @@ public final class UnitFactory
     )
     {
         var paletteSwaps = Map.of(
-            Colors.PURPLE, Colors.RED,
-            Colors.DARK_PURPLE, Colors.RED
+            Colors.DARK_BLUE, Colors.DARK_RED,
+            Colors.DARK_PURPLE, Colors.DARK_RED,
+            Colors.PURPLE, Colors.DARK_RED
         );
         return new UnitBuilder()
             .controller(controller)
             .name(name)
             .life(life)
-            .sprite(new UnitSprite(new PlayerAnimations(), paletteSwaps))
+            .sprite(new UnitSprite(new PlayerAnimations(paletteSwaps)))
             .player(player)
             .level(level)
             .coordinates(coordinates)

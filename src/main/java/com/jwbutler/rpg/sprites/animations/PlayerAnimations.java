@@ -2,6 +2,7 @@ package com.jwbutler.rpg.sprites.animations;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
@@ -9,10 +10,15 @@ import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.units.Activity;
 
+import static com.jwbutler.rpg.graphics.ImageUtils.applyPaletteSwaps;
 import static com.jwbutler.rpg.graphics.ImageUtils.loadImage;
 import static com.jwbutler.rpg.graphics.ImageUtils.setTransparentColor;
 
-public final class PlayerAnimations implements AnimationPack
+public record PlayerAnimations
+(
+    @Nonnull Map<Color, Color> paletteSwaps
+)
+implements AnimationPack
 {
     @Nonnull
     @Override
@@ -44,6 +50,7 @@ public final class PlayerAnimations implements AnimationPack
             {
                 var image = loadImage(filename);
                 setTransparentColor(image, Color.WHITE);
+                applyPaletteSwaps(image, paletteSwaps);
                 return new Frame(image, filename, Layer.UNIT);
             })
             .toList();

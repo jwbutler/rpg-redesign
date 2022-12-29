@@ -48,6 +48,7 @@ public final class GameWindow
         frame.add(panel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.setTitle("RPG 2023");
 
         frame.setVisible(true);
         var insets = frame.getInsets();

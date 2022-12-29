@@ -57,7 +57,7 @@ public class Main
             playerUnit.addEquipment(shield);
         }
 
-        var enemyUnit = UnitFactory.createPlayerUnit(
+        var enemyUnit = UnitFactory.createEvilPlayerUnit(
             controller,
             "enemy_unit",
             100,
