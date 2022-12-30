@@ -45,19 +45,22 @@ implements AnimationPack
                 .toList();
         };
         List<Frame> frames = filenames.stream()
-            .map(filename ->
-            {
-                var image = loadImage(filename);
-                setTransparentColor(image, Color.WHITE);
-                applyPaletteSwaps(image, paletteSwaps);
-                return new Frame(
-                    image,
-                    filename,
-                    filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
-                );
-            })
+            .map(filename -> _buildFrame(filename, paletteSwaps))
             .toList();
         return new Animation(frames);
+    }
+
+    @Nonnull
+    private static Frame _buildFrame(@Nonnull String filename, @Nonnull Map<Color, Color> paletteSwaps)
+    {
+        var image = loadImage(filename);
+        setTransparentColor(image, Color.WHITE);
+        applyPaletteSwaps(image, paletteSwaps);
+        return new Frame(
+            image,
+            filename,
+            filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
+        );
     }
 
     @Nonnull
