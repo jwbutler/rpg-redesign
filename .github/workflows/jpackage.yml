@@ -25,7 +25,8 @@ jobs:
       with:
         path: ./build/distributions/rpg-redesign.msi
         name: windows-installer
-        retention-days: 1
+        #retention-days: 1
+
  create-release:
     name: Create Release
     runs-on: ubuntu-latest
