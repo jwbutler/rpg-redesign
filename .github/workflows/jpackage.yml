@@ -1,3 +1,5 @@
+name: Build Installers
+
 jobs:
   build-windows-installer:
     name: Build Installer on Windows
