@@ -35,7 +35,7 @@ jobs:
       name: Upload executable
       uses: actions/upload-artifact@v2
       with:
-        path: ./build/distributions/win/rpg-redesign-${{ env.APP_VERSION }}
+        path: ./build/distributions/win
         name: windows-executable
         retention-days: 1
   ##########
@@ -63,7 +63,7 @@ jobs:
       name: Upload executable
       uses: actions/upload-artifact@v2
       with:
-        path: ./build/distributions/osx/rpg-redesign-${{ env.APP_VERSION }}
+        path: ./build/distributions/osx
         name: osx-executable
         retention-days: 1
   create-release:
@@ -104,8 +104,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: win/rpg-redesign-${{ env.APP_VERSION }}
-        asset_name: win/rpg-redesign-${{ env.APP_VERSION }}
+        asset_path: win/rpg-redesign
+        asset_name: win/rpg-redesign
         asset_content_type: application/x-binary
 
     - id: release-osx
@@ -115,6 +115,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: osx/rpg-redesign-${{ env.APP_VERSION }}.dmg
-        asset_name: osx/rpg-redesign-${{ env.APP_VERSION }}.dmg
+        asset_path: osx/rpg-redesign
+        asset_name: osx/rpg-redesign
         asset_content_type: application/x-binary
