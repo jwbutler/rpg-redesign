@@ -19,10 +19,10 @@ jobs:
     steps:
     - id: checkout-code
       name: Checkout code
-      uses: actions/checkout@latest
+      uses: actions/checkout@v2
     - id: setup-jdk
       name: Setup JDK
-      uses: actions/setup-java@latest
+      uses: actions/setup-java@v3
       with:
         java-version: ${{ env.JAVA_VERSION }}
     - id: build
@@ -33,7 +33,7 @@ jobs:
         jpackage --verbose "@config/jpackage.cfg" "@config/jpackage-windows.cfg" --app-version ${{ env.APP_VERSION }}
     - id: upload
       name: Upload executable
-      uses: actions/upload-artifact@latest
+      uses: actions/upload-artifact@v3
       with:
         path: ./build/distributions/windows
         name: windows-executable
@@ -47,10 +47,10 @@ jobs:
     steps:
     - id: checkout-code
       name: Checkout code
-      uses: actions/checkout@latest
+      uses: actions/checkout@v2
     - id: setup-jdk
       name: Setup JDK
-      uses: actions/setup-java@latest
+      uses: actions/setup-java@v3
       with:
         java-version: ${{ env.JAVA_VERSION }}
     - id: build
@@ -61,7 +61,7 @@ jobs:
         jpackage --verbose "@config/jpackage.cfg" "@config/jpackage-osx.cfg" --app-version ${{ env.APP_VERSION }}
     - id: upload
       name: Upload executable
-      uses: actions/upload-artifact@latest
+      uses: actions/upload-artifact@v3
       with:
         path: ./build/distributions/osx
         name: osx-executable
@@ -77,13 +77,13 @@ jobs:
     ### Download executables
     - id: download-windows-executable
       name: Download Windows executable
-      uses: actions/download-artifact@latest
+      uses: actions/download-artifact@v3
       with:
         name: windows-executable
         path: windows
     - id: download-osx-executable
       name: Download OSX executable
-      uses: actions/download-artifact@latest
+      uses: actions/download-artifact@v3
       with:
         name: osx-executable
         path: osx
