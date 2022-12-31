@@ -1,4 +1,4 @@
-name: Build Installers
+name: Build Executables
 
 on:
   push:
@@ -12,8 +12,8 @@ jobs:
   ##########
   # WINDOWS
   ##########
-  build-windows-installer:
-    name: Build Installer on Windows
+  build-windows:
+    name: Build executable for Windows
     runs-on: windows-latest
     steps:
     - id: checkout-code
@@ -30,18 +30,18 @@ jobs:
         gradle -v
         gradle build
         jpackage --verbose "@config/jpackage.cfg" "@config/jpackage-windows.cfg"
-    - id: upload-installer
-      name: Upload installer
+    - id: upload
+      name: Upload executable
       uses: actions/upload-artifact@v2
       with:
-        path: ./build/distributions/rpg-redesign-${{ env.APP_VERSION }}.exe
-        name: windows-installer
+        path: ./build/distributions/win/rpg-redesign-${{ env.APP_VERSION }}
+        name: windows-executable
         retention-days: 1
   ##########
   # OSX
   ##########
-  build-osx-installer:
-    name: Build Installer on OSX
+  build-osx:
+    name: Build executable for OSX
     runs-on: macos-latest
     steps:
     - id: checkout-code
@@ -58,30 +58,30 @@ jobs:
         gradle -v
         gradle build
         jpackage --verbose "@config/jpackage.cfg" "@config/jpackage-osx.cfg"
-    - id: upload-installer
-      name: Upload installer
+    - id: upload
+      name: Upload executable
       uses: actions/upload-artifact@v2
       with:
-        path: ./build/distributions/rpg-redesign-${{ env.APP_VERSION }}.dmg
-        name: osx-installer
+        path: ./build/distributions/osx/rpg-redesign-${{ env.APP_VERSION }}
+        name: osx-executable
         retention-days: 1
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [build-windows-installer]
+    needs: [build-windows-executable]
     steps:
 
-    ### Download installers
-    - id: download-windows-installer
-      name: Download Windows installer
+    ### Download executables
+    - id: download-windows-executable
+      name: Download Windows executable
       uses: actions/download-artifact@v2
       with:
-        name: windows-installer
-    - id: download-osx-installer
-      name: Download Windows installer
+        name: windows-executable
+    - id: download-osx-executable
+      name: Download OSX executable
       uses: actions/download-artifact@v2
       with:
-        name: windows-installer
+        name: osx-executable
 
     ### Create the release
     - id: create-release
@@ -96,24 +96,24 @@ jobs:
         prerelease: false
 
     ### Upload the artifacts to the release
-    - id: release-windows-installer
-      name: Release Windows installer
+    - id: release-windows
+      name: Release Windows executable
       uses: actions/upload-release-asset@latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: rpg-redesign-${{ env.APP_VERSION }}.exe
-        asset_name: rpg-redesign-${{ env.APP_VERSION }}.exe
+        asset_path: win/rpg-redesign-${{ env.APP_VERSION }}
+        asset_name: win/rpg-redesign-${{ env.APP_VERSION }}
         asset_content_type: application/x-binary
 
-    - id: release-osx-installer
-      name: Release OSX installer
+    - id: release-osx
+      name: Release OSX executable
       uses: actions/upload-release-asset@latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: rpg-redesign-${{ env.APP_VERSION }}.dmg
-        asset_name: rpg-redesign-${{ env.APP_VERSION }}.dmg
+        asset_path: osx/rpg-redesign-${{ env.APP_VERSION }}.dmg
+        asset_name: osx/rpg-redesign-${{ env.APP_VERSION }}.dmg
         asset_content_type: application/x-binary

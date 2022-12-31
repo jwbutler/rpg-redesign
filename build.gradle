@@ -27,6 +27,14 @@ tasks.named('test') {
     useTestNG()
 }
 
+// https://dev.to/sualeh/how-to-create-platform-specific-installers-for-your-java-applications-from-github-actions-2c15
+task copyToLib(type: Copy) {
+    into "${buildDir}/libs"
+    from configurations.runtimeClasspath
+}
+
+build.dependsOn(copyToLib)
+
 // https://docs.gradle.org/current/userguide/building_java_projects.html#sec:feature_preview
 // This is specifically for JEP 406, "Enhanced Switch"
 tasks.withType(JavaCompile) {
