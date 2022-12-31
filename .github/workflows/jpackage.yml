@@ -1,0 +1,136 @@
+name: Build Executables
+
+on:
+  push:
+    branches: [ "master" ]
+
+env:
+  # OSX complains if it's 0.x.x
+  APP_VERSION: 1.0.0
+  JAVA_VERSION: 17
+  JAVA_DISTRIBUTION: zulu
+
+jobs:
+  ##########
+  # WINDOWS
+  ##########
+  build-windows:
+    name: Build executable for Windows
+    runs-on: windows-latest
+    steps:
+    - id: checkout-code
+      name: Checkout code
+      uses: actions/checkout@v3
+    - id: setup-jdk
+      name: Setup JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
+    - id: build
+      name: Build distribution
+      run: |
+        gradle -v
+        gradle build
+        jpackage --verbose "@config/jpackage.cfg" "@config/jpackage-windows.cfg" --app-version ${{ env.APP_VERSION }}
+    - id: upload
+      name: Upload executable
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./build/distributions/windows
+        name: windows-executable
+        retention-days: 1
+  ##########
+  # OSX
+  ##########
+  build-osx:
+    name: Build executable for OSX
+    runs-on: macos-latest
+    steps:
+    - id: checkout-code
+      name: Checkout code
+      uses: actions/checkout@v2
+    - id: setup-jdk
+      name: Setup JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
+    - id: build
+      name: Build distribution
+      run: |
+        gradle -v
+        gradle build
+        jpackage --verbose "@config/jpackage.cfg" "@config/jpackage-osx.cfg" --app-version ${{ env.APP_VERSION }}
+    - id: upload
+      name: Upload executable
+      uses: actions/upload-artifact@v3
+      with:
+        path: ./build/distributions/osx
+        name: osx-executable
+        retention-days: 1
+
+  ### Download and release the artifacts
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-osx]
+    steps:
+
+    ### Download executables
+    - id: download-windows-executable
+      name: Download Windows executable
+      uses: actions/download-artifact@v3
+      with:
+        name: windows-executable
+        path: windows
+    - id: download-osx-executable
+      name: Download OSX executable
+      uses: actions/download-artifact@v3
+      with:
+        name: osx-executable
+        path: osx
+
+    ### Create the release
+    - id: create-release
+      name: Create GitHub release
+      uses: actions/create-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: release-${{ github.sha }}
+        release_name: release-${{ github.sha }}
+        draft: false
+        prerelease: false
+
+    - id: zip-windows
+      name: Zip Windows executable
+      run:
+        zip -r windows.zip windows
+    - id: zip-osx
+      name: Zip OSX executable
+      run:
+        zip -r osx.zip osx
+
+    ### Upload the artifacts to the release
+    - id: upload-windows
+      name: Upload Windows executable
+      uses: actions/upload-release-asset@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
+        asset_path: windows.zip
+        asset_name: windows.zip
+        asset_content_type: application/zip
+
+    - id: upload-osx
+      name: Upload OSX executable
+      uses: actions/upload-release-asset@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
+        asset_path: osx.zip
+        asset_name: osx.zip
+        asset_content_type: application/zip
