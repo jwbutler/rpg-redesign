@@ -2,6 +2,7 @@ package com.jwbutler.rpg;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
+import javax.swing.Timer;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.core.GameState;
@@ -72,6 +73,7 @@ public class Main
         var inputHandler = new InputHandler(controller, window);
         window.addKeyboardListener(inputHandler::handleKeyDown);
         window.addMouseDownListener(inputHandler::handleMouseDown);
+        window.addMouseUpListener(inputHandler::handleMouseUp);
         window.addMouseMoveListener(inputHandler::handleMouseMove);
 
         while (true)

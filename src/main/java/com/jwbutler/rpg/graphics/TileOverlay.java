@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
-public enum Overlay
+public enum TileOverlay
 {
     PLAYER_ACTIVE(Colors.DARK_GREEN, Colors.CYAN),
     PLAYER_INACTIVE(Colors.DARK_GREEN, Colors.DARK_GREEN),
@@ -20,7 +20,7 @@ public enum Overlay
     @Nonnull
     private final Color innerColor;
 
-    Overlay(@Nonnull Color outerColor, @Nonnull Color innerColor)
+    TileOverlay(@Nonnull Color outerColor, @Nonnull Color innerColor)
     {
         this.outerColor = outerColor;
         this.innerColor = innerColor;

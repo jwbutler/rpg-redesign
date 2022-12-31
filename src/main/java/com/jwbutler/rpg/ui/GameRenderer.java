@@ -1,5 +1,6 @@
 package com.jwbutler.rpg.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import javax.annotation.Nonnull;
 
@@ -7,9 +8,10 @@ import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.geometry.Rect;
 import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.graphics.Layer;
-import com.jwbutler.rpg.graphics.Overlay;
+import com.jwbutler.rpg.graphics.TileOverlay;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
@@ -38,10 +40,11 @@ public final class GameRenderer
             _drawGrid(state, graphics);
             _drawTileOverlays(state, graphics);
             _drawUnits(state, graphics);
+            _drawUiOverlays(state, graphics);
         });
     }
 
-    private void _drawGrid(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawGrid(@Nonnull GameState state, @Nonnull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
         var humanPlayer = state.getHumanPlayer();
@@ -59,7 +62,7 @@ public final class GameRenderer
         }
     }
 
-    private void _drawTileOverlays(
+    private static void _drawTileOverlays(
         @Nonnull GameState state,
         @Nonnull Graphics2D graphics
     )
@@ -68,21 +71,21 @@ public final class GameRenderer
 
         if (humanPlayer.getMouseCoordinates() != null)
         {
-            _drawOverlay(Overlay.TILE_MOUSEOVER, state, graphics, humanPlayer.getMouseCoordinates());
+            _drawTileOverlay(TileOverlay.TILE_MOUSEOVER, state, graphics, humanPlayer.getMouseCoordinates());
         }
 
         for (var playerUnit : humanPlayer.getUnits())
         {
             switch (playerUnit.getLatestCommand())
             {
-                case MoveCommand mc -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, mc.target());
-                case AttackCommand ac -> _drawOverlay(Overlay.TILE_TARGETED, state, graphics, ac.target().getCoordinates());
+                case MoveCommand mc -> _drawTileOverlay(TileOverlay.TILE_TARGETED, state, graphics, mc.target());
+                case AttackCommand ac -> _drawTileOverlay(TileOverlay.TILE_TARGETED, state, graphics, ac.target().getCoordinates());
                 default -> {}
             }
         }
     }
 
-    private void _drawUnits(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawUnits(@Nonnull GameState state, @Nonnull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
 
@@ -100,7 +103,7 @@ public final class GameRenderer
         }
     }
 
-    private void _drawUnit(
+    private static void _drawUnit(
         @Nonnull GameState state,
         @Nonnull Graphics2D graphics,
         @Nonnull Unit unit
@@ -112,19 +115,29 @@ public final class GameRenderer
         var image = frame.image();
         var overlay = switch (unit.getPlayer().getFaction())
         {
-            case PLAYER -> Overlay.PLAYER_ACTIVE;
+            case PLAYER ->
+            {
+                if (humanPlayer.getSelectedUnits().contains(unit))
+                {
+                    yield TileOverlay.PLAYER_ACTIVE;
+                }
+                else
+                {
+                    yield TileOverlay.PLAYER_INACTIVE;
+                }
+            }
             case ENEMY, NEUTRAL -> // NEUTRAL doesn't really make sense, oh well
             {
                 if (humanPlayer.getUnits()
                     .stream()
                     .anyMatch(playerUnit -> playerUnit.getCommand() instanceof AttackCommand ac && ac.target() == unit))
                 {
-                    yield Overlay.ENEMY_TARGETED;
+                    yield TileOverlay.ENEMY_TARGETED;
                 }
-                yield Overlay.ENEMY_INACTIVE;
+                yield TileOverlay.ENEMY_INACTIVE;
             }
         };
-        _drawOverlay(overlay, state, graphics, coordinates);
+        _drawTileOverlay(overlay, state, graphics, coordinates);
         var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
         var topLeft = new Pixel(
             tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
@@ -149,7 +162,7 @@ public final class GameRenderer
         }
     }
 
-    private void _drawEquipment(
+    private static void _drawEquipment(
         @Nonnull GameState state,
         @Nonnull Graphics2D graphics,
         @Nonnull Equipment equipment
@@ -168,8 +181,8 @@ public final class GameRenderer
         graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
     }
 
-    private void _drawOverlay(
-        @Nonnull Overlay overlay,
+    private static void _drawTileOverlay(
+        @Nonnull TileOverlay overlay,
         @Nonnull GameState state,
         @Nonnull Graphics2D graphics,
         @Nonnull Coordinates coordinates
@@ -179,5 +192,18 @@ public final class GameRenderer
         var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
         var image = overlay.getImage();
         graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
+    }
+
+    private static void _drawUiOverlays(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    {
+        var humanPlayer = state.getHumanPlayer();
+        var start = humanPlayer.getSelectionStart();
+        var end = humanPlayer.getSelectionEnd();
+        if (start != null && end != null)
+        {
+            graphics.setColor(Colors.CYAN);
+            var rect = Rect.between(start, end);
+            graphics.drawRect(rect.left(), rect.top(), rect.width(), rect.height());
+        }
     }
 }

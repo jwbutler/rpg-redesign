@@ -2,15 +2,24 @@ package com.jwbutler.rpg.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.geometry.Rect;
 import com.jwbutler.rpg.players.Faction;
 import com.jwbutler.rpg.players.HumanPlayer;
+import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
+
+import static com.jwbutler.rpg.ui.InputUtils.isLeftButton;
+import static com.jwbutler.rpg.ui.InputUtils.isLeftButtonDown;
+import static com.jwbutler.rpg.ui.InputUtils.isRightButton;
+import static com.jwbutler.rpg.ui.InputUtils.isRightButtonDown;
 
 public final class InputHandler
 {
@@ -49,35 +58,98 @@ public final class InputHandler
 
     public void handleMouseDown(@Nonnull MouseEvent event)
     {
+        var pixel = new Pixel(event.getX(), event.getY());
+        if (isRightButton(event))
+        {
+            // _handleRightClick(pixel);
+        }
+        else if (isLeftButton(event))
+        {
+            _handleLeftDown(pixel);
+        }
+    }
+
+    public void handleMouseUp(@Nonnull MouseEvent event)
+    {
+        var pixel = new Pixel(event.getX(), event.getY());
+        if (isRightButton(event))
+        {
+            _handleRightUp(pixel);
+        }
+        else if (isLeftButton(event))
+        {
+            _handleLeftUp(pixel);
+        }
+    }
+
+    private void _handleRightUp(@Nonnull Pixel pixel)
+    {
         var state = controller.getState();
         var humanPlayer = state.getHumanPlayer();
         if (humanPlayer.getState() != HumanPlayer.State.GAME)
         {
             return;
         }
-
-        var pixel = new Pixel(event.getX(), event.getY());
         var level = state.getCurrentLevel();
         var coordinates = humanPlayer.getCamera().pixelToCoordinates(pixel);
 
         if (level.containsCoordinates(coordinates))
         {
             var unit = level.getUnit(coordinates);
+            var selectedUnits = humanPlayer.getSelectedUnits();
             if (unit != null && unit.getPlayer().getFaction() == Faction.ENEMY)
             {
-                for (var playerUnit : humanPlayer.getUnits())
+                for (var playerUnit : selectedUnits)
                 {
                     playerUnit.setNextCommand(new AttackCommand(controller, unit));
                 }
             }
             else if (unit == null)
             {
-                for (var playerUnit : humanPlayer.getUnits())
+                for (var playerUnit : selectedUnits)
                 {
                     playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
                 }
             }
         }
+    }
+
+    private void _handleLeftDown(@Nonnull Pixel pixel)
+    {
+        var state = controller.getState();
+        var humanPlayer = state.getHumanPlayer();
+        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        {
+            return;
+        }
+        humanPlayer.setSelectionStart(pixel);
+    }
+
+    private void _handleLeftUp(@Nonnull Pixel pixel)
+    {
+        var state = controller.getState();
+        var humanPlayer = state.getHumanPlayer();
+        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        {
+            return;
+        }
+        var selectionStart = humanPlayer.getSelectionStart();
+        if (selectionStart == null)
+        {
+            // don't think this is possible
+            return;
+        }
+        var rect = Rect.between(selectionStart, pixel);
+        var camera = humanPlayer.getCamera();
+        Set<Unit> selectedUnits = state.getCurrentLevel()
+            .getUnits()
+            .stream()
+            .filter(u -> u.getPlayer() == humanPlayer)
+            .filter(u -> rect.getIntersection(camera.coordinatesToPixelRect(u.getCoordinates())).area() >= 100) // arbitrary threshold
+            .collect(Collectors.toSet());
+        humanPlayer.setSelectionStart(null);
+        humanPlayer.setSelectionEnd(null);
+        humanPlayer.setSelectedUnits(selectedUnits);
     }
 
     public void handleMouseMove(@Nonnull MouseEvent event)
@@ -96,6 +168,11 @@ public final class InputHandler
         if (level.containsCoordinates(coordinates))
         {
             humanPlayer.setMouseCoordinates(coordinates);
+        }
+
+        if (isLeftButtonDown(event))
+        {
+            humanPlayer.setSelectionEnd(pixel);
         }
     }
 }

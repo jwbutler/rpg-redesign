@@ -97,6 +97,19 @@ public final class GameWindow
         });
     }
 
+    public void addMouseUpListener(@Nonnull Consumer<MouseEvent> handler)
+    {
+        frame.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseReleased(@Nonnull MouseEvent e)
+            {
+                _fixMousePosition(e);
+                handler.accept(e);
+            }
+        });
+    }
+
     public void addMouseMoveListener(@Nonnull Consumer<MouseEvent> handler)
     {
         frame.addMouseMotionListener(new MouseMotionAdapter()
@@ -107,15 +120,25 @@ public final class GameWindow
                 _fixMousePosition(e);
                 handler.accept(e);
             }
+
+            @Override
+            public void mouseDragged(@Nonnull MouseEvent e)
+            {
+                _fixMousePosition(e);
+                handler.accept(e);
+            }
         });
     }
 
     private void _fixMousePosition(@Nonnull MouseEvent e)
     {
-        var zoomRatio = 1.0 * frame.getWidth() / GAME_WIDTH;
+        var zoomRatio = 1.0 * (frame.getWidth() - frame.getInsets().left - frame.getInsets().right) / GAME_WIDTH;
         // First, subtract the frame's insets;
         // then, scale it down to the original pixels
-        e.translatePoint(-frame.getInsets().left, -frame.getInsets().top);
+        e.translatePoint(
+            -frame.getInsets().left,
+            -frame.getInsets().top
+        );
         e.translatePoint(
             -e.getX() + (int) (e.getX() * (1.0 / zoomRatio)),
             -e.getY() + (int) (e.getY() * (1.0 / zoomRatio))
