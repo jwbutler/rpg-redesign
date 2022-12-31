@@ -68,7 +68,7 @@ jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: [build-windows-executable]
+    needs: [build-windows]
     steps:
 
     ### Download executables
