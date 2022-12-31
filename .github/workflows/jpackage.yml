@@ -35,7 +35,7 @@ jobs:
       name: Upload executable
       uses: actions/upload-artifact@v2
       with:
-        path: ./build/distributions/win
+        path: ./build/distributions/windows
         name: windows-executable
         retention-days: 1
   ##########
@@ -66,6 +66,8 @@ jobs:
         path: ./build/distributions/osx
         name: osx-executable
         retention-days: 1
+
+  ### Download and release the artifacts
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
@@ -78,11 +80,13 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: windows-executable
+        path: windows
     - id: download-osx-executable
       name: Download OSX executable
       uses: actions/download-artifact@v2
       with:
         name: osx-executable
+        path: osx
 
     ### Create the release
     - id: create-release
@@ -104,8 +108,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
-        asset_path: win/rpg-redesign
-        asset_name: win/rpg-redesign
+        asset_path: windows/rpg-redesign
+        asset_name: windows/rpg-redesign
         asset_content_type: application/x-binary
 
     - id: release-osx
