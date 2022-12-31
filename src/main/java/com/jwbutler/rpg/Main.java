@@ -2,7 +2,6 @@ package com.jwbutler.rpg;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-import javax.swing.Timer;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.core.GameState;
@@ -39,8 +38,6 @@ public class Main
         state.setCurrentLevel(level);
         var humanPlayer = new HumanPlayer(controller, "human_player", new Coordinates(5, 5));
         controller.addPlayer(humanPlayer);
-        var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
-        controller.addPlayer(enemyPlayer);
         for (int i = 1; i <= 3; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
@@ -58,15 +55,21 @@ public class Main
             playerUnit.addEquipment(shield);
         }
 
-        var enemyUnit = UnitFactory.createEvilPlayerUnit(
-            controller,
-            "enemy_unit",
-            100,
-            enemyPlayer,
-            level,
-            new Coordinates(3, 3)
-        );
-        controller.addUnit(enemyUnit);
+        var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
+        controller.addPlayer(enemyPlayer);
+        for (int i = 1; i <= 3; i++)
+        {
+            var enemyUnit = UnitFactory.createEvilPlayerUnit(
+                controller,
+                "enemy_unit",
+                100,
+                enemyPlayer,
+                level,
+                new Coordinates(2 + i, 3)
+            );
+            controller.addUnit(enemyUnit);
+        }
+
         humanPlayer.setState(HumanPlayer.State.GAME);
         renderer.render(state);
 
@@ -83,7 +86,7 @@ public class Main
             {
                 unit.update();
             }
-            while (System.nanoTime() < startTime + (Duration.ofMillis(200).toNanos()))
+            while (System.nanoTime() < startTime + (Duration.ofMillis(150).toNanos()))
             {
                 renderer.render(state);
                 sleepUninterruptibly(10, TimeUnit.MILLISECONDS);

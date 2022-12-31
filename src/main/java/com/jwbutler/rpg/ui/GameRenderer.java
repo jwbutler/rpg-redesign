@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.ui;
 
-import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import javax.annotation.Nonnull;
 

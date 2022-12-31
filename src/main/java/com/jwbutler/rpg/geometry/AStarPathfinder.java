@@ -16,7 +16,7 @@ import static com.jwbutler.rpg.geometry.GeometryUtils.hypotenuse;
 /**
  * Ported from rpg-js
  */
-public final class AStarPathfinder implements Pathfinder
+final class AStarPathfinder implements Pathfinder
 {
     /**
      * @param cost Exact cost from start => node

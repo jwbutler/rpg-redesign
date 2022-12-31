@@ -13,4 +13,6 @@ public interface Pathfinder
         @Nonnull Coordinates end,
         @Nonnull Set<Coordinates> candidates
     );
+
+    Pathfinder A_STAR = new AStarPathfinder();
 }

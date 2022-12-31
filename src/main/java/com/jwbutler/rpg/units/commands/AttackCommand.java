@@ -5,9 +5,9 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
-import com.jwbutler.rpg.geometry.AStarPathfinder;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
+import com.jwbutler.rpg.geometry.Pathfinder;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 
@@ -37,7 +37,7 @@ implements Command
                 .collect(Collectors.toSet());
             candidates.add(unit.getCoordinates());
             candidates.add(target.getCoordinates());
-            @CheckForNull var path = new AStarPathfinder().findPath(
+            @CheckForNull var path = Pathfinder.A_STAR.findPath(
                 unit.getCoordinates(),
                 target.getCoordinates(),
                 candidates
