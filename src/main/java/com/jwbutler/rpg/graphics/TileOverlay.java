@@ -36,6 +36,7 @@ public enum TileOverlay
                 Color.RED, outerColor,
                 Color.BLUE, innerColor
             ))
+            .cache(ImageCache.INSTANCE)
             .build();
     }
 }

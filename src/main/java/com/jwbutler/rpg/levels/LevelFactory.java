@@ -14,8 +14,8 @@ public final class LevelFactory
 
     public static final Supplier<Level> LEVEL_ONE = () -> new LevelBuilder()
         .name("level_one")
-        .dimensions(new Dimensions(10, 10))
-        .addTiles(_tileBox(new Dimensions(10, 10), TileType.GRASS))
+        .dimensions(new Dimensions(40, 40))
+        .addTiles(_tileBox(new Dimensions(40, 40), TileType.GRASS))
         .build();
 
     public static final Supplier<Level> TEST_LEVEL = () -> new LevelBuilder()

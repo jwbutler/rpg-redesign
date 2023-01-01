@@ -14,9 +14,10 @@ public record DieCommand
 implements Command
 {
     @Override
-    public void startNextActivity(@Nonnull Unit unit)
+    @Nonnull
+    public ActivityPair getNextActivity(@Nonnull Unit unit)
     {
-        unit.startActivity(Activity.FALLING, unit.getDirection());
+        return new ActivityPair(Activity.FALLING, unit.getDirection());
     }
 
     @Override

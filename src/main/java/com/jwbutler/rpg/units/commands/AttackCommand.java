@@ -21,11 +21,12 @@ public record AttackCommand
 implements Command
 {
     @Override
-    public void startNextActivity(@Nonnull Unit unit)
+    @Nonnull
+    public ActivityPair getNextActivity(@Nonnull Unit unit)
     {
         if (isDirectlyAdjacent(unit.getCoordinates(), target.getCoordinates()))
         {
-            unit.startActivity(Activity.ATTACKING, Direction.between(unit.getCoordinates(), target.getCoordinates()));
+            return new ActivityPair(Activity.ATTACKING, Direction.between(unit.getCoordinates(), target.getCoordinates()));
         }
         else
         {
@@ -50,18 +51,10 @@ implements Command
                 if (level.containsCoordinates(nextCoordinates) && level.getUnit(nextCoordinates) == null)
                 {
                     var direction = Direction.between(unit.getCoordinates(), nextCoordinates);
-                    unit.startActivity(Activity.WALKING, direction);
-                }
-                else
-                {
-                    unit.startActivity(Activity.STANDING, unit.getDirection());
+                    return new ActivityPair(Activity.WALKING, direction);
                 }
             }
-            else
-            {
-                // TODO - very easy to miss this "else" here.  Can we design commands a bit better?
-                unit.startActivity(Activity.STANDING, unit.getDirection());
-            }
+            return new ActivityPair(Activity.STANDING, unit.getDirection());
         }
     }
 

@@ -19,11 +19,12 @@ public record MoveCommand
 implements Command
 {
     @Override
-    public void startNextActivity(@Nonnull Unit unit)
+    @Nonnull
+    public ActivityPair getNextActivity(@Nonnull Unit unit)
     {
         if (unit.getCoordinates().equals(target))
         {
-            unit.startActivity(Activity.STANDING, unit.getDirection());
+            return new ActivityPair(Activity.STANDING, unit.getDirection());
         }
         else
         {
@@ -49,14 +50,11 @@ implements Command
                 if (level.containsCoordinates(nextCoordinates) && level.getUnit(nextCoordinates) == null)
                 {
                     var direction = Direction.between(unit.getCoordinates(), nextCoordinates);
-                    unit.startActivity(Activity.WALKING, direction);
-                }
-                else
-                {
-                    unit.startActivity(Activity.STANDING, unit.getDirection());
+                    return new ActivityPair(Activity.WALKING, direction);
                 }
             }
         }
+        return new ActivityPair(Activity.STANDING, unit.getDirection());
     }
 
     @Override

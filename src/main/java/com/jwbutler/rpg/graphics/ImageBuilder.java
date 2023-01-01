@@ -3,6 +3,7 @@ package com.jwbutler.rpg.graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
@@ -15,6 +16,7 @@ public final class ImageBuilder
     private String filename;
     private Color transparentColor;
     private Map<Color, Color> paletteSwaps;
+    private ImageCache cache;
 
     public ImageBuilder filename(String filename)
     {
@@ -34,21 +36,37 @@ public final class ImageBuilder
         return this;
     }
 
+    public ImageBuilder cache(ImageCache cache)
+    {
+        this.cache = cache;
+        return this;
+    }
+
     @Nonnull
     public BufferedImage build()
     {
         checkState(filename != null);
-        var image = ImageUtils.loadImage(filename);
 
-        if (transparentColor != null)
+        Supplier<BufferedImage> supplier = () ->
         {
-            setTransparentColor(image, transparentColor);
-        }
+            var image = ImageUtils.loadImage(filename);
+            if (transparentColor != null)
+            {
+                setTransparentColor(image, transparentColor);
+            }
 
-        if (paletteSwaps != null)
+            if (paletteSwaps != null)
+            {
+                applyPaletteSwaps(image, paletteSwaps);
+            }
+            return image;
+        };
+
+        if (cache != null)
         {
-            applyPaletteSwaps(image, paletteSwaps);
+            var cacheKey = new ImageCache.CacheKey(filename, transparentColor, paletteSwaps);
+            return cache.computeIfAbsent(cacheKey, supplier);
         }
-        return image;
+        return supplier.get();
     }
 }

@@ -245,7 +245,8 @@ final class UnitImpl implements Unit
             command.endActivity(this);
             command = (nextCommand != null) ? nextCommand : command;
             nextCommand = null;
-            command.startNextActivity(this);
+            var activityPair = command.getNextActivity(this);
+            startActivity(activityPair.activity(), activityPair.direction());
         }
     }
 

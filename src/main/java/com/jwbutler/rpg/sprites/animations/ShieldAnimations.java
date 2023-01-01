@@ -7,13 +7,11 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Direction;
+import com.jwbutler.rpg.graphics.ImageBuilder;
+import com.jwbutler.rpg.graphics.ImageCache;
 import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.sprites.SpriteUtils;
 import com.jwbutler.rpg.units.Activity;
-
-import static com.jwbutler.rpg.graphics.ImageUtils.applyPaletteSwaps;
-import static com.jwbutler.rpg.graphics.ImageUtils.loadImage;
-import static com.jwbutler.rpg.graphics.ImageUtils.setTransparentColor;
 
 public record ShieldAnimations
 (
@@ -59,9 +57,16 @@ implements AnimationPack
     @Nonnull
     private static Frame _buildFrame(@Nonnull String filename, @Nonnull Map<Color, Color> paletteSwaps)
     {
-        var image = loadImage(filename);
-        setTransparentColor(image, Color.WHITE);
-        applyPaletteSwaps(image, paletteSwaps);
-        return new Frame(image, filename, Layer.UNIT);
+        var image = new ImageBuilder()
+            .filename(filename)
+            .transparentColor(Color.WHITE)
+            .paletteSwaps(paletteSwaps)
+            .cache(ImageCache.INSTANCE)
+            .build();
+        return new Frame(
+            image,
+            filename,
+            filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
+        );
     }
 }

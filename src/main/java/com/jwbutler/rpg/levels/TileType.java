@@ -4,6 +4,7 @@ import java.awt.Color;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.graphics.ImageBuilder;
+import com.jwbutler.rpg.graphics.ImageCache;
 import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.sprites.animations.Frame;
 
@@ -21,6 +22,7 @@ public enum TileType
         var image = new ImageBuilder()
             .filename("tiles/" + filename)
             .transparentColor(Color.WHITE)
+            .cache(ImageCache.INSTANCE)
             .build();
         frame = new Frame(image, filename, Layer.TILE);
     }

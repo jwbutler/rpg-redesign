@@ -7,6 +7,8 @@ import com.jwbutler.rpg.sprites.animations.AnimationPack;
 import com.jwbutler.rpg.sprites.animations.Frame;
 import com.jwbutler.rpg.units.Unit;
 
+import static com.google.common.base.Preconditions.checkState;
+
 public final class UnitSprite implements AnimatedSprite<Unit>
 {
     @Nonnull
@@ -22,6 +24,7 @@ public final class UnitSprite implements AnimatedSprite<Unit>
     public Frame getFrame(@Nonnull Unit target)
     {
         var animation = getAnimation(target);
+        checkState(target.getFrameNumber() < animation.frames().size());
         return animation.frames().get(target.getFrameNumber());
     }
 

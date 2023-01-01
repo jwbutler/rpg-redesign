@@ -38,7 +38,7 @@ public class Main
         state.setCurrentLevel(level);
         var humanPlayer = new HumanPlayer(controller, "human_player", new Coordinates(5, 5));
         controller.addPlayer(humanPlayer);
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= 10; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
                 controller,
@@ -86,7 +86,7 @@ public class Main
             {
                 unit.update();
             }
-            while (System.nanoTime() < startTime + (Duration.ofMillis(150).toNanos()))
+            while (System.nanoTime() < startTime + (Duration.ofMillis(100).toNanos()))
             {
                 renderer.render(state);
                 sleepUninterruptibly(10, TimeUnit.MILLISECONDS);

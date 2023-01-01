@@ -14,9 +14,10 @@ public record StayCommand
 implements Command
 {
     @Override
-    public void startNextActivity(@Nonnull Unit unit)
+    @Nonnull
+    public ActivityPair getNextActivity(@Nonnull Unit unit)
     {
-        unit.startActivity(Activity.STANDING, unit.getDirection());
+        return new ActivityPair(Activity.STANDING, unit.getDirection());
     }
 
     @Override
