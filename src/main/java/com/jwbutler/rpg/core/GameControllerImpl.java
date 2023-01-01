@@ -7,7 +7,8 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.DieCommand;
-import com.jwbutler.rpg.units.commands.StayCommand;
+
+import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 final class GameControllerImpl implements GameController
 {
@@ -38,7 +39,7 @@ final class GameControllerImpl implements GameController
         {
             if (other.getCommand().getTargetUnit() == unit)
             {
-                other.setCommand(new StayCommand(this));
+                other.setCommand(defaultCommand());
             }
         }
     }
@@ -70,7 +71,7 @@ final class GameControllerImpl implements GameController
         target.takeDamage(amount);
         if (target.getLife() <= 0)
         {
-            target.setCommand(new DieCommand(this));
+            target.setCommand(new DieCommand());
         }
     }
 

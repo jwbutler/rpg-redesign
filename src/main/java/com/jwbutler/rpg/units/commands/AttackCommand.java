@@ -4,7 +4,6 @@ import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pathfinder;
@@ -15,7 +14,6 @@ import static com.jwbutler.rpg.geometry.GeometryUtils.isDirectlyAdjacent;
 
 public record AttackCommand
 (
-    @Nonnull GameController controller,
     @Nonnull Unit target
 )
 implements Command
@@ -30,9 +28,9 @@ implements Command
         }
         else
         {
+            var controller = unit.getController();
             var level = controller.getState().getCurrentLevel();
-            var candidates = level
-                .getAllCoordinates()
+            var candidates = level.getAllCoordinates()
                 .stream()
                 .filter(coordinates -> level.getUnit(coordinates) == null && !level.getTile(coordinates).isBlocking())
                 .collect(Collectors.toSet());
@@ -55,33 +53,6 @@ implements Command
                 }
             }
             return new ActivityPair(Activity.STANDING, unit.getDirection());
-        }
-    }
-
-    @Override
-    public void endActivity(@Nonnull Unit unit)
-    {
-        switch (unit.getActivity())
-        {
-            case ATTACKING ->
-            {
-                var damage = unit.getAttackDamage();
-                controller.dealDamage(unit, target, damage);
-                if (target.getLife() <= 0)
-                {
-                    target.setCommand(new DieCommand(controller));
-                    unit.setCommand(new StayCommand(controller));
-                }
-            }
-            case WALKING ->
-            {
-                var coordinates = unit.getCoordinates().plus(unit.getDirection());
-                var level = unit.getLevel();
-                if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
-                {
-                    controller.moveUnit(unit, level, coordinates);
-                }
-            }
         }
     }
 

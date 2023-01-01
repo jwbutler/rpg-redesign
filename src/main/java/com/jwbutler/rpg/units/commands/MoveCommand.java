@@ -4,16 +4,14 @@ import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
-import com.jwbutler.rpg.core.GameController;
-import com.jwbutler.rpg.geometry.Pathfinder;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
+import com.jwbutler.rpg.geometry.Pathfinder;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 
 public record MoveCommand
 (
-    @Nonnull GameController controller,
     @Nonnull Coordinates target
 )
 implements Command
@@ -24,11 +22,13 @@ implements Command
     {
         if (unit.getCoordinates().equals(target))
         {
-            return new ActivityPair(Activity.STANDING, unit.getDirection());
+            // TODO hack hack hack
+            return new DefendCommand().getNextActivity(unit);
+            // return new ActivityPair(Activity.STANDING, unit.getDirection());
         }
         else
         {
-            var level = controller.getState().getCurrentLevel();
+            var level = unit.getController().getState().getCurrentLevel();
             var candidates = level
                 .getAllCoordinates()
                 .stream()
@@ -54,24 +54,9 @@ implements Command
                 }
             }
         }
-        return new ActivityPair(Activity.STANDING, unit.getDirection());
-    }
 
-    @Override
-    public void endActivity(@Nonnull Unit unit)
-    {
-        switch (unit.getActivity())
-        {
-            case WALKING ->
-            {
-                var coordinates = unit.getCoordinates().plus(unit.getDirection());
-                var level = unit.getLevel();
-                if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
-                {
-                    controller.moveUnit(unit, level, coordinates);
-                }
-            }
-        }
+        // TODO hack hack hack
+        return new DefendCommand().getNextActivity(unit);
     }
 
     @CheckForNull

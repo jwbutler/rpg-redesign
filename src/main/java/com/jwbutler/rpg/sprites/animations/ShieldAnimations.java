@@ -38,7 +38,7 @@ implements AnimationPack
                 .map(SpriteUtils::substituteBehindFilename)
                 .toList();
             case FALLING -> Stream.of("1", "2", "3", "4")
-                .map(number -> _formatFilename(activity, direction, number))
+                .map(number -> _formatFilename(activity, _getFallingDirection(direction), number))
                 .map(SpriteUtils::substituteBehindFilename)
                 .toList();
         };
@@ -68,5 +68,16 @@ implements AnimationPack
             filename,
             filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
         );
+    }
+
+    @Nonnull
+    private static Direction _getFallingDirection(@Nonnull Direction direction)
+    {
+        return switch (direction)
+        {
+            case W, NW, N -> Direction.NW;
+            case NE, E -> Direction.NE;
+            case SE, S, SW -> Direction.S;
+        };
     }
 }

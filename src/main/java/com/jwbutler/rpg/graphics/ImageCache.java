@@ -33,10 +33,6 @@ public final class ImageCache
     @Nonnull
     public BufferedImage computeIfAbsent(@Nonnull CacheKey key, @Nonnull Supplier<BufferedImage> supplier)
     {
-        if (images.get(key) == null)
-        {
-            System.out.println("Cache miss: " + key);
-        }
         return images.computeIfAbsent(key, k -> supplier.get());
     }
 }

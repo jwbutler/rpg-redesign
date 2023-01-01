@@ -100,14 +100,14 @@ public final class InputHandler
             {
                 for (var playerUnit : selectedUnits)
                 {
-                    playerUnit.setNextCommand(new AttackCommand(controller, unit));
+                    playerUnit.setNextCommand(new AttackCommand(unit));
                 }
             }
             else if (unit == null)
             {
                 for (var playerUnit : selectedUnits)
                 {
-                    playerUnit.setNextCommand(new MoveCommand(controller, coordinates));
+                    playerUnit.setNextCommand(new MoveCommand(coordinates));
                 }
             }
         }

@@ -57,7 +57,7 @@ public class Main
 
         var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
         controller.addPlayer(enemyPlayer);
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= 10; i++)
         {
             var enemyUnit = UnitFactory.createEvilPlayerUnit(
                 controller,
@@ -65,7 +65,7 @@ public class Main
                 100,
                 enemyPlayer,
                 level,
-                new Coordinates(2 + i, 3)
+                new Coordinates(2 + i, 5)
             );
             controller.addUnit(enemyUnit);
         }
@@ -86,10 +86,10 @@ public class Main
             {
                 unit.update();
             }
-            while (System.nanoTime() < startTime + (Duration.ofMillis(100).toNanos()))
+            while (System.nanoTime() < startTime + (Duration.ofMillis(150).toNanos()))
             {
                 renderer.render(state);
-                sleepUninterruptibly(10, TimeUnit.MILLISECONDS);
+                sleepUninterruptibly(20, TimeUnit.MILLISECONDS);
             }
         }
     }

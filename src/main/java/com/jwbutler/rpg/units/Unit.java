@@ -5,6 +5,7 @@ import java.util.UUID;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
@@ -15,6 +16,9 @@ import com.jwbutler.rpg.units.commands.Command;
 
 public interface Unit
 {
+    @Nonnull
+    GameController getController();
+
     @Nonnull
     UUID getId();
 

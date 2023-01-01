@@ -18,9 +18,9 @@ import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
-import com.jwbutler.rpg.units.commands.StayCommand;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 final class UnitImpl implements Unit
 {
@@ -71,12 +71,19 @@ final class UnitImpl implements Unit
         activity = Activity.STANDING;
         direction = Direction.SE;
         frameNumber = 0;
-        command = new StayCommand(controller);
+        command = defaultCommand();
         nextCommand = null;
         this.player = player;
         this.level = level;
         this.coordinates = coordinates;
         this.slotToEquipment = new EnumMap<>(Slot.class);
+    }
+
+    @Nonnull
+    @Override
+    public GameController getController()
+    {
+        return controller;
     }
 
     @Override
@@ -242,7 +249,7 @@ final class UnitImpl implements Unit
         frameNumber++;
         if (frameNumber > _getMaxFrameNumber())
         {
-            command.endActivity(this);
+            activity.onComplete(this);
             command = (nextCommand != null) ? nextCommand : command;
             nextCommand = null;
             var activityPair = command.getNextActivity(this);
