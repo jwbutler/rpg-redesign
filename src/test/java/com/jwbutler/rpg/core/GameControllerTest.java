@@ -6,6 +6,7 @@ import com.jwbutler.rpg.players.EnemyPlayer;
 import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.UnitFactory;
 import com.jwbutler.rpg.units.commands.AttackCommand;
+import com.jwbutler.rpg.units.commands.DefendCommand;
 import com.jwbutler.rpg.units.commands.StayCommand;
 import org.testng.annotations.Test;
 
@@ -64,13 +65,13 @@ public final class GameControllerTest
         controller.addPlayer(enemyPlayer);
         var enemy = UnitFactory.createEvilPlayerUnit(controller, "targeting_unit", 10, enemyPlayer, level, new Coordinates(3, 3));
         controller.addUnit(enemy);
-        enemy.setCommand(new AttackCommand(controller, unit));
+        enemy.setCommand(new AttackCommand(unit));
 
         controller.removeUnit(unit);
         assertNull(state.getUnitNullable(unit.getId()));
         assertNull(level.getUnit(unit.getCoordinates()));
         assertFalse(player.getUnits().contains(unit));
-        assertEquals(enemy.getCommand(), new StayCommand(controller));
+        assertEquals(enemy.getCommand(), new DefendCommand());
     }
 
     @Test
