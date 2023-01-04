@@ -11,6 +11,7 @@ import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.graphics.ImageCache;
 import com.jwbutler.rpg.graphics.Layer;
+import com.jwbutler.rpg.ui.ClientType;
 import com.jwbutler.rpg.units.Activity;
 
 public record PlayerAnimations
@@ -58,6 +59,7 @@ implements AnimationPack
             .transparentColor(Colors.WHITE)
             .paletteSwaps(paletteSwaps)
             .cache(ImageCache.INSTANCE)
+            .clientType(ClientType.SWING)
             .build();
         return new Frame(image, filename, Layer.UNIT);
     }

@@ -7,6 +7,7 @@ import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.graphics.ImageCache;
 import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.sprites.animations.Frame;
+import com.jwbutler.rpg.ui.ClientType;
 
 public enum TileType
 {
@@ -23,6 +24,7 @@ public enum TileType
             .filename("tiles/" + filename)
             .transparentColor(Colors.WHITE)
             .cache(ImageCache.INSTANCE)
+            .clientType(ClientType.SWING)
             .build();
         frame = new Frame(image, filename, Layer.TILE);
     }

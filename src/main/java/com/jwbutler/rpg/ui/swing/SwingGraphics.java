@@ -7,7 +7,10 @@ import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.geometry.Rect;
 import com.jwbutler.rpg.graphics.Color;
 import com.jwbutler.rpg.graphics.Image;
+import com.jwbutler.rpg.graphics.swing.SwingImage;
 import com.jwbutler.rpg.ui.Graphics;
+
+import static com.google.common.base.Preconditions.checkState;
 
 public final class SwingGraphics implements Graphics
 {
@@ -22,7 +25,8 @@ public final class SwingGraphics implements Graphics
     @Override
     public void drawImage(@Nonnull Image image, @Nonnull Pixel topLeft)
     {
-        var bufferedImage = image.asBufferedImage();
+        checkState(image instanceof SwingImage);
+        var bufferedImage = ((SwingImage) image).getBufferedImage();
         delegate.drawImage(bufferedImage, topLeft.x(), topLeft.y(), null);
     }
 

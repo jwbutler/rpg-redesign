@@ -3,6 +3,8 @@ package com.jwbutler.rpg.graphics;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.ui.ClientType;
+
 public enum TileOverlay
 {
     PLAYER_ACTIVE(Colors.DARK_GREEN, Colors.CYAN),
@@ -35,6 +37,7 @@ public enum TileOverlay
                 Colors.BLUE, innerColor
             ))
             .cache(ImageCache.INSTANCE)
+            .clientType(ClientType.SWING)
             .build();
     }
 }

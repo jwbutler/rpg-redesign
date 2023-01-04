@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.ui.ClientType;
+
 import static com.google.common.base.Preconditions.checkState;
 import static com.jwbutler.rpg.graphics.ImageUtils.applyPaletteSwaps;
 import static com.jwbutler.rpg.graphics.ImageUtils.setTransparentColor;
@@ -15,6 +17,7 @@ public final class ImageBuilder
     private Color transparentColor;
     private Map<Color, Color> paletteSwaps;
     private ImageCache cache;
+    private ClientType clientType;
 
     public ImageBuilder filename(String filename)
     {
@@ -40,14 +43,21 @@ public final class ImageBuilder
         return this;
     }
 
+    public ImageBuilder clientType(ClientType clientType)
+    {
+        this.clientType = clientType;
+        return this;
+    }
+
     @Nonnull
     public Image build()
     {
         checkState(filename != null);
+        checkState(clientType != null);
 
         Supplier<Image> supplier = () ->
         {
-            var image = ImageUtils.loadImage(filename);
+            var image = ImageUtils.loadImage(filename, clientType);
             if (transparentColor != null)
             {
                 setTransparentColor(image, transparentColor);

@@ -1,7 +1,11 @@
 package com.jwbutler.rpg.graphics.swing;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URL;
 import javax.annotation.Nonnull;
+import javax.imageio.ImageIO;
 
 import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.graphics.Color;
@@ -17,9 +21,23 @@ public final class SwingImage implements Image
         this.delegate = delegate;
     }
 
+    public static SwingImage fromFile(@Nonnull URL url)
+    {
+        try
+        {
+            var image = ImageIO.read(url);
+            var argb = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            argb.getGraphics().drawImage(image, 0, 0, null);
+            return new SwingImage(argb);
+        }
+        catch (IOException e)
+        {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     @Nonnull
-    @Override
-    public BufferedImage asBufferedImage()
+    public BufferedImage getBufferedImage()
     {
         return delegate;
     }

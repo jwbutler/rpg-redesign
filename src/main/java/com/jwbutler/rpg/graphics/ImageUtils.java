@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Map;
 import javax.annotation.Nonnull;
-import javax.imageio.ImageIO;
 
 import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.graphics.swing.SwingImage;
+import com.jwbutler.rpg.ui.ClientType;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -17,22 +17,16 @@ public final class ImageUtils
     private ImageUtils() {}
 
     @Nonnull
-    public static Image loadImage(@Nonnull String filename)
+    public static Image loadImage(@Nonnull String filename, @Nonnull ClientType clientType)
     {
         var fullFilename = "/png/" + filename + ".png";
-        try
+        var url = ImageUtils.class.getResource(fullFilename);
+        checkState(url != null, "Could not find image " + fullFilename);
+        return switch (clientType)
         {
-            var url = ImageUtils.class.getResource(fullFilename);
-            checkState(url != null, "Could not find image " + fullFilename);
-            var image = ImageIO.read(url);
-            var argb = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            argb.getGraphics().drawImage(image, 0, 0, null);
-            return new SwingImage(argb);
-        }
-        catch (IOException e)
-        {
-            throw new UncheckedIOException(e);
-        }
+            case SWING -> SwingImage.fromFile(url);
+            case CANVAS -> throw new UnsupportedOperationException();
+        };
     }
 
     public static boolean imageFileExists(@Nonnull String filename)
