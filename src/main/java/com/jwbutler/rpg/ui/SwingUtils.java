@@ -3,9 +3,9 @@ package com.jwbutler.rpg.ui;
 import java.awt.event.MouseEvent;
 import javax.annotation.Nonnull;
 
-final class InputUtils
+final class SwingUtils
 {
-    private InputUtils() {}
+    private SwingUtils() {}
 
     static boolean isRightButtonDown(@Nonnull MouseEvent event)
     {

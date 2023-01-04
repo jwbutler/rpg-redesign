@@ -1,7 +1,5 @@
 package com.jwbutler.rpg.ui;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
@@ -15,10 +13,6 @@ import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
-
-import static com.jwbutler.rpg.ui.InputUtils.isLeftButton;
-import static com.jwbutler.rpg.ui.InputUtils.isLeftButtonDown;
-import static com.jwbutler.rpg.ui.InputUtils.isRightButton;
 
 public final class InputHandler
 {
@@ -35,19 +29,19 @@ public final class InputHandler
 
     public void handleKeyDown(@Nonnull KeyEvent e)
     {
-        int keyCode = e.getKeyCode();
+        var key = e.key();
         var player = controller.getState().getHumanPlayer();
         var camera = player.getCamera();
 
-        switch (keyCode)
+        switch (key)
         {
-            case KeyEvent.VK_W, KeyEvent.VK_UP    -> camera.move(Direction.NW);
-            case KeyEvent.VK_A, KeyEvent.VK_LEFT  -> camera.move(Direction.SW);
-            case KeyEvent.VK_S, KeyEvent.VK_DOWN  -> camera.move(Direction.SE);
-            case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> camera.move(Direction.NE);
-            case KeyEvent.VK_ENTER ->
+            case W, UP    -> camera.move(Direction.NW);
+            case A, LEFT  -> camera.move(Direction.SW);
+            case S, DOWN  -> camera.move(Direction.SE);
+            case D, RIGHT -> camera.move(Direction.NE);
+            case ENTER ->
             {
-                if ((e.getModifiersEx() & KeyEvent.ALT_DOWN_MASK) > 0)
+                if (e.modifiers().contains(KeyEvent.Modifier.ALT))
                 {
                     window.toggleMaximized();
                 }
@@ -57,27 +51,20 @@ public final class InputHandler
 
     public void handleMouseDown(@Nonnull MouseEvent event)
     {
-        var pixel = new Pixel(event.getX(), event.getY());
-        if (isRightButton(event))
+        switch (event.button())
         {
-            // _handleRightClick(pixel);
-        }
-        else if (isLeftButton(event))
-        {
-            _handleLeftDown(pixel);
+            case null, default -> {}
+            case LEFT -> _handleLeftDown(event.pixel());
         }
     }
 
     public void handleMouseUp(@Nonnull MouseEvent event)
     {
-        var pixel = new Pixel(event.getX(), event.getY());
-        if (isRightButton(event))
+        switch (event.button())
         {
-            _handleRightUp(pixel);
-        }
-        else if (isLeftButton(event))
-        {
-            _handleLeftUp(pixel);
+            case null, default -> {}
+            case LEFT -> _handleLeftUp(event.pixel());
+            case RIGHT -> _handleRightUp(event.pixel());
         }
     }
 
@@ -153,7 +140,7 @@ public final class InputHandler
 
     public void handleMouseMove(@Nonnull MouseEvent event)
     {
-        var pixel = new Pixel(event.getX(), event.getY());
+        var pixel = event.pixel();
         var state = controller.getState();
         var humanPlayer = state.getHumanPlayer();
         if (humanPlayer.getState() != HumanPlayer.State.GAME)
@@ -169,7 +156,7 @@ public final class InputHandler
             humanPlayer.setMouseCoordinates(coordinates);
         }
 
-        if (isLeftButtonDown(event))
+        if (event.heldButtons().contains(MouseEvent.Button.LEFT))
         {
             humanPlayer.setSelectionEnd(pixel);
         }
