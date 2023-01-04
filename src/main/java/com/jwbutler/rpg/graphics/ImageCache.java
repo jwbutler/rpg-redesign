@@ -1,7 +1,5 @@
 package com.jwbutler.rpg.graphics;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -18,7 +16,7 @@ public final class ImageCache
     ) {}
 
     @Nonnull
-    private final Map<CacheKey, BufferedImage> images;
+    private final Map<CacheKey, Image> images;
 
     public ImageCache()
     {
@@ -31,7 +29,7 @@ public final class ImageCache
     public static final ImageCache INSTANCE = new ImageCache();
 
     @Nonnull
-    public BufferedImage computeIfAbsent(@Nonnull CacheKey key, @Nonnull Supplier<BufferedImage> supplier)
+    public Image computeIfAbsent(@Nonnull CacheKey key, @Nonnull Supplier<Image> supplier)
     {
         return images.computeIfAbsent(key, k -> supplier.get());
     }

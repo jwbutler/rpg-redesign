@@ -1,8 +1,8 @@
 package com.jwbutler.rpg.levels;
 
-import java.awt.Color;
 import javax.annotation.Nonnull;
 
+import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.graphics.ImageCache;
 import com.jwbutler.rpg.graphics.Layer;
@@ -21,7 +21,7 @@ public enum TileType
     {
         var image = new ImageBuilder()
             .filename("tiles/" + filename)
-            .transparentColor(Color.WHITE)
+            .transparentColor(Colors.WHITE)
             .cache(ImageCache.INSTANCE)
             .build();
         frame = new Frame(image, filename, Layer.TILE);

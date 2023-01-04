@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.ui;
 
-import java.awt.Graphics2D;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
@@ -33,9 +32,10 @@ public final class GameRenderer
     {
         window.render(graphics ->
         {
-            graphics.setColor(Colors.BLACK);
-            graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-            graphics.setColor(Colors.WHITE);
+            graphics.fillRect(
+                new Rect(0, 0, GAME_WIDTH, GAME_HEIGHT),
+                Colors.BLACK
+            );
             _drawGrid(state, graphics);
             _drawTileOverlays(state, graphics);
             _drawUnits(state, graphics);
@@ -43,7 +43,7 @@ public final class GameRenderer
         });
     }
 
-    private static void _drawGrid(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawGrid(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
         var level = state.getCurrentLevel();
         var humanPlayer = state.getHumanPlayer();
@@ -56,14 +56,15 @@ public final class GameRenderer
                 var tile = level.getTile(coordinates);
                 var frame = tile.getFrame();
                 var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
-                graphics.drawImage(frame.image(), tileRect.left(), tileRect.top(), null);
+                var topLeft = new Pixel(tileRect.left(), tileRect.top());
+                graphics.drawImage(frame.image(), topLeft);
             }
         }
     }
 
     private static void _drawTileOverlays(
         @Nonnull GameState state,
-        @Nonnull Graphics2D graphics
+        @Nonnull Graphics graphics
     )
     {
         var humanPlayer = state.getHumanPlayer();
@@ -84,7 +85,7 @@ public final class GameRenderer
         }
     }
 
-    private static void _drawUnits(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawUnits(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
         var level = state.getCurrentLevel();
 
@@ -104,7 +105,7 @@ public final class GameRenderer
 
     private static void _drawUnit(
         @Nonnull GameState state,
-        @Nonnull Graphics2D graphics,
+        @Nonnull Graphics graphics,
         @Nonnull Unit unit
     )
     {
@@ -150,7 +151,7 @@ public final class GameRenderer
                 _drawEquipment(state, graphics, equipment);
             }
         }
-        graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
+        graphics.drawImage(image, topLeft);
 
         for (var equipment : unit.getEquipment())
         {
@@ -163,7 +164,7 @@ public final class GameRenderer
 
     private static void _drawEquipment(
         @Nonnull GameState state,
-        @Nonnull Graphics2D graphics,
+        @Nonnull Graphics graphics,
         @Nonnull Equipment equipment
     )
     {
@@ -177,32 +178,32 @@ public final class GameRenderer
             tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
             tileRect.top() + (TILE_WIDTH / 2) - image.getHeight()
         );
-        graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
+        graphics.drawImage(image, topLeft);
     }
 
     private static void _drawTileOverlay(
         @Nonnull TileOverlay overlay,
         @Nonnull GameState state,
-        @Nonnull Graphics2D graphics,
+        @Nonnull Graphics graphics,
         @Nonnull Coordinates coordinates
     )
     {
         var humanPlayer = state.getHumanPlayer();
         var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
         var image = overlay.getImage();
-        graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
+        var topLeft = new Pixel(tileRect.left(), tileRect.top());
+        graphics.drawImage(image, topLeft);
     }
 
-    private static void _drawUiOverlays(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawUiOverlays(@Nonnull GameState state, @Nonnull Graphics graphics)
     {
         var humanPlayer = state.getHumanPlayer();
         var start = humanPlayer.getSelectionStart();
         var end = humanPlayer.getSelectionEnd();
         if (start != null && end != null)
         {
-            graphics.setColor(Colors.CYAN);
             var rect = Rect.between(start, end);
-            graphics.drawRect(rect.left(), rect.top(), rect.width(), rect.height());
+            graphics.drawRect(rect, Colors.CYAN);
         }
     }
 }

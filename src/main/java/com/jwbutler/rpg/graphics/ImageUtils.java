@@ -1,12 +1,14 @@
 package com.jwbutler.rpg.graphics;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
+
+import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.graphics.swing.SwingImage;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -15,7 +17,7 @@ public final class ImageUtils
     private ImageUtils() {}
 
     @Nonnull
-    public static BufferedImage loadImage(@Nonnull String filename)
+    public static Image loadImage(@Nonnull String filename)
     {
         var fullFilename = "/png/" + filename + ".png";
         try
@@ -25,7 +27,7 @@ public final class ImageUtils
             var image = ImageIO.read(url);
             var argb = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
             argb.getGraphics().drawImage(image, 0, 0, null);
-            return argb;
+            return new SwingImage(argb);
         }
         catch (IOException e)
         {
@@ -40,16 +42,16 @@ public final class ImageUtils
         return url != null;
     }
 
-    public static void setTransparentColor(@Nonnull BufferedImage image, @Nonnull Color transparentColor)
+    public static void setTransparentColor(@Nonnull Image image, @Nonnull Color transparentColor)
     {
         for (int y = 0; y < image.getHeight(); y++)
         {
             for (int x = 0; x < image.getWidth(); x++)
             {
-                var rgb = image.getRGB(x, y);
-                if (rgb == transparentColor.getRGB())
+                var pixel = new Pixel(x, y);
+                if (image.getColor(pixel).equals(transparentColor))
                 {
-                    image.setRGB(x, y, Colors.TRANSPARENT_BLACK.getRGB());
+                    image.setColor(pixel, Colors.TRANSPARENT_BLACK);
                 }
             }
         }
@@ -58,18 +60,18 @@ public final class ImageUtils
     /**
      * TODO optimize me
      */
-    public static void applyPaletteSwaps(@Nonnull BufferedImage image, @Nonnull Map<Color, Color> paletteSwaps)
+    public static void applyPaletteSwaps(@Nonnull Image image, @Nonnull Map<Color, Color> paletteSwaps)
     {
         for (int y = 0; y < image.getHeight(); y++)
         {
             for (int x = 0; x < image.getWidth(); x++)
             {
-                var rgb = image.getRGB(x, y);
-                var color = new Color(rgb);
+                var pixel = new Pixel(x, y);
+                var color = image.getColor(pixel);
                 var swapped = paletteSwaps.get(color);
                 if (swapped != null)
                 {
-                    image.setRGB(x, y, swapped.getRGB());
+                    image.setColor(pixel, swapped);
                 }
             }
         }

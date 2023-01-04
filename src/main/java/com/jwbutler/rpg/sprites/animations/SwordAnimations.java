@@ -1,12 +1,13 @@
 package com.jwbutler.rpg.sprites.animations;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.geometry.Direction;
+import com.jwbutler.rpg.graphics.Color;
+import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.graphics.ImageCache;
 import com.jwbutler.rpg.graphics.Layer;
@@ -64,7 +65,7 @@ implements AnimationPack
     {
         var image = new ImageBuilder()
             .filename(filename)
-            .transparentColor(Color.WHITE)
+            .transparentColor(Colors.WHITE)
             .paletteSwaps(paletteSwaps)
             .cache(ImageCache.INSTANCE)
             .build();

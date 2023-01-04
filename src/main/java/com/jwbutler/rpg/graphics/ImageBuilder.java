@@ -1,7 +1,5 @@
 package com.jwbutler.rpg.graphics;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -43,11 +41,11 @@ public final class ImageBuilder
     }
 
     @Nonnull
-    public BufferedImage build()
+    public Image build()
     {
         checkState(filename != null);
 
-        Supplier<BufferedImage> supplier = () ->
+        Supplier<Image> supplier = () ->
         {
             var image = ImageUtils.loadImage(filename);
             if (transparentColor != null)

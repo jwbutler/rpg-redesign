@@ -11,8 +11,7 @@ import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.EnemyPlayer;
 import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.ui.GameRenderer;
-import com.jwbutler.rpg.ui.GameWindow;
-import com.jwbutler.rpg.ui.SwingGameWindow;
+import com.jwbutler.rpg.ui.swing.SwingGameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
 

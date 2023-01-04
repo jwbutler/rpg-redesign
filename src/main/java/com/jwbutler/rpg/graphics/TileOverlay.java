@@ -1,7 +1,5 @@
 package com.jwbutler.rpg.graphics;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
@@ -27,14 +25,14 @@ public enum TileOverlay
     }
 
     @Nonnull
-    public BufferedImage getImage()
+    public Image getImage()
     {
         return new ImageBuilder()
             .filename("tiles/overlay_24x12")
-            .transparentColor(Color.WHITE)
+            .transparentColor(Colors.WHITE)
             .paletteSwaps(Map.of(
-                Color.RED, outerColor,
-                Color.BLUE, innerColor
+                Colors.RED, outerColor,
+                Colors.BLUE, innerColor
             ))
             .cache(ImageCache.INSTANCE)
             .build();

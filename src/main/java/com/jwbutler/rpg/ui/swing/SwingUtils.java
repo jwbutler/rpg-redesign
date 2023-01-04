@@ -1,4 +1,4 @@
-package com.jwbutler.rpg.ui;
+package com.jwbutler.rpg.ui.swing;
 
 import java.awt.event.MouseEvent;
 import javax.annotation.Nonnull;
