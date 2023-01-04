@@ -59,7 +59,7 @@ implements AnimationPack
             .transparentColor(Colors.WHITE)
             .paletteSwaps(paletteSwaps)
             .cache(ImageCache.INSTANCE)
-            .clientType(ClientType.SWING)
+            .clientType(ClientType.getDefault())
             .build();
         return new Frame(image, filename, Layer.UNIT);
     }

@@ -24,7 +24,7 @@ public enum TileType
             .filename("tiles/" + filename)
             .transparentColor(Colors.WHITE)
             .cache(ImageCache.INSTANCE)
-            .clientType(ClientType.SWING)
+            .clientType(ClientType.getDefault())
             .build();
         frame = new Frame(image, filename, Layer.TILE);
     }

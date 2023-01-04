@@ -2,7 +2,8 @@ package com.jwbutler.rpg.graphics;
 
 import javax.annotation.Nonnull;
 
-public record Color(
+public record Color
+(
     int red,
     int green,
     int blue,

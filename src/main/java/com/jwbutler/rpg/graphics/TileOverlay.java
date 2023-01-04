@@ -37,7 +37,7 @@ public enum TileOverlay
                 Colors.BLUE, innerColor
             ))
             .cache(ImageCache.INSTANCE)
-            .clientType(ClientType.SWING)
+            .clientType(ClientType.getDefault())
             .build();
     }
 }

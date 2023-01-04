@@ -6,4 +6,10 @@ public enum ClientType
 {
     SWING,
     CANVAS;
+
+    @Nonnull
+    public static ClientType getDefault()
+    {
+        return SWING;
+    }
 }

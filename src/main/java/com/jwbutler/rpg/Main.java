@@ -10,8 +10,9 @@ import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.EnemyPlayer;
 import com.jwbutler.rpg.players.HumanPlayer;
+import com.jwbutler.rpg.ui.ClientType;
 import com.jwbutler.rpg.ui.GameRenderer;
-import com.jwbutler.rpg.ui.swing.SwingGameWindow;
+import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
 
@@ -29,7 +30,7 @@ public class Main
 
         var state = GameState.create();
         var controller = GameController.create(state);
-        var window = new SwingGameWindow();
+        var window = GameWindow.create(ClientType.getDefault());
         var renderer = new GameRenderer(window);
 
         var level = LevelFactory.LEVEL_ONE.get();

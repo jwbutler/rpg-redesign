@@ -1,8 +1,5 @@
 package com.jwbutler.rpg.graphics;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
