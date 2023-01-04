@@ -65,4 +65,11 @@ implements Command
     {
         return null;
     }
+
+    @Nonnull
+    @Override
+    public Coordinates getTargetCoordinates()
+    {
+        return target;
+    }
 }
