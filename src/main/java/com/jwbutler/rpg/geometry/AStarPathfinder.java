@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.geometry.GeometryUtils.hypotenuse;
 
@@ -28,10 +28,10 @@ final class AStarPathfinder implements Pathfinder
         int y,
         double cost,
         double estimatedCost,
-        @CheckForNull Node parent
+        @Nullable Node parent
     )
     {
-        @Nonnull
+        @NonNull
         Coordinates getCoordinates()
         {
             return new Coordinates(x(), y());
@@ -48,12 +48,12 @@ final class AStarPathfinder implements Pathfinder
      * http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
      * http://theory.stanford.edu/~amitp/GameProgramming/ImplementationNotes.html#sketch
      */
-    @CheckForNull
+    @Nullable
     @Override
     public List<Coordinates> findPath(
-        @Nonnull Coordinates start,
-        @Nonnull Coordinates end,
-        @Nonnull Set<Coordinates> candidates
+        @NonNull Coordinates start,
+        @NonNull Coordinates end,
+        @NonNull Set<Coordinates> candidates
     )
     {
         var open = new PriorityQueue<>(Comparator.comparing(Node::totalCost));
@@ -117,13 +117,13 @@ final class AStarPathfinder implements Pathfinder
         }
     }
 
-    private static double _getHeuristicCost(@Nonnull Coordinates start, @Nonnull Coordinates end)
+    private static double _getHeuristicCost(@NonNull Coordinates start, @NonNull Coordinates end)
     {
         return hypotenuse(start, end);
     }
 
-    @Nonnull
-    private static List<Coordinates> traverseParents(@Nonnull Node node)
+    @NonNull
+    private static List<Coordinates> traverseParents(@NonNull Node node)
     {
         var path = new ArrayList<Coordinates>();
         for (var currentNode = node; currentNode != null; currentNode = currentNode.parent())
@@ -133,8 +133,8 @@ final class AStarPathfinder implements Pathfinder
         return path;
     }
 
-    @Nonnull
-    private static Set<Coordinates> _findNeighbors(@Nonnull Coordinates current, @Nonnull Set<Coordinates> candidates)
+    @NonNull
+    private static Set<Coordinates> _findNeighbors(@NonNull Coordinates current, @NonNull Set<Coordinates> candidates)
     {
         return Arrays.stream(Direction.values())
             .map(current::plus)

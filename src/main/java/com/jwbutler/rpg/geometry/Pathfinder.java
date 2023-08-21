@@ -2,16 +2,16 @@ package com.jwbutler.rpg.geometry;
 
 import java.util.List;
 import java.util.Set;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public interface Pathfinder
 {
-    @CheckForNull
+    @Nullable
     List<Coordinates> findPath(
-        @Nonnull Coordinates start,
-        @Nonnull Coordinates end,
-        @Nonnull Set<Coordinates> candidates
+        @NonNull Coordinates start,
+        @NonNull Coordinates end,
+        @NonNull Set<Coordinates> candidates
     );
 
     Pathfinder A_STAR = new AStarPathfinder();

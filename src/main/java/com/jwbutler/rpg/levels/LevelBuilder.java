@@ -3,12 +3,12 @@ package com.jwbutler.rpg.levels;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Dimensions;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.jwbutler.rpg.util.Preconditions.checkState;
 
 final class LevelBuilder
 {
@@ -33,19 +33,19 @@ final class LevelBuilder
         return this;
     }
 
-    LevelBuilder addTile(@Nonnull Coordinates coordinates, @Nonnull TileType tileType)
+    LevelBuilder addTile(@NonNull Coordinates coordinates, @NonNull TileType tileType)
     {
         coordinatesToTile.put(coordinates, tileType);
         return this;
     }
 
-    LevelBuilder addTiles(@Nonnull Map<Coordinates, TileType> coordinatesToTile)
+    LevelBuilder addTiles(@NonNull Map<Coordinates, TileType> coordinatesToTile)
     {
         this.coordinatesToTile.putAll(coordinatesToTile);
         return this;
     }
 
-    @Nonnull
+    @NonNull
     Level build()
     {
         checkState(name != null);

@@ -15,8 +15,6 @@ import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
 
-import static com.google.common.util.concurrent.Uninterruptibles.sleepUninterruptibly;
-
 public class Main
 {
     public static void main(String[] args)
@@ -89,7 +87,14 @@ public class Main
             while (System.nanoTime() < startTime + (Duration.ofMillis(150).toNanos()))
             {
                 renderer.render(state);
-                sleepUninterruptibly(20, TimeUnit.MILLISECONDS);
+                try
+                {
+                    Thread.sleep(20);
+                }
+                catch (InterruptedException e)
+                {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

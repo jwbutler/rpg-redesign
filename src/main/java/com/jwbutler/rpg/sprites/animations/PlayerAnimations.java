@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.graphics.ImageBuilder;
@@ -14,13 +14,13 @@ import com.jwbutler.rpg.units.Activity;
 
 public record PlayerAnimations
 (
-    @Nonnull Map<Color, Color> paletteSwaps
+    @NonNull Map<Color, Color> paletteSwaps
 )
 implements AnimationPack
 {
-    @Nonnull
+    @NonNull
     @Override
-    public Animation getAnimation(@Nonnull Activity activity, @Nonnull Direction direction)
+    public Animation getAnimation(@NonNull Activity activity, @NonNull Direction direction)
     {
         List<String> filenames = switch (activity)
         {
@@ -49,8 +49,8 @@ implements AnimationPack
         return new Animation(frames);
     }
 
-    @Nonnull
-    private static Frame _buildFrame(@Nonnull String filename, @Nonnull Map<Color, Color> paletteSwaps)
+    @NonNull
+    private static Frame _buildFrame(@NonNull String filename, @NonNull Map<Color, Color> paletteSwaps)
     {
         var image = new ImageBuilder()
             .filename(filename)
@@ -61,8 +61,8 @@ implements AnimationPack
         return new Frame(image, filename, Layer.UNIT);
     }
 
-    @Nonnull
-    private static String _formatFilename(@Nonnull Activity activity, @Nonnull Direction direction, @Nonnull String number)
+    @NonNull
+    private static String _formatFilename(@NonNull Activity activity, @NonNull Direction direction, @NonNull String number)
     {
         return String.format("units/player/player_%s_%s_%s", activity, direction, number);
     }

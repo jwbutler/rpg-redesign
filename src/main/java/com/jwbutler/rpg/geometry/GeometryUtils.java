@@ -1,20 +1,20 @@
 package com.jwbutler.rpg.geometry;
 
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public final class GeometryUtils
 {
     private GeometryUtils() {}
 
-    public static double hypotenuse(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    public static double hypotenuse(@NonNull Coordinates first, @NonNull Coordinates second)
     {
         var dx = second.x() - first.x();
         var dy = second.y() - first.y();
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public static double manhattanDistance(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    public static double manhattanDistance(@NonNull Coordinates first, @NonNull Coordinates second)
     {
         var dx = second.x() - first.x();
         var dy = second.y() - first.y();
@@ -24,14 +24,14 @@ public final class GeometryUtils
     /**
      * https://en.wikipedia.org/wiki/Chebyshev_distance
      */
-    public static double chebyshevDistance(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    public static double chebyshevDistance(@NonNull Coordinates first, @NonNull Coordinates second)
     {
         var dx = second.x() - first.x();
         var dy = second.y() - first.y();
         return Math.max(Math.abs(dx), Math.abs(dy));
     }
 
-    public static boolean isDirectlyAdjacent(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    public static boolean isDirectlyAdjacent(@NonNull Coordinates first, @NonNull Coordinates second)
     {
         var dx = second.x() - first.x();
         var dy = second.y() - first.y();

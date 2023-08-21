@@ -1,7 +1,7 @@
 package com.jwbutler.rpg.levels;
 
 import java.awt.Color;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.graphics.ImageBuilder;
 import com.jwbutler.rpg.graphics.ImageCache;
@@ -14,10 +14,10 @@ public enum TileType
     DIRT("dirt_24x12_1"),
     WALL("floor_24x12_stone_1");
 
-    @Nonnull
+    @NonNull
     private final Frame frame;
 
-    TileType(@Nonnull String filename)
+    TileType(@NonNull String filename)
     {
         var image = new ImageBuilder()
             .filename("tiles/" + filename)
@@ -27,7 +27,7 @@ public enum TileType
         frame = new Frame(image, filename, Layer.TILE);
     }
 
-    @Nonnull
+    @NonNull
     public final Frame getFrame()
     {
         return frame;

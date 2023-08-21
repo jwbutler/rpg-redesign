@@ -1,11 +1,11 @@
 package com.jwbutler.rpg.equipment;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.units.Unit;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.jwbutler.rpg.util.Preconditions.checkState;
 
 public final class EquipmentBuilder
 {
@@ -45,7 +45,7 @@ public final class EquipmentBuilder
         return this;
     }
 
-    @Nonnull
+    @NonNull
     public Equipment build()
     {
         checkState(name != null);

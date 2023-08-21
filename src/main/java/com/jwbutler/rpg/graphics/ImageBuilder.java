@@ -5,9 +5,9 @@ import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.jwbutler.rpg.util.Preconditions.checkState;
 import static com.jwbutler.rpg.graphics.ImageUtils.applyPaletteSwaps;
 import static com.jwbutler.rpg.graphics.ImageUtils.setTransparentColor;
 
@@ -42,7 +42,7 @@ public final class ImageBuilder
         return this;
     }
 
-    @Nonnull
+    @NonNull
     public BufferedImage build()
     {
         checkState(filename != null);

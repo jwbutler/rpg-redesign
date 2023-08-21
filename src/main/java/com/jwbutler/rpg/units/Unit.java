@@ -2,8 +2,8 @@ package com.jwbutler.rpg.units;
 
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.equipment.Equipment;
@@ -16,56 +16,56 @@ import com.jwbutler.rpg.units.commands.Command;
 
 public interface Unit
 {
-    @Nonnull
+    @NonNull
     GameController getController();
 
-    @Nonnull
+    @NonNull
     UUID getId();
 
-    @Nonnull
+    @NonNull
     String getName();
 
     int getLife();
     int getMaxLife();
 
-    @Nonnull
+    @NonNull
     Activity getActivity();
-    @Nonnull
+    @NonNull
     Direction getDirection();
     int getFrameNumber();
 
-    void startActivity(@Nonnull Activity activity, @Nonnull Direction direction);
+    void startActivity(@NonNull Activity activity, @NonNull Direction direction);
 
-    @Nonnull
+    @NonNull
     Command getCommand();
-    void setCommand(@Nonnull Command command);
-    @CheckForNull
+    void setCommand(@NonNull Command command);
+    @Nullable
     Command getNextCommand();
-    void setNextCommand(@CheckForNull Command command);
+    void setNextCommand(@Nullable Command command);
 
     /**
      * @return "next command" if it exists, else "current command"
      */
-    @Nonnull
+    @NonNull
     Command getLatestCommand();
 
-    @Nonnull
+    @NonNull
     Player getPlayer();
 
-    @Nonnull
+    @NonNull
     Level getLevel();
 
-    @Nonnull
+    @NonNull
     Sprite<Unit> getSprite();
 
-    void setLevel(@Nonnull Level level);
+    void setLevel(@NonNull Level level);
 
-    @Nonnull
+    @NonNull
     Coordinates getCoordinates();
-    void setCoordinates(@Nonnull Coordinates coordinates);
+    void setCoordinates(@NonNull Coordinates coordinates);
 
-    void addEquipment(@Nonnull Equipment equipment);
-    @Nonnull
+    void addEquipment(@NonNull Equipment equipment);
+    @NonNull
     Set<Equipment> getEquipment();
 
     int getAttackDamage();

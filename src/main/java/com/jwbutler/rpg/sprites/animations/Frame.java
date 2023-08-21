@@ -1,15 +1,15 @@
 package com.jwbutler.rpg.sprites.animations;
 
 import java.awt.image.BufferedImage;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.graphics.Layer;
 
 public record Frame
 (
-    @Nonnull BufferedImage image,
-    @Nonnull String filename,
-    @Nonnull Layer layer
+    @NonNull BufferedImage image,
+    @NonNull String filename,
+    @NonNull Layer layer
 )
 {
 }

@@ -1,7 +1,7 @@
 package com.jwbutler.rpg.units;
 
 import java.util.Map;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -17,14 +17,14 @@ public final class UnitFactory
 {
     private UnitFactory() {}
 
-    @Nonnull
+    @NonNull
     public static Unit createPlayerUnit(
-        @Nonnull GameController controller,
-        @Nonnull String name,
+        @NonNull GameController controller,
+        @NonNull String name,
         int life,
-        @Nonnull Player player,
-        @Nonnull Level level,
-        @Nonnull Coordinates coordinates
+        @NonNull Player player,
+        @NonNull Level level,
+        @NonNull Coordinates coordinates
     )
     {
         return new UnitBuilder()
@@ -38,14 +38,14 @@ public final class UnitFactory
             .build();
     }
 
-    @Nonnull
+    @NonNull
     public static Unit createEvilPlayerUnit(
-        @Nonnull GameController controller,
-        @Nonnull String name,
+        @NonNull GameController controller,
+        @NonNull String name,
         int life,
-        @Nonnull Player player,
-        @Nonnull Level level,
-        @Nonnull Coordinates coordinates
+        @NonNull Player player,
+        @NonNull Level level,
+        @NonNull Coordinates coordinates
     )
     {
         var paletteSwaps = Map.of(

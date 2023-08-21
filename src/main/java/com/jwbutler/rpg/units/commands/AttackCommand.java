@@ -1,8 +1,9 @@
 package com.jwbutler.rpg.units.commands;
 
+import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
@@ -14,13 +15,13 @@ import static com.jwbutler.rpg.geometry.GeometryUtils.isDirectlyAdjacent;
 
 public record AttackCommand
 (
-    @Nonnull Unit target
+    @NonNull Unit target
 )
 implements Command
 {
     @Override
-    @Nonnull
-    public ActivityPair getNextActivity(@Nonnull Unit unit)
+    @NonNull
+    public ActivityPair getNextActivity(@NonNull Unit unit)
     {
         if (isDirectlyAdjacent(unit.getCoordinates(), target.getCoordinates()))
         {
@@ -36,7 +37,7 @@ implements Command
                 .collect(Collectors.toSet());
             candidates.add(unit.getCoordinates());
             candidates.add(target.getCoordinates());
-            @CheckForNull var path = Pathfinder.A_STAR.findPath(
+            @Nullable List<Coordinates> path = Pathfinder.A_STAR.findPath(
                 unit.getCoordinates(),
                 target.getCoordinates(),
                 candidates
@@ -56,14 +57,14 @@ implements Command
         }
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Unit getTargetUnit()
     {
         return target;
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Coordinates getTargetCoordinates()
     {

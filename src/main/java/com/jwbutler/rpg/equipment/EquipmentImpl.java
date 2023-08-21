@@ -1,7 +1,7 @@
 package com.jwbutler.rpg.equipment;
 
 import java.util.UUID;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
@@ -9,23 +9,23 @@ import com.jwbutler.rpg.units.Unit;
 
 final class EquipmentImpl implements Equipment
 {
-    @Nonnull
+    @NonNull
     private final UUID id;
-    @Nonnull
+    @NonNull
     private final String name;
-    @Nonnull
+    @NonNull
     private final Unit unit;
-    @Nonnull
+    @NonNull
     private final Slot slot;
-    @Nonnull
+    @NonNull
     private final AnimatedSprite<Equipment> sprite;
     private final int damage;
 
     EquipmentImpl(
-        @Nonnull String name,
-        @Nonnull Unit unit,
-        @Nonnull Slot slot,
-        @Nonnull AnimatedSprite<Equipment> sprite,
+        @NonNull String name,
+        @NonNull Unit unit,
+        @NonNull Slot slot,
+        @NonNull AnimatedSprite<Equipment> sprite,
         int damage
     )
     {
@@ -37,35 +37,35 @@ final class EquipmentImpl implements Equipment
         this.damage = damage;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public UUID getId()
     {
         return id;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public String getName()
     {
         return name;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Unit getUnit()
     {
         return unit;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Slot getSlot()
     {
         return slot;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Sprite<Equipment> getSprite()
     {

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.equipment.Equipment;
@@ -19,47 +19,47 @@ import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 final class UnitImpl implements Unit
 {
-    @Nonnull
+    @NonNull
     private final GameController controller;
-    @Nonnull
+    @NonNull
     private final UUID id;
-    @Nonnull
+    @NonNull
     private final String name;
     private int life;
     private int maxLife;
-    @Nonnull
+    @NonNull
     private final AnimatedSprite<Unit> sprite;
-    @Nonnull
+    @NonNull
     private Activity activity;
-    @Nonnull
+    @NonNull
     private Direction direction;
     private int frameNumber;
-    @Nonnull
+    @NonNull
     private Command command;
-    @CheckForNull
+    @Nullable
     private Command nextCommand;
-    @Nonnull
+    @NonNull
     private Player player;
-    @Nonnull
+    @NonNull
     private Level level;
-    @Nonnull
+    @NonNull
     private Coordinates coordinates;
-    @Nonnull
+    @NonNull
     private final Map<Slot, Equipment> slotToEquipment;
 
     UnitImpl(
-        @Nonnull GameController controller,
-        @Nonnull String name,
+        @NonNull GameController controller,
+        @NonNull String name,
         int life,
-        @Nonnull AnimatedSprite<Unit> sprite,
-        @Nonnull Player player,
-        @Nonnull Level level,
-        @Nonnull Coordinates coordinates
+        @NonNull AnimatedSprite<Unit> sprite,
+        @NonNull Player player,
+        @NonNull Level level,
+        @NonNull Coordinates coordinates
     )
     {
         this.controller = controller;
@@ -79,7 +79,7 @@ final class UnitImpl implements Unit
         this.slotToEquipment = new EnumMap<>(Slot.class);
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public GameController getController()
     {
@@ -87,14 +87,14 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public UUID getId()
     {
         return id;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public String getName()
     {
         return name;
@@ -113,14 +113,14 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Activity getActivity()
     {
         return activity;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Direction getDirection()
     {
         return direction;
@@ -133,7 +133,7 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    public void startActivity(@Nonnull Activity activity, @Nonnull Direction direction)
+    public void startActivity(@NonNull Activity activity, @NonNull Direction direction)
     {
         this.activity = activity;
         this.direction = direction;
@@ -141,19 +141,19 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Command getCommand()
     {
         return command;
     }
 
     @Override
-    public void setCommand(@Nonnull Command command)
+    public void setCommand(@NonNull Command command)
     {
         this.command = command;
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Command getNextCommand()
     {
@@ -161,19 +161,19 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    public void setNextCommand(@CheckForNull Command command)
+    public void setNextCommand(@Nullable Command command)
     {
         nextCommand = command;
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Command getLatestCommand()
     {
         return (nextCommand != null) ? nextCommand : command;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Player getPlayer()
     {
@@ -181,13 +181,13 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    @Nonnull
+    @NonNull
     public Level getLevel()
     {
         return level;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Sprite<Unit> getSprite()
     {
@@ -195,12 +195,12 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    public void setLevel(@Nonnull Level level)
+    public void setLevel(@NonNull Level level)
     {
         this.level = level;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Coordinates getCoordinates()
     {
@@ -208,19 +208,19 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    public void setCoordinates(@Nonnull Coordinates coordinates)
+    public void setCoordinates(@NonNull Coordinates coordinates)
     {
         this.coordinates = coordinates;
     }
 
     @Override
-    public void addEquipment(@Nonnull Equipment equipment)
+    public void addEquipment(@NonNull Equipment equipment)
     {
         checkArgument(slotToEquipment.get(equipment.getSlot()) == null);
         slotToEquipment.put(equipment.getSlot(), equipment);
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Set<Equipment> getEquipment()
     {

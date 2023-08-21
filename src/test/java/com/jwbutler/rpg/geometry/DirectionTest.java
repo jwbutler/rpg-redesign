@@ -1,7 +1,5 @@
 package com.jwbutler.rpg.geometry;
 
-import com.jwbutler.rpg.geometry.Coordinates;
-import com.jwbutler.rpg.geometry.Direction;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;

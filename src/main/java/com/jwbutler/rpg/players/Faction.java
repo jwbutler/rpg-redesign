@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.players;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public enum Faction
 {
@@ -8,7 +8,7 @@ public enum Faction
     NEUTRAL,
     ENEMY;
 
-    public boolean isHostile(@Nonnull Faction other)
+    public boolean isHostile(@NonNull Faction other)
     {
         return switch (this)
         {

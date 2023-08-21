@@ -1,8 +1,9 @@
 package com.jwbutler.rpg.units.commands;
 
+import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
@@ -12,13 +13,13 @@ import com.jwbutler.rpg.units.Unit;
 
 public record MoveCommand
 (
-    @Nonnull Coordinates target
+    @NonNull Coordinates target
 )
 implements Command
 {
     @Override
-    @Nonnull
-    public ActivityPair getNextActivity(@Nonnull Unit unit)
+    @NonNull
+    public ActivityPair getNextActivity(@NonNull Unit unit)
     {
         if (unit.getCoordinates().equals(target))
         {
@@ -37,7 +38,7 @@ implements Command
 
             candidates.add(unit.getCoordinates());
             candidates.add(target);
-            @CheckForNull var path = Pathfinder.A_STAR.findPath(
+            @Nullable List<Coordinates> path = Pathfinder.A_STAR.findPath(
                 unit.getCoordinates(),
                 target,
                 candidates
@@ -59,14 +60,14 @@ implements Command
         return new DefendCommand().getNextActivity(unit);
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Unit getTargetUnit()
     {
         return null;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public Coordinates getTargetCoordinates()
     {

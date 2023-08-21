@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.geometry;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 
@@ -11,23 +11,23 @@ import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
 
 public final class Camera
 {
-    @Nonnull
+    @NonNull
     private final GameController controller;
-    @Nonnull
+    @NonNull
     private Coordinates coordinates;
 
-    public Camera(@Nonnull GameController controller, @Nonnull Coordinates coordinates)
+    public Camera(@NonNull GameController controller, @NonNull Coordinates coordinates)
     {
         this.controller = controller;
         this.coordinates = coordinates;
     }
 
-    public void setCoordinates(@Nonnull Coordinates coordinates)
+    public void setCoordinates(@NonNull Coordinates coordinates)
     {
         this.coordinates = coordinates;
     }
 
-    public void move(@Nonnull Direction direction)
+    public void move(@NonNull Direction direction)
     {
         var coordinates = this.coordinates.plus(direction);
         var level = controller.getState().getCurrentLevel();
@@ -42,8 +42,8 @@ public final class Camera
      * coordinate system,  We can then take relative pixel lengths relative to this point and divide by the tile
      * dimensions.
      */
-    @Nonnull
-    public Coordinates pixelToCoordinates(@Nonnull Pixel pixel)
+    @NonNull
+    public Coordinates pixelToCoordinates(@NonNull Pixel pixel)
     {
         // relative to the top-center of the center coordinate
         var x = pixel.x() - GAME_WIDTH / 2;
@@ -56,8 +56,8 @@ public final class Camera
         );
     }
 
-    @Nonnull
-    public Rect coordinatesToPixelRect(@Nonnull Coordinates coordinates)
+    @NonNull
+    public Rect coordinatesToPixelRect(@NonNull Coordinates coordinates)
     {
         var cameraCoordinates = this.coordinates;
         var left = (coordinates.x() - cameraCoordinates.x() - coordinates.y() + cameraCoordinates.y() - 1) * (TILE_WIDTH / 2) + GAME_WIDTH / 2;

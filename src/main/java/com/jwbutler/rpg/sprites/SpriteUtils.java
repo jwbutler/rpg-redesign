@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.sprites;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.graphics.ImageUtils.imageFileExists;
 
@@ -10,8 +10,8 @@ public final class SpriteUtils
 
     private SpriteUtils() {}
 
-    @Nonnull
-    public static String substituteBehindFilename(@Nonnull String filename)
+    @NonNull
+    public static String substituteBehindFilename(@NonNull String filename)
     {
         String behindFilename = filename + BEHIND_SUFFIX;
         if (imageFileExists(behindFilename))

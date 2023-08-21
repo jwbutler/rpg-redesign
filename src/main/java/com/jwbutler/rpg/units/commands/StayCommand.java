@@ -1,7 +1,7 @@
 package com.jwbutler.rpg.units.commands;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.units.Activity;
@@ -10,20 +10,20 @@ import com.jwbutler.rpg.units.Unit;
 public record StayCommand() implements Command
 {
     @Override
-    @Nonnull
-    public ActivityPair getNextActivity(@Nonnull Unit unit)
+    @NonNull
+    public ActivityPair getNextActivity(@NonNull Unit unit)
     {
         return new ActivityPair(Activity.STANDING, unit.getDirection());
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Unit getTargetUnit()
     {
         return null;
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Coordinates getTargetCoordinates()
     {

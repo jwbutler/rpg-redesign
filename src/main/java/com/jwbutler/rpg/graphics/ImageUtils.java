@@ -5,17 +5,17 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Map;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 import javax.imageio.ImageIO;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.jwbutler.rpg.util.Preconditions.checkState;
 
 public final class ImageUtils
 {
     private ImageUtils() {}
 
-    @Nonnull
-    public static BufferedImage loadImage(@Nonnull String filename)
+    @NonNull
+    public static BufferedImage loadImage(@NonNull String filename)
     {
         var fullFilename = "/png/" + filename + ".png";
         try
@@ -33,14 +33,14 @@ public final class ImageUtils
         }
     }
 
-    public static boolean imageFileExists(@Nonnull String filename)
+    public static boolean imageFileExists(@NonNull String filename)
     {
         var fullFilename = "/png/" + filename + ".png";
         var url = ImageUtils.class.getResource(fullFilename);
         return url != null;
     }
 
-    public static void setTransparentColor(@Nonnull BufferedImage image, @Nonnull Color transparentColor)
+    public static void setTransparentColor(@NonNull BufferedImage image, @NonNull Color transparentColor)
     {
         for (int y = 0; y < image.getHeight(); y++)
         {
@@ -58,7 +58,7 @@ public final class ImageUtils
     /**
      * TODO optimize me
      */
-    public static void applyPaletteSwaps(@Nonnull BufferedImage image, @Nonnull Map<Color, Color> paletteSwaps)
+    public static void applyPaletteSwaps(@NonNull BufferedImage image, @NonNull Map<Color, Color> paletteSwaps)
     {
         for (int y = 0; y < image.getHeight(); y++)
         {

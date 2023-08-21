@@ -1,7 +1,6 @@
 package com.jwbutler.rpg.ui;
 
 import java.awt.Graphics2D;
-import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.equipment.Equipment;
@@ -14,6 +13,7 @@ import com.jwbutler.rpg.graphics.TileOverlay;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
+import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
@@ -21,15 +21,15 @@ import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
 
 public final class GameRenderer
 {
-    @Nonnull
+    @NonNull
     private final GameWindow window;
 
-    public GameRenderer(@Nonnull GameWindow window)
+    public GameRenderer(@NonNull GameWindow window)
     {
         this.window = window;
     }
 
-    public void render(@Nonnull GameState state)
+    public void render(@NonNull GameState state)
     {
         window.render(graphics ->
         {
@@ -43,7 +43,7 @@ public final class GameRenderer
         });
     }
 
-    private static void _drawGrid(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawGrid(@NonNull GameState state, @NonNull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
         var humanPlayer = state.getHumanPlayer();
@@ -62,8 +62,8 @@ public final class GameRenderer
     }
 
     private static void _drawTileOverlays(
-        @Nonnull GameState state,
-        @Nonnull Graphics2D graphics
+        @NonNull GameState state,
+        @NonNull Graphics2D graphics
     )
     {
         var humanPlayer = state.getHumanPlayer();
@@ -84,7 +84,7 @@ public final class GameRenderer
         }
     }
 
-    private static void _drawUnits(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawUnits(@NonNull GameState state, @NonNull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
 
@@ -103,9 +103,9 @@ public final class GameRenderer
     }
 
     private static void _drawUnit(
-        @Nonnull GameState state,
-        @Nonnull Graphics2D graphics,
-        @Nonnull Unit unit
+        @NonNull GameState state,
+        @NonNull Graphics2D graphics,
+        @NonNull Unit unit
     )
     {
         var humanPlayer = state.getHumanPlayer();
@@ -162,9 +162,9 @@ public final class GameRenderer
     }
 
     private static void _drawEquipment(
-        @Nonnull GameState state,
-        @Nonnull Graphics2D graphics,
-        @Nonnull Equipment equipment
+        @NonNull GameState state,
+        @NonNull Graphics2D graphics,
+        @NonNull Equipment equipment
     )
     {
         var unit = equipment.getUnit();
@@ -181,10 +181,10 @@ public final class GameRenderer
     }
 
     private static void _drawTileOverlay(
-        @Nonnull TileOverlay overlay,
-        @Nonnull GameState state,
-        @Nonnull Graphics2D graphics,
-        @Nonnull Coordinates coordinates
+        @NonNull TileOverlay overlay,
+        @NonNull GameState state,
+        @NonNull Graphics2D graphics,
+        @NonNull Coordinates coordinates
     )
     {
         var humanPlayer = state.getHumanPlayer();
@@ -193,7 +193,7 @@ public final class GameRenderer
         graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
     }
 
-    private static void _drawUiOverlays(@Nonnull GameState state, @Nonnull Graphics2D graphics)
+    private static void _drawUiOverlays(@NonNull GameState state, @NonNull Graphics2D graphics)
     {
         var humanPlayer = state.getHumanPlayer();
         var start = humanPlayer.getSelectionStart();

@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.sprites;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.sprites.animations.Animation;
@@ -9,28 +9,28 @@ import com.jwbutler.rpg.sprites.animations.Frame;
 
 public final class EquipmentSprite implements AnimatedSprite<Equipment>
 {
-    @Nonnull
+    @NonNull
     private final AnimationPack animations;
 
     public EquipmentSprite(
-        @Nonnull AnimationPack animations
+        @NonNull AnimationPack animations
     )
     {
         this.animations = animations;
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public Frame getFrame(@Nonnull Equipment target)
+    public Frame getFrame(@NonNull Equipment target)
     {
         var animation = getAnimation(target);
         var unit = target.getUnit();
         return animation.frames().get(unit.getFrameNumber());
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public Animation getAnimation(@Nonnull Equipment target)
+    public Animation getAnimation(@NonNull Equipment target)
     {
         var unit = target.getUnit();
         return animations.getAnimation(unit.getActivity(), unit.getDirection());

@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Direction;
@@ -15,6 +14,7 @@ import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
+import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.ui.InputUtils.isLeftButton;
 import static com.jwbutler.rpg.ui.InputUtils.isLeftButtonDown;
@@ -22,18 +22,18 @@ import static com.jwbutler.rpg.ui.InputUtils.isRightButton;
 
 public final class InputHandler
 {
-    @Nonnull
+    @NonNull
     private final GameController controller;
-    @Nonnull
+    @NonNull
     private final GameWindow window;
 
-    public InputHandler(@Nonnull GameController controller, @Nonnull GameWindow window)
+    public InputHandler(@NonNull GameController controller, @NonNull GameWindow window)
     {
         this.controller = controller;
         this.window = window;
     }
 
-    public void handleKeyDown(@Nonnull KeyEvent e)
+    public void handleKeyDown(@NonNull KeyEvent e)
     {
         int keyCode = e.getKeyCode();
         var player = controller.getState().getHumanPlayer();
@@ -55,7 +55,7 @@ public final class InputHandler
         };
     }
 
-    public void handleMouseDown(@Nonnull MouseEvent event)
+    public void handleMouseDown(@NonNull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
         if (isRightButton(event))
@@ -68,7 +68,7 @@ public final class InputHandler
         }
     }
 
-    public void handleMouseUp(@Nonnull MouseEvent event)
+    public void handleMouseUp(@NonNull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
         if (isRightButton(event))
@@ -81,7 +81,7 @@ public final class InputHandler
         }
     }
 
-    private void _handleRightUp(@Nonnull Pixel pixel)
+    private void _handleRightUp(@NonNull Pixel pixel)
     {
         var state = controller.getState();
         var humanPlayer = state.getHumanPlayer();
@@ -113,7 +113,7 @@ public final class InputHandler
         }
     }
 
-    private void _handleLeftDown(@Nonnull Pixel pixel)
+    private void _handleLeftDown(@NonNull Pixel pixel)
     {
         var state = controller.getState();
         var humanPlayer = state.getHumanPlayer();
@@ -124,7 +124,7 @@ public final class InputHandler
         humanPlayer.setSelectionStart(pixel);
     }
 
-    private void _handleLeftUp(@Nonnull Pixel pixel)
+    private void _handleLeftUp(@NonNull Pixel pixel)
     {
         var state = controller.getState();
         var humanPlayer = state.getHumanPlayer();
@@ -151,7 +151,7 @@ public final class InputHandler
         humanPlayer.setSelectedUnits(selectedUnits);
     }
 
-    public void handleMouseMove(@Nonnull MouseEvent event)
+    public void handleMouseMove(@NonNull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
         var state = controller.getState();

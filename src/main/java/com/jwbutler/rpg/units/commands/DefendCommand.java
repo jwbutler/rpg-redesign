@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
@@ -17,8 +17,8 @@ import static com.jwbutler.rpg.util.RandomUtils.randomChoice;
 public record DefendCommand() implements Command
 {
     @Override
-    @Nonnull
-    public ActivityPair getNextActivity(@Nonnull Unit unit)
+    @NonNull
+    public ActivityPair getNextActivity(@NonNull Unit unit)
     {
         Set<Unit> adjacentEnemies = Arrays.stream(Direction.values())
             .map(unit.getCoordinates()::plus)
@@ -36,14 +36,14 @@ public record DefendCommand() implements Command
         return new ActivityPair(Activity.STANDING, unit.getDirection());
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Unit getTargetUnit()
     {
         return null;
     }
 
-    @CheckForNull
+    @Nullable
     @Override
     public Coordinates getTargetCoordinates()
     {

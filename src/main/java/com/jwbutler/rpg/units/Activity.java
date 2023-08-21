@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.units;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.units.commands.DieCommand;
 
@@ -11,14 +11,14 @@ public enum Activity
     STANDING
     {
         @Override
-        public void onComplete(@Nonnull Unit unit)
+        public void onComplete(@NonNull Unit unit)
         {
         }
     },
     WALKING
     {
         @Override
-        public void onComplete(@Nonnull Unit unit)
+        public void onComplete(@NonNull Unit unit)
         {
             var coordinates = unit.getCoordinates().plus(unit.getDirection());
             var level = unit.getLevel();
@@ -31,7 +31,7 @@ public enum Activity
     ATTACKING
     {
         @Override
-        public void onComplete(@Nonnull Unit unit)
+        public void onComplete(@NonNull Unit unit)
         {
             var damage = unit.getAttackDamage();
             var controller = unit.getController();
@@ -51,19 +51,19 @@ public enum Activity
     FALLING
     {
         @Override
-        public void onComplete(@Nonnull Unit unit)
+        public void onComplete(@NonNull Unit unit)
         {
             var controller = unit.getController();
             controller.removeUnit(unit);
         }
     };
 
-    @Nonnull
+    @NonNull
     @Override
     public final String toString()
     {
         return name().toLowerCase();
     }
 
-    public abstract void onComplete(@Nonnull Unit unit);
+    public abstract void onComplete(@NonNull Unit unit);
 }
