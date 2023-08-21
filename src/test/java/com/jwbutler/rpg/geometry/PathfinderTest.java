@@ -4,8 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nonnull;
-
+import org.jspecify.annotations.NonNull;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -90,7 +89,7 @@ public final class PathfinderTest
         assertEquals(path, expectedPath);
     }
 
-    @Nonnull
+    @NonNull
     private static Set<Coordinates> _box(int width, int height)
     {
         var set = new HashSet<Coordinates>();

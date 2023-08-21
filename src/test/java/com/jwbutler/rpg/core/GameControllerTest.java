@@ -7,7 +7,6 @@ import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.UnitFactory;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.DefendCommand;
-import com.jwbutler.rpg.units.commands.StayCommand;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
