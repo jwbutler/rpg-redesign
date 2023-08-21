@@ -1,10 +1,9 @@
 package com.jwbutler.rpg.core;
 
 import java.util.UUID;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
@@ -12,60 +11,59 @@ import com.jwbutler.rpg.units.Unit;
 
 public interface GameState
 {
-    void addPlayer(@Nonnull Player player);
+    void addPlayer(@NonNull Player player);
 
     /**
      * @throws IllegalArgumentException if there is no player with the specified id
      */
-    @Nonnull
-    Player getPlayer(@Nonnull UUID id);
+    @NonNull
+    Player getPlayer(@NonNull UUID id);
 
-    @Nonnull
+    @NonNull
     @Deprecated
     HumanPlayer getHumanPlayer();
 
     /**
      * @throws IllegalArgumentException if we already have a level with the specified id
      */
-    void addLevel(@Nonnull Level level);
+    void addLevel(@NonNull Level level);
 
     /**
      * @throws IllegalArgumentException if there is no level with the specified id
      */
-    @Nonnull
-    Level getLevel(@Nonnull UUID id);
+    @NonNull
+    Level getLevel(@NonNull UUID id);
 
     /**
      * @deprecated - this should be per-player, not global
      */
     @Deprecated
-    void setCurrentLevel(@Nonnull Level currentLevel);
+    void setCurrentLevel(@NonNull Level currentLevel);
 
     /**
      * @deprecated - this should be per-player, not global
      */
-    @Nonnull
+    @NonNull
     @Deprecated
     Level getCurrentLevel();
 
     /**
      * @throws IllegalArgumentException if we already have a unit with the specified id
      */
-    void addUnit(@Nonnull Unit unit);
+    void addUnit(@NonNull Unit unit);
 
     /**
      * @throws IllegalArgumentException if there is no unit with the specified id
      */
-    @Nonnull
-    Unit getUnit(@Nonnull UUID id);
+    @NonNull
+    Unit getUnit(@NonNull UUID id);
 
-    @CheckForNull
-    @VisibleForTesting
-    Unit getUnitNullable(@Nonnull UUID id);
+    @Nullable
+    Unit getUnitNullable(@NonNull UUID id);
 
-    void removeUnit(@Nonnull Unit unit);
+    void removeUnit(@NonNull Unit unit);
 
-    @Nonnull
+    @NonNull
     static GameState create()
     {
         return new GameStateImpl();

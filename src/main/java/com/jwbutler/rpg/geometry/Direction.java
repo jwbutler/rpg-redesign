@@ -2,7 +2,7 @@ package com.jwbutler.rpg.geometry;
 
 import java.util.Comparator;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public enum Direction
 {
@@ -37,8 +37,8 @@ public enum Direction
     /**
      * @throws IllegalArgumentException if {@code first} and {@code second} are not directly adjacent
      */
-    @Nonnull
-    public static Direction between(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    @NonNull
+    public static Direction between(@NonNull Coordinates first, @NonNull Coordinates second)
     {
         var dx = second.x() - first.x();
         var dy = second.y() - first.y();
@@ -48,8 +48,8 @@ public enum Direction
             .orElseThrow(() -> new IllegalArgumentException(String.format("No direction found between points %s, %s", first, second)));
     }
 
-    @Nonnull
-    public static Direction nearestBetween(@Nonnull Coordinates first, @Nonnull Coordinates second)
+    @NonNull
+    public static Direction nearestBetween(@NonNull Coordinates first, @NonNull Coordinates second)
     {
         var dx = second.x() - first.x();
         var dy = second.y() - first.y();

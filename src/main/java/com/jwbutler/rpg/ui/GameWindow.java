@@ -10,10 +10,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
-import javax.annotation.Nonnull;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
@@ -23,11 +24,11 @@ import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
  */
 public final class GameWindow
 {
-    @Nonnull
+    @NonNull
     private final JFrame frame;
-    @Nonnull
+    @NonNull
     private final JPanel panel;
-    @Nonnull
+    @NonNull
     private final BufferedImage image;
 
     private final double ZOOM_RATIO = 2.0;
@@ -38,7 +39,7 @@ public final class GameWindow
         panel = new JPanel()
         {
             @Override
-            protected void paintComponent(@Nonnull Graphics graphics)
+            protected void paintComponent(@NonNull Graphics graphics)
             {
                 super.paintComponent(graphics);
                 graphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -66,30 +67,30 @@ public final class GameWindow
         }
     }
 
-    public void render(@Nonnull Consumer<Graphics2D> consumer)
+    public void render(@NonNull Consumer<Graphics2D> consumer)
     {
         consumer.accept((Graphics2D) image.getGraphics());
         panel.repaint();
     }
 
-    public void addKeyboardListener(@Nonnull Consumer<KeyEvent> keyListener)
+    public void addKeyboardListener(@NonNull Consumer<KeyEvent> keyListener)
     {
         frame.addKeyListener(new KeyAdapter()
         {
             @Override
-            public void keyPressed(@Nonnull KeyEvent e)
+            public void keyPressed(@NonNull KeyEvent e)
             {
                 keyListener.accept(e);
             }
         });
     }
 
-    public void addMouseDownListener(@Nonnull Consumer<MouseEvent> handler)
+    public void addMouseDownListener(@NonNull Consumer<MouseEvent> handler)
     {
         frame.addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mousePressed(@Nonnull MouseEvent e)
+            public void mousePressed(@NonNull MouseEvent e)
             {
                 _fixMousePosition(e);
                 handler.accept(e);
@@ -97,12 +98,12 @@ public final class GameWindow
         });
     }
 
-    public void addMouseUpListener(@Nonnull Consumer<MouseEvent> handler)
+    public void addMouseUpListener(@NonNull Consumer<MouseEvent> handler)
     {
         frame.addMouseListener(new MouseAdapter()
         {
             @Override
-            public void mouseReleased(@Nonnull MouseEvent e)
+            public void mouseReleased(@NonNull MouseEvent e)
             {
                 _fixMousePosition(e);
                 handler.accept(e);
@@ -110,19 +111,19 @@ public final class GameWindow
         });
     }
 
-    public void addMouseMoveListener(@Nonnull Consumer<MouseEvent> handler)
+    public void addMouseMoveListener(@NonNull Consumer<MouseEvent> handler)
     {
         frame.addMouseMotionListener(new MouseMotionAdapter()
         {
             @Override
-            public void mouseMoved(@Nonnull MouseEvent e)
+            public void mouseMoved(@NonNull MouseEvent e)
             {
                 _fixMousePosition(e);
                 handler.accept(e);
             }
 
             @Override
-            public void mouseDragged(@Nonnull MouseEvent e)
+            public void mouseDragged(@NonNull MouseEvent e)
             {
                 _fixMousePosition(e);
                 handler.accept(e);
@@ -130,7 +131,7 @@ public final class GameWindow
         });
     }
 
-    private void _fixMousePosition(@Nonnull MouseEvent e)
+    private void _fixMousePosition(@NonNull MouseEvent e)
     {
         var zoomRatio = 1.0 * (frame.getWidth() - frame.getInsets().left - frame.getInsets().right) / GAME_WIDTH;
         // First, subtract the frame's insets;

@@ -2,17 +2,16 @@ package com.jwbutler.rpg.util;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
 
-import com.google.common.util.concurrent.Uninterruptibles;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * A simplified wrapper for {@link BlockingQueue} which only supports a single element at a time.
  */
 public final class SingletonBlockingQueue<T>
 {
-    @Nonnull
+    @NonNull
     private final BlockingQueue<T> queue;
 
     public SingletonBlockingQueue()
@@ -20,20 +19,27 @@ public final class SingletonBlockingQueue<T>
         queue = new ArrayBlockingQueue<>(1);
     }
 
-    public void offer(@Nonnull T element)
+    public void offer(@NonNull T element)
     {
         // noinspection ResultOfMethodCallIgnored
         queue.offer(element);
     }
 
-    @Nonnull
+    @NonNull
     @Blocking
     public T take()
     {
-        return Uninterruptibles.takeUninterruptibly(queue);
+        try
+        {
+            return queue.take();
+        }
+        catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
-    @CheckForNull
+    @Nullable
     public T poll()
     {
         return queue.poll();

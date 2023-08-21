@@ -1,11 +1,11 @@
 package com.jwbutler.rpg.sprites.animations;
 
 import java.util.List;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public record Animation
 (
-    @Nonnull List<Frame> frames
+    @NonNull List<Frame> frames
 )
 {
 }

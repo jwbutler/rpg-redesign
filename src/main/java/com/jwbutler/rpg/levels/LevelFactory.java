@@ -3,7 +3,7 @@ package com.jwbutler.rpg.levels;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Dimensions;
@@ -24,8 +24,8 @@ public final class LevelFactory
         .addTiles(_tileBox(new Dimensions(10, 10), TileType.GRASS))
         .build();
 
-    @Nonnull
-    private static Map<Coordinates, TileType> _tileBox(@Nonnull Dimensions dimensions, @Nonnull TileType tileType)
+    @NonNull
+    private static Map<Coordinates, TileType> _tileBox(@NonNull Dimensions dimensions, @NonNull TileType tileType)
     {
         Map<Coordinates, TileType> map = new HashMap<>();
         for (int y = 0; y < dimensions.height(); y++)

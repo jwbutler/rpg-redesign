@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.geometry;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public record Pixel
 (
@@ -10,20 +10,20 @@ public record Pixel
 {
     private static final Pixel ZERO = new Pixel(0, 0);
 
-    @Nonnull
+    @NonNull
     public Pixel plus(int dx, int dy)
     {
         return new Pixel(x + dx, y + dy);
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public String toString()
     {
         return String.format("(%d, %d)", x, y);
     }
 
-    @Nonnull
+    @NonNull
     public static Pixel zero()
     {
         return ZERO;

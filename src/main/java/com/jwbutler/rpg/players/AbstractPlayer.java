@@ -3,27 +3,27 @@ package com.jwbutler.rpg.players;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.units.Unit;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 
 abstract class AbstractPlayer implements Player
 {
-    @Nonnull
+    @NonNull
     private final GameController controller;
-    @Nonnull
+    @NonNull
     private final UUID id;
-    @Nonnull
+    @NonNull
     private final String name;
-    @Nonnull
+    @NonNull
     private final Faction faction;
-    @Nonnull
+    @NonNull
     private final Set<Unit> units;
 
-    protected AbstractPlayer(@Nonnull GameController controller, @Nonnull String name, @Nonnull Faction faction)
+    protected AbstractPlayer(@NonNull GameController controller, @NonNull String name, @NonNull Faction faction)
     {
         this.controller = controller;
         this.id = UUID.randomUUID();
@@ -32,21 +32,21 @@ abstract class AbstractPlayer implements Player
         this.units = new HashSet<>();
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public final UUID getId()
     {
         return id;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public final String getName()
     {
         return name;
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public final Faction getFaction()
     {
@@ -54,13 +54,13 @@ abstract class AbstractPlayer implements Player
     }
 
     @Override
-    public final void addUnit(@Nonnull Unit unit)
+    public final void addUnit(@NonNull Unit unit)
     {
         checkArgument(!units.contains(unit));
         units.add(unit);
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public final Set<Unit> getUnits()
     {
@@ -68,7 +68,7 @@ abstract class AbstractPlayer implements Player
     }
 
     @Override
-    public final void removeUnit(@Nonnull Unit unit)
+    public final void removeUnit(@NonNull Unit unit)
     {
         checkArgument(units.contains(unit));
         units.remove(unit);

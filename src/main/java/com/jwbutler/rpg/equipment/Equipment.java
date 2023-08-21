@@ -1,22 +1,22 @@
 package com.jwbutler.rpg.equipment;
 
 import java.util.UUID;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.Unit;
 
 public interface Equipment
 {
-    @Nonnull
+    @NonNull
     UUID getId();
-    @Nonnull
+    @NonNull
     String getName();
-    @Nonnull
+    @NonNull
     Unit getUnit();
-    @Nonnull
+    @NonNull
     Slot getSlot();
-    @Nonnull
+    @NonNull
     Sprite<Equipment> getSprite();
     int getDamage();
 }

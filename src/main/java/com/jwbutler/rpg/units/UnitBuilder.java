@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.units;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -8,7 +8,7 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.sprites.AnimatedSprite;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.jwbutler.rpg.util.Preconditions.checkState;
 
 final class UnitBuilder
 {
@@ -62,7 +62,7 @@ final class UnitBuilder
         return this;
     }
 
-    @Nonnull
+    @NonNull
     Unit build()
     {
         checkState(controller != null);

@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.geometry;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public record Rect
 (
@@ -10,8 +10,8 @@ public record Rect
     int height
 )
 {
-    @Nonnull
-    public static Rect between(@Nonnull Point start, @Nonnull Point end)
+    @NonNull
+    public static Rect between(@NonNull Point start, @NonNull Point end)
     {
         return new Rect(
             Math.min(start.x(), end.x()),
@@ -21,7 +21,7 @@ public record Rect
         );
     }
 
-    public boolean overlaps(@Nonnull Rect other)
+    public boolean overlaps(@NonNull Rect other)
     {
         return
             (left() <= other.right())
@@ -30,8 +30,8 @@ public record Rect
             && (bottom() >= other.top());
     }
 
-    @Nonnull
-    public Rect getIntersection(@Nonnull Rect other)
+    @NonNull
+    public Rect getIntersection(@NonNull Rect other)
     {
         var left = Math.max(left(), other.left());
         var top = Math.max(top(), other.top());
@@ -57,13 +57,13 @@ public record Rect
         return width() * height();
     }
 
-    @Nonnull
+    @NonNull
     public Dimensions getDimensions()
     {
         return new Dimensions(width, height);
     }
 
-    public boolean contains(@Nonnull Point point)
+    public boolean contains(@NonNull Point point)
     {
         return point.x() >= left()
             && point.x() < right()

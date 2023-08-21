@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.core;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
@@ -12,28 +12,28 @@ public interface GameController
     /**
      * @throws IllegalArgumentException if the unit's coordinates are out of bounds
      */
-    void addUnit(@Nonnull Unit unit);
+    void addUnit(@NonNull Unit unit);
     /**
      * @throws IllegalArgumentException if the unit is not present in the game state
      */
-    void removeUnit(@Nonnull Unit unit);
+    void removeUnit(@NonNull Unit unit);
 
     /**
      * @throws IllegalArgumentException if {@code coordinates} are out of bounds
      */
-    void moveUnit(@Nonnull Unit unit, @Nonnull Level level, @Nonnull Coordinates coordinates);
+    void moveUnit(@NonNull Unit unit, @NonNull Level level, @NonNull Coordinates coordinates);
 
-    void addLevel(@Nonnull Level level);
+    void addLevel(@NonNull Level level);
 
-    void addPlayer(@Nonnull Player player);
+    void addPlayer(@NonNull Player player);
 
-    void dealDamage(@Nonnull Unit source, @Nonnull Unit target, int amount);
+    void dealDamage(@NonNull Unit source, @NonNull Unit target, int amount);
 
-    @Nonnull
+    @NonNull
     GameState getState();
 
-    @Nonnull
-    static GameController create(@Nonnull GameState state)
+    @NonNull
+    static GameController create(@NonNull GameState state)
     {
         return new GameControllerImpl(state);
     }

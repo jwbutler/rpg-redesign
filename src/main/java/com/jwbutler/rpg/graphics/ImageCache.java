@@ -5,19 +5,19 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 public final class ImageCache
 {
     public record CacheKey
     (
-        @Nonnull String filename,
-        @CheckForNull Color transparentColor,
-        @Nonnull Map<Color, Color> paletteSwaps
+        @NonNull String filename,
+        @Nullable Color transparentColor,
+        @NonNull Map<Color, Color> paletteSwaps
     ) {}
 
-    @Nonnull
+    @NonNull
     private final Map<CacheKey, BufferedImage> images;
 
     public ImageCache()
@@ -30,8 +30,8 @@ public final class ImageCache
      */
     public static final ImageCache INSTANCE = new ImageCache();
 
-    @Nonnull
-    public BufferedImage computeIfAbsent(@Nonnull CacheKey key, @Nonnull Supplier<BufferedImage> supplier)
+    @NonNull
+    public BufferedImage computeIfAbsent(@NonNull CacheKey key, @NonNull Supplier<BufferedImage> supplier)
     {
         return images.computeIfAbsent(key, k -> supplier.get());
     }

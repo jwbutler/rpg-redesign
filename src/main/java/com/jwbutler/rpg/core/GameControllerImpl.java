@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.core;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
@@ -12,16 +12,16 @@ import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 final class GameControllerImpl implements GameController
 {
-    @Nonnull
+    @NonNull
     private final GameState state;
 
-    GameControllerImpl(@Nonnull GameState state)
+    GameControllerImpl(@NonNull GameState state)
     {
         this.state = state;
     }
 
     @Override
-    public void addUnit(@Nonnull Unit unit)
+    public void addUnit(@NonNull Unit unit)
     {
         state.addUnit(unit);
         unit.getLevel().addUnit(unit);
@@ -29,7 +29,7 @@ final class GameControllerImpl implements GameController
     }
 
     @Override
-    public void removeUnit(@Nonnull Unit unit)
+    public void removeUnit(@NonNull Unit unit)
     {
         state.removeUnit(unit);
         unit.getLevel().removeUnit(unit);
@@ -45,7 +45,7 @@ final class GameControllerImpl implements GameController
     }
 
     @Override
-    public void moveUnit(@Nonnull Unit unit, @Nonnull Level level, @Nonnull Coordinates coordinates)
+    public void moveUnit(@NonNull Unit unit, @NonNull Level level, @NonNull Coordinates coordinates)
     {
         unit.getLevel().removeUnit(unit);
         unit.setLevel(level);
@@ -54,19 +54,19 @@ final class GameControllerImpl implements GameController
     }
 
     @Override
-    public void addLevel(@Nonnull Level level)
+    public void addLevel(@NonNull Level level)
     {
         state.addLevel(level);
     }
 
     @Override
-    public void addPlayer(@Nonnull Player player)
+    public void addPlayer(@NonNull Player player)
     {
         state.addPlayer(player);
     }
 
     @Override
-    public void dealDamage(@Nonnull Unit source, @Nonnull Unit target, int amount)
+    public void dealDamage(@NonNull Unit source, @NonNull Unit target, int amount)
     {
         target.takeDamage(amount);
         if (target.getLife() <= 0)
@@ -75,7 +75,7 @@ final class GameControllerImpl implements GameController
         }
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public GameState getState()
     {

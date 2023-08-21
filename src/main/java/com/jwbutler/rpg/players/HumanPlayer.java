@@ -2,8 +2,8 @@ package com.jwbutler.rpg.players;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Camera;
@@ -19,23 +19,23 @@ public final class HumanPlayer extends AbstractPlayer implements Player
         GAME
     }
 
-    @Nonnull
+    @NonNull
     private final Camera camera;
-    @CheckForNull
+    @Nullable
     private Coordinates mouseCoordinates;
-    @Nonnull
+    @NonNull
     private State state;
-    @Nonnull
+    @NonNull
     private final Set<Unit> selectedUnits;
-    @CheckForNull
+    @Nullable
     private Pixel selectionStart;
-    @CheckForNull
+    @Nullable
     private Pixel selectionEnd;
 
     public HumanPlayer(
-        @Nonnull GameController controller,
-        @Nonnull String name,
-        @Nonnull Coordinates cameraCoordinates
+        @NonNull GameController controller,
+        @NonNull String name,
+        @NonNull Coordinates cameraCoordinates
     )
     {
         super(controller, name, Faction.PLAYER);
@@ -46,52 +46,52 @@ public final class HumanPlayer extends AbstractPlayer implements Player
         selectedUnits = new HashSet<>();
     }
 
-    @Nonnull
+    @NonNull
     public Camera getCamera()
     {
         return camera;
     }
 
-    @CheckForNull
+    @Nullable
     public Coordinates getMouseCoordinates()
     {
         return mouseCoordinates;
     }
 
-    public void setMouseCoordinates(@CheckForNull Coordinates mouseCoordinates)
+    public void setMouseCoordinates(@Nullable Coordinates mouseCoordinates)
     {
         this.mouseCoordinates = mouseCoordinates;
     }
 
-    @Nonnull
+    @NonNull
     public State getState()
     {
         return state;
     }
 
-    public void setState(@Nonnull State state)
+    public void setState(@NonNull State state)
     {
         this.state = state;
     }
 
-    @CheckForNull
+    @Nullable
     public Pixel getSelectionStart()
     {
         return selectionStart;
     }
 
-    public void setSelectionStart(@CheckForNull Pixel pixel)
+    public void setSelectionStart(@Nullable Pixel pixel)
     {
         selectionStart = pixel;
     }
 
-    @CheckForNull
+    @Nullable
     public Pixel getSelectionEnd()
     {
         return selectionEnd;
     }
 
-    public void setSelectionEnd(@CheckForNull Pixel pixel)
+    public void setSelectionEnd(@Nullable Pixel pixel)
     {
         if (selectionStart == null)
         {
@@ -99,13 +99,13 @@ public final class HumanPlayer extends AbstractPlayer implements Player
         }
         selectionEnd = pixel;
     }
-    @Nonnull
+    @NonNull
     public Set<Unit> getSelectedUnits()
     {
         return selectedUnits;
     }
 
-    public void setSelectedUnits(@Nonnull Set<Unit> units)
+    public void setSelectedUnits(@NonNull Set<Unit> units)
     {
         this.selectedUnits.clear();
         this.selectedUnits.addAll(units);

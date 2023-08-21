@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.geometry;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public record Coordinates
 (
@@ -11,26 +11,26 @@ implements Point
 {
     private static final Coordinates ZERO = new Coordinates(0, 0);
 
-    @Nonnull
+    @NonNull
     public Coordinates plus(int dx, int dy)
     {
         return new Coordinates(x + dx, y + dy);
     }
 
-    @Nonnull
-    public Coordinates plus(@Nonnull Direction direction)
+    @NonNull
+    public Coordinates plus(@NonNull Direction direction)
     {
         return new Coordinates(x + direction.dx(), y + direction.dy());
     }
 
-    @Nonnull
+    @NonNull
     @Override
     public String toString()
     {
         return String.format("(%d, %d)", x, y);
     }
 
-    @Nonnull
+    @NonNull
     public static Coordinates zero()
     {
         return ZERO;

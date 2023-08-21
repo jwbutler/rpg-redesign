@@ -2,25 +2,25 @@ package com.jwbutler.rpg.players;
 
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.units.Unit;
 
 public interface Player
 {
-    @Nonnull
+    @NonNull
     UUID getId();
 
-    @Nonnull
+    @NonNull
     String getName();
 
-    @Nonnull
+    @NonNull
     Faction getFaction();
 
-    void addUnit(@Nonnull Unit unit);
+    void addUnit(@NonNull Unit unit);
 
-    @Nonnull
+    @NonNull
     Set<Unit> getUnits();
 
-    void removeUnit(@Nonnull Unit unit);
+    void removeUnit(@NonNull Unit unit);
 }

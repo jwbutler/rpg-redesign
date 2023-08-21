@@ -1,6 +1,6 @@
 package com.jwbutler.rpg.equipment;
 
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.sprites.EquipmentSprite;
@@ -12,10 +12,10 @@ import static java.util.Collections.emptyMap;
 
 public class EquipmentFactory
 {
-    @Nonnull
+    @NonNull
     public static Equipment createNoobSword(
-        @Nonnull GameController controller,
-        @Nonnull Unit unit
+        @NonNull GameController controller,
+        @NonNull Unit unit
     )
     {
         return new EquipmentBuilder()
@@ -27,10 +27,10 @@ public class EquipmentFactory
             .build();
     }
 
-    @Nonnull
+    @NonNull
     public static Equipment createShield(
-        @Nonnull GameController controller,
-        @Nonnull Unit unit
+        @NonNull GameController controller,
+        @NonNull Unit unit
     )
     {
         return new EquipmentBuilder()

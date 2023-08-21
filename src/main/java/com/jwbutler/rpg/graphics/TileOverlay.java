@@ -3,7 +3,7 @@ package com.jwbutler.rpg.graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Map;
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 public enum TileOverlay
 {
@@ -15,18 +15,18 @@ public enum TileOverlay
     TILE_TARGETED(Colors.DARK_BLUE, Colors.BLUE),
     TILE_MOUSEOVER(Colors.DARK_BLUE, Colors.DARK_BLUE);
 
-    @Nonnull
+    @NonNull
     private final Color outerColor;
-    @Nonnull
+    @NonNull
     private final Color innerColor;
 
-    TileOverlay(@Nonnull Color outerColor, @Nonnull Color innerColor)
+    TileOverlay(@NonNull Color outerColor, @NonNull Color innerColor)
     {
         this.outerColor = outerColor;
         this.innerColor = innerColor;
     }
 
-    @Nonnull
+    @NonNull
     public BufferedImage getImage()
     {
         return new ImageBuilder()
