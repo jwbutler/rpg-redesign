@@ -8,7 +8,7 @@ public enum Faction
     NEUTRAL,
     ENEMY;
 
-    public boolean isHostile(@NonNull Faction other)
+    public boolean isHostileToward(@NonNull Faction other)
     {
         return switch (this)
         {

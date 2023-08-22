@@ -1,8 +1,5 @@
 package com.jwbutler.rpg.units.commands;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
@@ -12,6 +9,8 @@ import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 
+import static com.jwbutler.rpg.units.UnitUtils.getAdjacentUnits;
+import static com.jwbutler.rpg.units.UnitUtils.isHostileToward;
 import static com.jwbutler.rpg.util.RandomUtils.randomChoice;
 
 public record DefendCommand() implements Command
@@ -20,11 +19,9 @@ public record DefendCommand() implements Command
     @NonNull
     public ActivityPair getNextActivity(@NonNull Unit unit)
     {
-        Set<Unit> adjacentEnemies = Arrays.stream(Direction.values())
-            .map(unit.getCoordinates()::plus)
-            .map(unit.getLevel()::getUnit)
-            .filter(Objects::nonNull)
-            .filter(u -> unit.getPlayer().getFaction().isHostile(u.getPlayer().getFaction()))
+        var adjacentEnemies = getAdjacentUnits(unit)
+            .stream()
+            .filter(adjacentUnit -> isHostileToward(unit, adjacentUnit))
             .collect(Collectors.toSet());
 
         if (!adjacentEnemies.isEmpty())

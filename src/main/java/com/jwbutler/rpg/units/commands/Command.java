@@ -18,6 +18,7 @@ permits StayCommand, MoveCommand, AttackCommand, DieCommand, DefendCommand
      */
     @Nullable
     Unit getTargetUnit();
+
     /**
      * @return the coordinates this command is targeting, if it's targeting a tile
      *         (e.g. it's a move command).  This is intended as a UI convenience

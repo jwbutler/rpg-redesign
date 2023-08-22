@@ -2,10 +2,11 @@ package com.jwbutler.rpg.players;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
@@ -33,13 +34,13 @@ public final class HumanPlayer extends AbstractPlayer implements Player
     private Pixel selectionEnd;
 
     public HumanPlayer(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull String name,
         @NonNull Coordinates cameraCoordinates
     )
     {
-        super(controller, name, Faction.PLAYER);
-        this.camera = new Camera(controller, cameraCoordinates);
+        super(game, name, Faction.PLAYER);
+        this.camera = new Camera(game, cameraCoordinates);
         this.mouseCoordinates = null;
         this.state = State.TITLE_SCREEN;
         selectionStart = null;

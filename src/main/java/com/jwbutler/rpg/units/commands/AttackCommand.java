@@ -29,8 +29,7 @@ implements Command
         }
         else
         {
-            var controller = unit.getController();
-            var level = controller.getState().getCurrentLevel();
+            var level = unit.getGame().getCurrentLevel();
             var candidates = level.getAllCoordinates()
                 .stream()
                 .filter(coordinates -> level.getUnit(coordinates) == null && !level.getTile(coordinates).isBlocking())

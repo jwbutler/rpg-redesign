@@ -38,6 +38,5 @@ public final class GeometryUtils
 
         return Stream.of(Direction.values())
             .anyMatch(d -> d.dx() == dx && d.dy() == dy);
-
     }
 }

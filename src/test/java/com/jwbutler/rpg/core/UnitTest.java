@@ -6,6 +6,7 @@ import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.UnitFactory;
+import com.jwbutler.rpg.units.UnitUtils;
 import com.jwbutler.rpg.units.commands.DefendCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.testng.annotations.Test;
@@ -21,16 +22,15 @@ public final class UnitTest
     @Test
     public void testUpdate()
     {
-        var state = GameState.create();
-        var controller = GameController.create(state);
-        var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
-        controller.addPlayer(player);
+        var game = Game.create();
+        var player = new HumanPlayer(game, "test_player", Coordinates.zero());
+        game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
-        controller.addLevel(level);
-        state.setCurrentLevel(level);
+        game.addLevel(level);
+        game.setCurrentLevel(level);
 
-        var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
-        controller.addUnit(unit);
+        var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
+        UnitUtils.addUnit(unit, game);
 
         assertEquals(unit.getActivity(), Activity.STANDING);
         assertEquals(unit.getDirection(), Direction.SE);

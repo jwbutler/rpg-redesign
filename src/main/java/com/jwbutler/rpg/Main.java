@@ -2,8 +2,9 @@ package com.jwbutler.rpg;
 
 import java.time.Duration;
 
-import com.jwbutler.rpg.core.GameController;
-import com.jwbutler.rpg.core.GameState;
+import com.jwbutler.rpg.core.GameEngine;
+import com.jwbutler.rpg.core.Game;
+import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.equipment.EquipmentFactory;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
@@ -13,6 +14,9 @@ import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
+
+import static com.jwbutler.rpg.ui.InputUtils.registerInputListeners;
+import static com.jwbutler.rpg.units.UnitUtils.addUnit;
 
 public class Main
 {
@@ -27,68 +31,66 @@ public class Main
             System.exit(0);
         });
 
-        var state = GameState.create();
-        var controller = GameController.create(state);
+        var game = Game.create();
         var window = new GameWindow();
-        var renderer = GameRenderer.create(window);
 
         var level = LevelFactory.LEVEL_ONE.get();
 
-        controller.addLevel(level);
-        state.setCurrentLevel(level);
-        var humanPlayer = new HumanPlayer(controller, "human_player", new Coordinates(5, 5));
-        controller.addPlayer(humanPlayer);
+        game.addLevel(level);
+        game.setCurrentLevel(level);
+        var humanPlayer = new HumanPlayer(game, "human_player", new Coordinates(5, 5));
+        var session = Session.create(humanPlayer);
+        game.addPlayer(humanPlayer);
+        var renderer = GameRenderer.create(window, session);
         for (int i = 1; i <= 10; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
-                controller,
+                game,
                 "test_unit_" + i,
                 100,
                 humanPlayer,
                 level,
                 new Coordinates(i - 1, 0)
             );
-            controller.addUnit(playerUnit);
-            var sword = EquipmentFactory.createNoobSword(controller, playerUnit);
+            addUnit(playerUnit, game);
+            var sword = EquipmentFactory.createNoobSword(game, playerUnit);
             playerUnit.addEquipment(sword);
-            var shield = EquipmentFactory.createShield(controller, playerUnit);
+            var shield = EquipmentFactory.createShield(game, playerUnit);
             playerUnit.addEquipment(shield);
         }
 
-        var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
-        controller.addPlayer(enemyPlayer);
+        var enemyPlayer = new EnemyPlayer(game, "enemy_player");
+        game.addPlayer(enemyPlayer);
+
         for (int i = 1; i <= 10; i++)
         {
             var enemyUnit = UnitFactory.createEvilPlayerUnit(
-                controller,
+                game,
                 "enemy_unit",
                 100,
                 enemyPlayer,
                 level,
                 new Coordinates(2 + i, 5)
             );
-            controller.addUnit(enemyUnit);
+            addUnit(enemyUnit, game);
         }
 
         humanPlayer.setState(HumanPlayer.State.GAME);
-        renderer.render(state);
 
-        var inputHandler = new InputHandler(controller, window);
-        window.addKeyboardListener(inputHandler::handleKeyDown);
-        window.addMouseDownListener(inputHandler::handleMouseDown);
-        window.addMouseUpListener(inputHandler::handleMouseUp);
-        window.addMouseMoveListener(inputHandler::handleMouseMove);
+        var engine = GameEngine.create(game, session, renderer, window);
+        engine.render(game);
+
+        var inputHandler = new InputHandler(game, session, engine);
+        registerInputListeners(inputHandler, window);
 
         while (true)
         {
             long startTime = System.nanoTime();
-            for (var unit : state.getCurrentLevel().getUnits())
-            {
-                unit.update();
-            }
+            engine.update(game);
+            
             while (System.nanoTime() < startTime + (Duration.ofMillis(FRAME_FREQUENCY_MILLIS).toNanos()))
             {
-                renderer.render(state);
+                engine.render(game);
                 try
                 {
                     Thread.sleep(RENDER_FREQUENCY_MILLIS);

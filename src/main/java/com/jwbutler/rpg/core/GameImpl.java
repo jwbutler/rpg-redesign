@@ -1,22 +1,22 @@
 package com.jwbutler.rpg.core;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.levels.Level;
-import com.jwbutler.rpg.players.Faction;
-import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 import static com.jwbutler.rpg.util.Preconditions.checkState;
 
-final class GameStateImpl implements GameState
+final class GameImpl implements Game
 {
     @NonNull
     private final Map<UUID, Level> levelsById;
@@ -28,7 +28,7 @@ final class GameStateImpl implements GameState
     @Nullable
     private Level currentLevel;
 
-    GameStateImpl()
+    GameImpl()
     {
         playersById = new HashMap<>();
         levelsById = new HashMap<>();
@@ -53,18 +53,12 @@ final class GameStateImpl implements GameState
         checkArgument(player != null);
         return player;
     }
-
+    
     @NonNull
     @Override
-    public HumanPlayer getHumanPlayer()
+    public Set<Player> getPlayers()
     {
-        return playersById.values()
-            .stream()
-            .filter(player -> player.getFaction() == Faction.PLAYER)
-            .filter(HumanPlayer.class::isInstance)
-            .map(HumanPlayer.class::cast)
-            .findFirst()
-            .orElseThrow(IllegalStateException::new);
+        return new HashSet<>(playersById.values());
     }
 
     @Override

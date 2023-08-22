@@ -1,15 +1,15 @@
 package com.jwbutler.rpg.core;
 
+import java.util.Set;
 import java.util.UUID;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.levels.Level;
-import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
-public interface GameState
+public interface Game
 {
     void addPlayer(@NonNull Player player);
 
@@ -18,10 +18,8 @@ public interface GameState
      */
     @NonNull
     Player getPlayer(@NonNull UUID id);
-
-    @NonNull
-    @Deprecated
-    HumanPlayer getHumanPlayer();
+    
+    @NonNull Set<Player> getPlayers();
 
     /**
      * @throws IllegalArgumentException if we already have a level with the specified id
@@ -33,19 +31,11 @@ public interface GameState
      */
     @NonNull
     Level getLevel(@NonNull UUID id);
-
-    /**
-     * @deprecated - this should be per-player, not global
-     */
-    @Deprecated
-    void setCurrentLevel(@NonNull Level currentLevel);
-
-    /**
-     * @deprecated - this should be per-player, not global
-     */
+    
     @NonNull
-    @Deprecated
     Level getCurrentLevel();
+
+    void setCurrentLevel(@NonNull Level currentLevel);
 
     /**
      * @throws IllegalArgumentException if we already have a unit with the specified id
@@ -64,8 +54,8 @@ public interface GameState
     void removeUnit(@NonNull Unit unit);
 
     @NonNull
-    static GameState create()
+    static Game create()
     {
-        return new GameStateImpl();
+        return new GameImpl();
     }
 }
