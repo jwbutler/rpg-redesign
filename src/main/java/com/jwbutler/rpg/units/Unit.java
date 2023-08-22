@@ -26,21 +26,27 @@ public interface Unit
     String getName();
 
     int getLife();
+
     int getMaxLife();
 
     @NonNull
     Activity getActivity();
+
     @NonNull
     Direction getDirection();
+
     int getFrameNumber();
 
     void startActivity(@NonNull Activity activity, @NonNull Direction direction);
 
     @NonNull
     Command getCommand();
+
     void setCommand(@NonNull Command command);
+
     @Nullable
     Command getNextCommand();
+
     void setNextCommand(@Nullable Command command);
 
     /**
@@ -62,13 +68,16 @@ public interface Unit
 
     @NonNull
     Coordinates getCoordinates();
+
     void setCoordinates(@NonNull Coordinates coordinates);
 
     void addEquipment(@NonNull Equipment equipment);
+
     @NonNull
     Set<Equipment> getEquipment();
 
     int getAttackDamage();
+
     void takeDamage(int amount);
 
     void update();

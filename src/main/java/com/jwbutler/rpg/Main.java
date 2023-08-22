@@ -27,7 +27,7 @@ public class Main
         var state = GameState.create();
         var controller = GameController.create(state);
         var window = new GameWindow();
-        var renderer = new GameRenderer(window);
+        var renderer = GameRenderer.create(window);
 
         var level = LevelFactory.LEVEL_ONE.get();
 
