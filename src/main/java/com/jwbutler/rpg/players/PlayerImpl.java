@@ -11,7 +11,7 @@ import com.jwbutler.rpg.units.Unit;
 
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 
-abstract class AbstractPlayer implements Player
+final class PlayerImpl implements Player
 {
     @NonNull
     private final Game game;
@@ -24,7 +24,7 @@ abstract class AbstractPlayer implements Player
     @NonNull
     private final Set<Unit> units;
 
-    protected AbstractPlayer(@NonNull Game game, @NonNull String name, @NonNull Faction faction)
+    PlayerImpl(@NonNull Game game, @NonNull String name, @NonNull Faction faction)
     {
         this.game = game;
         this.id = UUID.randomUUID();
@@ -35,27 +35,27 @@ abstract class AbstractPlayer implements Player
 
     @NonNull
     @Override
-    public final UUID getId()
+    public UUID getId()
     {
         return id;
     }
 
     @NonNull
     @Override
-    public final String getName()
+    public String getName()
     {
         return name;
     }
 
     @NonNull
     @Override
-    public final Faction getFaction()
+    public Faction getFaction()
     {
         return faction;
     }
 
     @Override
-    public final void addUnit(@NonNull Unit unit)
+    public void addUnit(@NonNull Unit unit)
     {
         checkArgument(!units.contains(unit));
         units.add(unit);
@@ -63,13 +63,13 @@ abstract class AbstractPlayer implements Player
 
     @NonNull
     @Override
-    public final Set<Unit> getUnits()
+    public Set<Unit> getUnits()
     {
         return units;
     }
 
     @Override
-    public final void removeUnit(@NonNull Unit unit)
+    public void removeUnit(@NonNull Unit unit)
     {
         checkArgument(units.contains(unit));
         units.remove(unit);

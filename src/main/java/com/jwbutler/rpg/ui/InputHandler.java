@@ -8,7 +8,6 @@ import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
-import com.jwbutler.rpg.players.HumanPlayer;
 import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.ui.SwingUtils.isLeftButton;
@@ -83,20 +82,18 @@ public final class InputHandler
 
     private void _handleRightUp(@NonNull Pixel pixel)
     {
-        var humanPlayer = session.getPlayer();
-        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
-        var coordinates = humanPlayer.getCamera().pixelToCoordinates(pixel);
+        var coordinates = session.getCamera().pixelToCoordinates(pixel);
 
         engine.moveOrAttack(coordinates);
     }
 
     private void _handleLeftDown(@NonNull Pixel pixel)
     {
-        var humanPlayer = session.getPlayer();
-        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
@@ -105,8 +102,7 @@ public final class InputHandler
 
     private void _handleLeftUp(@NonNull Pixel pixel)
     {
-        var humanPlayer = session.getPlayer();
-        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
@@ -116,14 +112,13 @@ public final class InputHandler
     public void handleMouseMove(@NonNull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
-        var humanPlayer = session.getPlayer();
-        if (humanPlayer.getState() != HumanPlayer.State.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
 
         var level = game.getCurrentLevel();
-        var coordinates = humanPlayer.getCamera().pixelToCoordinates(pixel);
+        var coordinates = session.getCamera().pixelToCoordinates(pixel);
 
         if (level.containsCoordinates(coordinates))
         {
@@ -132,7 +127,7 @@ public final class InputHandler
 
         if (isLeftButtonDown(event))
         {
-            humanPlayer.setSelectionEnd(pixel);
+            engine.updateSelectionRect(pixel);
         }
     }
 }

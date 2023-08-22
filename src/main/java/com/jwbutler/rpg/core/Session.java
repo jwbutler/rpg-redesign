@@ -1,19 +1,60 @@
 package com.jwbutler.rpg.core;
 
-import com.jwbutler.rpg.players.HumanPlayer;
+import java.util.Set;
+
+import com.jwbutler.rpg.geometry.Camera;
+import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.players.Player;
+import com.jwbutler.rpg.units.Unit;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  * With an eye toward multiplayer support - this is a container for player-specific data
  */
 public interface Session
 {
+    enum SessionState
+    {
+        TITLE_SCREEN,
+        GAME
+    }
+
     @NonNull
-    HumanPlayer getPlayer();
+    Player getPlayer();
     
     @NonNull
-    static Session create(@NonNull HumanPlayer player)
+    SessionState getState();
+    
+    void setState(@NonNull SessionState state);
+    
+    @NonNull
+    Camera getCamera();
+
+    @Nullable
+    Pixel getSelectionStart();
+
+    void setSelectionStart(@Nullable Pixel pixel);
+
+    @Nullable
+    Pixel getSelectionEnd();
+
+    void setSelectionEnd(@Nullable Pixel pixel);
+    
+    @NonNull
+    Set<Unit> getSelectedUnits();
+
+    void setSelectedUnits(@NonNull Set<Unit> units);
+    
+    @Nullable
+    Coordinates getMouseCoordinates();
+
+    void setMouseCoordinates(@Nullable Coordinates mouseCoordinates);
+
+    @NonNull
+    static Session create(@NonNull Player player, @NonNull Camera camera)
     {
-        return new SessionImpl(player);
+        return new SessionImpl(player, camera);
     }
 }

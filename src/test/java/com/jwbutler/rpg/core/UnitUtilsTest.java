@@ -2,15 +2,13 @@ package com.jwbutler.rpg.core;
 
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
-import com.jwbutler.rpg.players.EnemyPlayer;
-import com.jwbutler.rpg.players.HumanPlayer;
+import com.jwbutler.rpg.players.Faction;
+import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.UnitFactory;
 import com.jwbutler.rpg.units.UnitUtils;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import org.testng.annotations.Test;
 
-import static com.jwbutler.rpg.units.UnitUtils.addUnit;
-import static com.jwbutler.rpg.units.UnitUtils.moveUnit;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
@@ -26,7 +24,7 @@ public final class UnitUtilsTest
     public void testAddUnit()
     {
         var game = Game.create();
-        var player = new HumanPlayer(game, "test_player", Coordinates.zero());
+        var player = Player.create(game, "test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);
@@ -44,7 +42,7 @@ public final class UnitUtilsTest
     public void testRemoveUnit()
     {
         var game = Game.create();
-        var player = new HumanPlayer(game, "test_player", Coordinates.zero());
+        var player = Player.create(game, "test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);
@@ -57,7 +55,7 @@ public final class UnitUtilsTest
         assertEquals(level.getUnit(unit.getCoordinates()), unit);
         assertTrue(player.getUnits().contains(unit));
 
-        var enemyPlayer = new EnemyPlayer(game, "enemy_player");
+        var enemyPlayer = Player.create(game, "test_player", Faction.ENEMY);
         game.addPlayer(enemyPlayer);
         var enemy = UnitFactory.createEvilPlayerUnit(game, "targeting_unit", 10, enemyPlayer, level, new Coordinates(3, 3));
         UnitUtils.addUnit(enemy, game);
@@ -73,7 +71,7 @@ public final class UnitUtilsTest
     public void testMoveUnit()
     {
         var game = Game.create();
-        var player = new HumanPlayer(game, "test_player", Coordinates.zero());
+        var player = Player.create(game, "test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);

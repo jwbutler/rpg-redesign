@@ -57,8 +57,7 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void moveCamera(@NonNull Direction direction)
     {
-        var player = session.getPlayer();
-        var camera = player.getCamera();
+        var camera = session.getCamera();
         camera.move(direction);
     }
 
@@ -71,13 +70,12 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void moveOrAttack(@NonNull Coordinates coordinates)
     {
-        var humanPlayer = session.getPlayer();
         var level = game.getCurrentLevel();
 
         if (level.containsCoordinates(coordinates))
         {
             var unit = level.getUnit(coordinates);
-            var selectedUnits = humanPlayer.getSelectedUnits();
+            var selectedUnits = session.getSelectedUnits();
             if (unit != null && unit.getPlayer().getFaction() == Faction.ENEMY)
             {
                 for (var playerUnit : selectedUnits)
@@ -98,29 +96,25 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void setMouseCoordinates(@NonNull Coordinates coordinates)
     {
-        var humanPlayer = session.getPlayer();
-        humanPlayer.setMouseCoordinates(coordinates);
+        session.setMouseCoordinates(coordinates);
     }
 
     @Override
     public void startSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = session.getPlayer();
-        humanPlayer.setSelectionStart(pixel);
+        session.setSelectionStart(pixel);
     }
     
     @Override
     public void updateSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = session.getPlayer();
-        humanPlayer.setSelectionEnd(pixel);
+        session.setSelectionEnd(pixel);
     }
 
     @Override
     public void finishSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = session.getPlayer();
-        var selectionStart = humanPlayer.getSelectionStart();
+        var selectionStart = session.getSelectionStart();
         if (selectionStart == null)
         {
             // don't think this is possible
@@ -128,20 +122,19 @@ final class GameEngineImpl implements GameEngine
         }
         var rect = Rect.between(selectionStart, pixel);
         Set<Unit> selectedUnits = _getUnitsInSelectionRect(rect);
-        humanPlayer.setSelectionStart(null);
-        humanPlayer.setSelectionEnd(null);
-        humanPlayer.setSelectedUnits(selectedUnits);
+        session.setSelectionStart(null);
+        session.setSelectionEnd(null);
+        session.setSelectedUnits(selectedUnits);
     }
     
     @NonNull
     private Set<Unit> _getUnitsInSelectionRect(@NonNull Rect rect)
     {
-        var humanPlayer = session.getPlayer();
-        var camera = humanPlayer.getCamera();
+        var camera = session.getCamera();
         return game.getCurrentLevel()
             .getUnits()
             .stream()
-            .filter(u -> u.getPlayer() == humanPlayer)
+            .filter(u -> u.getPlayer() == session.getPlayer())
             .filter(u -> rect.getIntersection(camera.coordinatesToPixelRect(u.getCoordinates())).area() >= 100) // arbitrary threshold
             .collect(Collectors.toSet());
     }

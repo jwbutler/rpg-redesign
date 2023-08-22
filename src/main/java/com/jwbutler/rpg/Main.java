@@ -2,19 +2,21 @@ package com.jwbutler.rpg;
 
 import java.time.Duration;
 
-import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.core.Game;
-import com.jwbutler.rpg.core.Session;
+import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.equipment.EquipmentFactory;
+import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
-import com.jwbutler.rpg.players.EnemyPlayer;
-import com.jwbutler.rpg.players.HumanPlayer;
+import com.jwbutler.rpg.players.Faction;
+import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
 
+import static com.jwbutler.rpg.core.Session.SessionState;
+import static com.jwbutler.rpg.core.Session.create;
 import static com.jwbutler.rpg.ui.InputUtils.registerInputListeners;
 import static com.jwbutler.rpg.units.UnitUtils.addUnit;
 
@@ -38,8 +40,9 @@ public class Main
 
         game.addLevel(level);
         game.setCurrentLevel(level);
-        var humanPlayer = new HumanPlayer(game, "human_player", new Coordinates(5, 5));
-        var session = Session.create(humanPlayer);
+        var humanPlayer = Player.create(game, "human_player", Faction.PLAYER);
+        var camera = new Camera(game, new Coordinates(5, 5));
+        var session = create(humanPlayer, camera);
         game.addPlayer(humanPlayer);
         var renderer = GameRenderer.create(window, session);
         for (int i = 1; i <= 10; i++)
@@ -59,7 +62,7 @@ public class Main
             playerUnit.addEquipment(shield);
         }
 
-        var enemyPlayer = new EnemyPlayer(game, "enemy_player");
+        var enemyPlayer = Player.create(game, "enemy_player", Faction.ENEMY);
         game.addPlayer(enemyPlayer);
 
         for (int i = 1; i <= 10; i++)
@@ -75,7 +78,7 @@ public class Main
             addUnit(enemyUnit, game);
         }
 
-        humanPlayer.setState(HumanPlayer.State.GAME);
+        session.setState(SessionState.GAME);
 
         var engine = GameEngine.create(game, session, renderer, window);
         engine.render(game);
