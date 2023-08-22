@@ -11,9 +11,9 @@ import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.players.HumanPlayer;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.ui.InputUtils.isLeftButton;
-import static com.jwbutler.rpg.ui.InputUtils.isLeftButtonDown;
-import static com.jwbutler.rpg.ui.InputUtils.isRightButton;
+import static com.jwbutler.rpg.ui.SwingUtils.isLeftButton;
+import static com.jwbutler.rpg.ui.SwingUtils.isLeftButtonDown;
+import static com.jwbutler.rpg.ui.SwingUtils.isRightButton;
 
 public final class InputHandler
 {

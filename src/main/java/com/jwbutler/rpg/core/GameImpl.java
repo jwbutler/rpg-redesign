@@ -95,7 +95,10 @@ final class GameImpl implements Game
     public void addUnit(@NonNull Unit unit)
     {
         checkArgument(unitsById.get(unit.getId()) == null);
+        checkArgument(currentLevel.getUnit(unit.getCoordinates()) == null);
         unitsById.put(unit.getId(), unit);
+        currentLevel.addUnit(unit);
+        unit.getPlayer().addUnit(unit);
     }
 
     @Override
@@ -117,7 +120,10 @@ final class GameImpl implements Game
     @Override
     public void removeUnit(@NonNull Unit unit)
     {
+        checkArgument(this.currentLevel.getUnit(unit.getCoordinates()) == unit);
         var removed = unitsById.remove(unit.getId());
         checkState(removed == unit);
+        this.currentLevel.removeUnit(unit);
+        unit.getPlayer().removeUnit(unit);
     }
 }

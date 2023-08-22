@@ -21,16 +21,15 @@ public final class UnitTest
     @Test
     public void testUpdate()
     {
-        var state = Game.create();
-        var controller = GameController.create(state);
-        var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
-        controller.addPlayer(player);
+        var game = Game.create();
+        var player = new HumanPlayer(game, "test_player", Coordinates.zero());
+        game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
-        controller.addLevel(level);
-        state.setCurrentLevel(level);
+        game.addLevel(level);
+        game.setCurrentLevel(level);
 
-        var unit = UnitFactory.createPlayerUnit(controller, "test_unit", 10, player, level, Coordinates.zero());
-        controller.addUnit(unit);
+        var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
+        game.addUnit(unit);
 
         assertEquals(unit.getActivity(), Activity.STANDING);
         assertEquals(unit.getDirection(), Direction.SE);

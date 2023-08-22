@@ -15,6 +15,7 @@ import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
 
+import static com.jwbutler.rpg.ui.InputUtils.registerInputListeners;
 import static com.jwbutler.rpg.units.UnitUtils.addUnit;
 
 public class Main
@@ -80,10 +81,7 @@ public class Main
         engine.render(game);
 
         var inputHandler = new InputHandler(game, session, engine);
-        window.addKeyboardListener(inputHandler::handleKeyDown);
-        window.addMouseDownListener(inputHandler::handleMouseDown);
-        window.addMouseUpListener(inputHandler::handleMouseUp);
-        window.addMouseMoveListener(inputHandler::handleMouseMove);
+        registerInputListeners(inputHandler, window);
 
         while (true)
         {

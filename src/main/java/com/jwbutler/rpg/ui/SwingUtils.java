@@ -4,9 +4,12 @@ import java.awt.event.MouseEvent;
 
 import org.jspecify.annotations.NonNull;
 
-final class InputUtils
+/**
+ * Package-local utility functions dealing with Swing/AWT classes
+ */
+final class SwingUtils
 {
-    private InputUtils() {}
+    private SwingUtils() {}
 
     static boolean isRightButtonDown(@NonNull MouseEvent event)
     {
