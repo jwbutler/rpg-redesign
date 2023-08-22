@@ -32,7 +32,11 @@ task copyToLib(type: Copy) {
     from configurations.runtimeClasspath
 }
 
-build.dependsOn(copyToLib)
+// The above link recommended `build.dependsOn(copyToLib)`
+// but Gradle complains about that, maybe since 8.x
+distTar.dependsOn(copyToLib)
+distZip.dependsOn(copyToLib)
+startScripts.dependsOn(copyToLib)
 
 // https://docs.gradle.org/current/userguide/building_java_projects.html#sec:feature_preview
 // This is specifically for JEP 406, "Enhanced Switch"
