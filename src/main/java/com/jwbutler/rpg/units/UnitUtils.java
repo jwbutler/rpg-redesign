@@ -21,9 +21,9 @@ public final class UnitUtils
     /**
      * @throws IllegalArgumentException if the unit's coordinates are out of bounds
      */
-    public static void addUnit(@NonNull Unit unit, @NonNull Game state)
+    public static void addUnit(@NonNull Unit unit, @NonNull Game game)
     {
-        state.addUnit(unit);
+        game.addUnit(unit);
         unit.getLevel().addUnit(unit);
         unit.getPlayer().addUnit(unit);
     }
@@ -31,9 +31,9 @@ public final class UnitUtils
     /**
      * @throws IllegalArgumentException if the unit is not present in the game state
      */
-    public static void removeUnit(@NonNull Unit unit, @NonNull Game state)
+    public static void removeUnit(@NonNull Unit unit, @NonNull Game game)
     {
-        state.removeUnit(unit);
+        game.removeUnit(unit);
         unit.getLevel().removeUnit(unit);
         unit.getPlayer().removeUnit(unit);
 
