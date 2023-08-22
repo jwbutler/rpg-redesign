@@ -24,11 +24,10 @@ public final class UnitUtilsTest
     public void testAddUnit()
     {
         var game = Game.create();
-        var player = Player.create(game, "test_player", Faction.PLAYER);
+        var player = Player.create("test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);
-        game.setCurrentLevel(level);
 
         var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
         UnitUtils.addUnit(unit, game);
@@ -42,11 +41,10 @@ public final class UnitUtilsTest
     public void testRemoveUnit()
     {
         var game = Game.create();
-        var player = Player.create(game, "test_player", Faction.PLAYER);
+        var player = Player.create("test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);
-        game.setCurrentLevel(level);
 
         var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
         UnitUtils.addUnit(unit, game);
@@ -55,7 +53,7 @@ public final class UnitUtilsTest
         assertEquals(level.getUnit(unit.getCoordinates()), unit);
         assertTrue(player.getUnits().contains(unit));
 
-        var enemyPlayer = Player.create(game, "test_player", Faction.ENEMY);
+        var enemyPlayer = Player.create("test_player", Faction.ENEMY);
         game.addPlayer(enemyPlayer);
         var enemy = UnitFactory.createEvilPlayerUnit(game, "targeting_unit", 10, enemyPlayer, level, new Coordinates(3, 3));
         UnitUtils.addUnit(enemy, game);
@@ -71,11 +69,10 @@ public final class UnitUtilsTest
     public void testMoveUnit()
     {
         var game = Game.create();
-        var player = Player.create(game, "test_player", Faction.PLAYER);
+        var player = Player.create("test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);
-        game.setCurrentLevel(level);
 
         var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
         UnitUtils.addUnit(unit, game);

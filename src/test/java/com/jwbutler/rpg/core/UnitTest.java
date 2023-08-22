@@ -1,5 +1,6 @@
 package com.jwbutler.rpg.core;
 
+import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.LevelFactory;
@@ -24,11 +25,10 @@ public final class UnitTest
     public void testUpdate()
     {
         var game = Game.create();
-        var player = Player.create(game, "test_player", Faction.PLAYER);
+        var player = Player.create("test_player", Faction.PLAYER);
         game.addPlayer(player);
         var level = LevelFactory.TEST_LEVEL.get();
         game.addLevel(level);
-        game.setCurrentLevel(level);
 
         var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
         UnitUtils.addUnit(unit, game);
