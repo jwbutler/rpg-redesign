@@ -12,12 +12,12 @@ import org.jspecify.annotations.NonNull;
  * This class handles all direct actions triggered by an input action.
  * So while {@link InputHandler} handles the mechanical translation of keyboard or mouse actions,
  * it should delegate to this class for any actual logic.
- * In some cases it's a trivial translation to an underlying {@link GameWindow} or {@link GameController} method.
+ * In some cases it's a trivial translation to an underlying {@link GameWindow} or {@link Game} method.
  */
 public interface GameEngine
 {
-    void update(@NonNull GameState state);
-    void render(@NonNull GameState state);
+    void update(@NonNull Game game);
+    void render(@NonNull Game game);
     
     void moveCamera(@NonNull Direction direction);
     void toggleScreenMaximized();
@@ -29,11 +29,11 @@ public interface GameEngine
     
     @NonNull
     static GameEngine create(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )
     {
-        return new GameEngineImpl(controller, renderer, window);
+        return new GameEngineImpl(game, renderer, window);
     }
 }

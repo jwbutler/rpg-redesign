@@ -5,10 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.equipment.Slot;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -25,7 +26,7 @@ import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 final class UnitImpl implements Unit
 {
     @NonNull
-    private final GameController controller;
+    private final Game game;
     @NonNull
     private final UUID id;
     @NonNull
@@ -53,7 +54,7 @@ final class UnitImpl implements Unit
     private final Map<Slot, Equipment> slotToEquipment;
 
     UnitImpl(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull String name,
         int life,
         @NonNull AnimatedSprite<Unit> sprite,
@@ -62,7 +63,7 @@ final class UnitImpl implements Unit
         @NonNull Coordinates coordinates
     )
     {
-        this.controller = controller;
+        this.game = game;
         this.id = UUID.randomUUID();
         this.name = name;
         this.life = life;
@@ -81,9 +82,9 @@ final class UnitImpl implements Unit
 
     @NonNull
     @Override
-    public GameController getController()
+    public Game getGame()
     {
-        return controller;
+        return game;
     }
 
     @Override

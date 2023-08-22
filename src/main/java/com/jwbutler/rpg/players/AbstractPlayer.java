@@ -3,9 +3,10 @@ package com.jwbutler.rpg.players;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.units.Unit;
 
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
@@ -13,7 +14,7 @@ import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 abstract class AbstractPlayer implements Player
 {
     @NonNull
-    private final GameController controller;
+    private final Game game;
     @NonNull
     private final UUID id;
     @NonNull
@@ -23,9 +24,9 @@ abstract class AbstractPlayer implements Player
     @NonNull
     private final Set<Unit> units;
 
-    protected AbstractPlayer(@NonNull GameController controller, @NonNull String name, @NonNull Faction faction)
+    protected AbstractPlayer(@NonNull Game game, @NonNull String name, @NonNull Faction faction)
     {
-        this.controller = controller;
+        this.game = game;
         this.id = UUID.randomUUID();
         this.name = name;
         this.faction = faction;

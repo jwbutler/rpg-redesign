@@ -1,9 +1,10 @@
 package com.jwbutler.rpg.units;
 
 import java.util.Map;
+
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.levels.Level;
@@ -19,7 +20,7 @@ public final class UnitFactory
 
     @NonNull
     public static Unit createPlayerUnit(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull String name,
         int life,
         @NonNull Player player,
@@ -28,7 +29,7 @@ public final class UnitFactory
     )
     {
         return new UnitBuilder()
-            .controller(controller)
+            .game(game)
             .name(name)
             .life(life)
             .sprite(new UnitSprite(new PlayerAnimations(emptyMap())))
@@ -40,7 +41,7 @@ public final class UnitFactory
 
     @NonNull
     public static Unit createEvilPlayerUnit(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull String name,
         int life,
         @NonNull Player player,
@@ -54,7 +55,7 @@ public final class UnitFactory
             Colors.PURPLE, Colors.DARK_RED
         );
         return new UnitBuilder()
-            .controller(controller)
+            .game(game)
             .name(name)
             .life(life)
             .sprite(new UnitSprite(new PlayerAnimations(paletteSwaps)))

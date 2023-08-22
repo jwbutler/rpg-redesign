@@ -19,7 +19,7 @@ public final class GameControllerTest
     @Test
     public void testAddLevel()
     {
-        var state = GameState.create();
+        var state = Game.create();
         var controller = GameController.create(state);
         var level = LevelFactory.TEST_LEVEL.get();
 
@@ -30,7 +30,7 @@ public final class GameControllerTest
     @Test
     public void testAddUnit()
     {
-        var state = GameState.create();
+        var state = Game.create();
         var controller = GameController.create(state);
         var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
         controller.addPlayer(player);
@@ -47,7 +47,7 @@ public final class GameControllerTest
     @Test
     public void testRemoveUnit()
     {
-        var state = GameState.create();
+        var state = Game.create();
         var controller = GameController.create(state);
         var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
         controller.addPlayer(player);
@@ -76,7 +76,7 @@ public final class GameControllerTest
     @Test
     public void testMoveUnit()
     {
-        var state = GameState.create();
+        var state = Game.create();
         var controller = GameController.create(state);
         var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
         controller.addPlayer(player);

@@ -1,8 +1,8 @@
 package com.jwbutler.rpg.units;
 
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
@@ -12,7 +12,7 @@ import static com.jwbutler.rpg.util.Preconditions.checkState;
 
 final class UnitBuilder
 {
-    private GameController controller;
+    private Game game;
     private String name;
     private Integer life;
     private AnimatedSprite<Unit> sprite;
@@ -20,9 +20,9 @@ final class UnitBuilder
     private Level level;
     private Coordinates coordinates;
 
-    UnitBuilder controller(GameController controller)
+    UnitBuilder game(Game game)
     {
-        this.controller = controller;
+        this.game = game;
         return this;
     }
 
@@ -65,7 +65,7 @@ final class UnitBuilder
     @NonNull
     Unit build()
     {
-        checkState(controller != null);
+        checkState(game != null);
         checkState(name != null);
         checkState(life != null);
         checkState(sprite != null);
@@ -74,7 +74,7 @@ final class UnitBuilder
         checkState(coordinates != null);
 
         return new UnitImpl(
-            controller,
+            game,
             name,
             life,
             sprite,

@@ -2,7 +2,7 @@ package com.jwbutler.rpg.ui;
 
 import java.awt.Graphics2D;
 
-import com.jwbutler.rpg.core.GameState;
+import com.jwbutler.rpg.core.Game;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
@@ -15,7 +15,7 @@ import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.core.GameStateUtils.getHumanPlayer;
+import static com.jwbutler.rpg.core.GameUtils.getHumanPlayer;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
 import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
@@ -31,7 +31,7 @@ final class GameRendererImpl implements GameRenderer
     }
 
     @Override
-    public void render(@NonNull GameState state)
+    public void render(@NonNull Game state)
     {
         window.render(graphics ->
         {
@@ -45,7 +45,7 @@ final class GameRendererImpl implements GameRenderer
         });
     }
 
-    private static void _drawGrid(@NonNull GameState state, @NonNull Graphics2D graphics)
+    private static void _drawGrid(@NonNull Game state, @NonNull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
         var humanPlayer = getHumanPlayer(state);
@@ -64,7 +64,7 @@ final class GameRendererImpl implements GameRenderer
     }
 
     private static void _drawTileOverlays(
-        @NonNull GameState state,
+        @NonNull Game state,
         @NonNull Graphics2D graphics
     )
     {
@@ -86,7 +86,7 @@ final class GameRendererImpl implements GameRenderer
         }
     }
 
-    private static void _drawUnits(@NonNull GameState state, @NonNull Graphics2D graphics)
+    private static void _drawUnits(@NonNull Game state, @NonNull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
 
@@ -105,7 +105,7 @@ final class GameRendererImpl implements GameRenderer
     }
 
     private static void _drawUnit(
-        @NonNull GameState state,
+        @NonNull Game state,
         @NonNull Graphics2D graphics,
         @NonNull Unit unit
     )
@@ -164,7 +164,7 @@ final class GameRendererImpl implements GameRenderer
     }
 
     private static void _drawEquipment(
-        @NonNull GameState state,
+        @NonNull Game state,
         @NonNull Graphics2D graphics,
         @NonNull Equipment equipment
     )
@@ -184,7 +184,7 @@ final class GameRendererImpl implements GameRenderer
 
     private static void _drawTileOverlay(
         @NonNull TileOverlay overlay,
-        @NonNull GameState state,
+        @NonNull Game state,
         @NonNull Graphics2D graphics,
         @NonNull Coordinates coordinates
     )
@@ -195,7 +195,7 @@ final class GameRendererImpl implements GameRenderer
         graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
     }
 
-    private static void _drawUiOverlays(@NonNull GameState state, @NonNull Graphics2D graphics)
+    private static void _drawUiOverlays(@NonNull Game state, @NonNull Graphics2D graphics)
     {
         var humanPlayer = getHumanPlayer(state);
         var start = humanPlayer.getSelectionStart();

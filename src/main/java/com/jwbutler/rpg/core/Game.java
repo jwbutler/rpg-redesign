@@ -6,11 +6,10 @@ import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.levels.Level;
-import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
-public interface GameState
+public interface Game
 {
     void addPlayer(@NonNull Player player);
 
@@ -55,8 +54,8 @@ public interface GameState
     void removeUnit(@NonNull Unit unit);
 
     @NonNull
-    static GameState create()
+    static Game create()
     {
-        return new GameStateImpl();
+        return new GameImpl();
     }
 }

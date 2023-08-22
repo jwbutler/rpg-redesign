@@ -1,8 +1,8 @@
 package com.jwbutler.rpg.equipment;
 
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.sprites.EquipmentSprite;
 import com.jwbutler.rpg.sprites.animations.ShieldAnimations;
 import com.jwbutler.rpg.sprites.animations.SwordAnimations;
@@ -14,7 +14,7 @@ public class EquipmentFactory
 {
     @NonNull
     public static Equipment createNoobSword(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull Unit unit
     )
     {
@@ -29,7 +29,7 @@ public class EquipmentFactory
 
     @NonNull
     public static Equipment createShield(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull Unit unit
     )
     {

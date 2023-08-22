@@ -4,7 +4,9 @@ import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.units.commands.DieCommand;
 
-import static com.jwbutler.rpg.core.GameStateUtils.removeUnit;
+import static com.jwbutler.rpg.units.UnitUtils.dealDamage;
+import static com.jwbutler.rpg.units.UnitUtils.moveUnit;
+import static com.jwbutler.rpg.units.UnitUtils.removeUnit;
 import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 public enum Activity
@@ -25,7 +27,7 @@ public enum Activity
             var level = unit.getLevel();
             if (level.containsCoordinates(coordinates) && level.getUnit(coordinates) == null)
             {
-                unit.getController().moveUnit(unit, level, coordinates);
+                moveUnit(unit, level, coordinates);
             }
         }
     },
@@ -35,12 +37,11 @@ public enum Activity
         public void onComplete(@NonNull Unit unit)
         {
             var damage = unit.getAttackDamage();
-            var controller = unit.getController();
             var coordinates = unit.getCoordinates().plus(unit.getDirection());
             var target = unit.getLevel().getUnit(coordinates);
             if (target != null)
             {
-                controller.dealDamage(unit, target, damage);
+                dealDamage(unit, target, damage);
                 if (target.getLife() <= 0)
                 {
                     target.setCommand(new DieCommand());
@@ -54,8 +55,7 @@ public enum Activity
         @Override
         public void onComplete(@NonNull Unit unit)
         {
-            var controller = unit.getController();
-            removeUnit(unit, controller.getState());
+            removeUnit(unit, unit.getGame());
         }
     };
 

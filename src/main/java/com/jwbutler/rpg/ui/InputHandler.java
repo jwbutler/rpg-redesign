@@ -3,14 +3,14 @@ package com.jwbutler.rpg.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import com.jwbutler.rpg.core.GameController;
+import com.jwbutler.rpg.core.Game;
 import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.players.HumanPlayer;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.core.GameStateUtils.getHumanPlayer;
+import static com.jwbutler.rpg.core.GameUtils.getHumanPlayer;
 import static com.jwbutler.rpg.ui.InputUtils.isLeftButton;
 import static com.jwbutler.rpg.ui.InputUtils.isLeftButtonDown;
 import static com.jwbutler.rpg.ui.InputUtils.isRightButton;
@@ -18,16 +18,16 @@ import static com.jwbutler.rpg.ui.InputUtils.isRightButton;
 public final class InputHandler
 {
     @NonNull
-    private final GameController controller;
+    private final Game game;
     @NonNull
     private final GameEngine engine;
 
     public InputHandler(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull GameEngine engine
     )
     {
-        this.controller = controller;
+        this.game = game;
         this.engine = engine;
     }
 
@@ -79,8 +79,7 @@ public final class InputHandler
 
     private void _handleRightUp(@NonNull Pixel pixel)
     {
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
+        var humanPlayer = getHumanPlayer(game);
         if (humanPlayer.getState() != HumanPlayer.State.GAME)
         {
             return;
@@ -92,8 +91,7 @@ public final class InputHandler
 
     private void _handleLeftDown(@NonNull Pixel pixel)
     {
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
+        var humanPlayer = getHumanPlayer(game);
         if (humanPlayer.getState() != HumanPlayer.State.GAME)
         {
             return;
@@ -103,8 +101,7 @@ public final class InputHandler
 
     private void _handleLeftUp(@NonNull Pixel pixel)
     {
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
+        var humanPlayer = getHumanPlayer(game);
         if (humanPlayer.getState() != HumanPlayer.State.GAME)
         {
             return;
@@ -115,14 +112,13 @@ public final class InputHandler
     public void handleMouseMove(@NonNull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
+        var humanPlayer = getHumanPlayer(game);
         if (humanPlayer.getState() != HumanPlayer.State.GAME)
         {
             return;
         }
 
-        var level = state.getCurrentLevel();
+        var level = game.getCurrentLevel();
         var coordinates = humanPlayer.getCamera().pixelToCoordinates(pixel);
 
         if (level.containsCoordinates(coordinates))

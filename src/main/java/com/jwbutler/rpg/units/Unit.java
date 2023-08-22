@@ -2,10 +2,11 @@ package com.jwbutler.rpg.units;
 
 import java.util.Set;
 import java.util.UUID;
+
+import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-import com.jwbutler.rpg.core.GameController;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
@@ -16,11 +17,7 @@ import com.jwbutler.rpg.units.commands.Command;
 
 public interface Unit
 {
-    /**
-     * TODO this does not make a lot of sense
-     */
-    @NonNull
-    GameController getController();
+    @NonNull Game getGame();
 
     @NonNull
     UUID getId();

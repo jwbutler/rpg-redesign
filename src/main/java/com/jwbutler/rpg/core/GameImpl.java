@@ -18,7 +18,7 @@ import com.jwbutler.rpg.units.Unit;
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 import static com.jwbutler.rpg.util.Preconditions.checkState;
 
-final class GameStateImpl implements GameState
+final class GameImpl implements Game
 {
     @NonNull
     private final Map<UUID, Level> levelsById;
@@ -30,7 +30,7 @@ final class GameStateImpl implements GameState
     @Nullable
     private Level currentLevel;
 
-    GameStateImpl()
+    GameImpl()
     {
         playersById = new HashMap<>();
         levelsById = new HashMap<>();
@@ -64,7 +64,7 @@ final class GameStateImpl implements GameState
     }
 
     @NonNull
-    public HumanPlayer getHumanPlayer(@NonNull GameState state)
+    public HumanPlayer getHumanPlayer(@NonNull Game state)
     {
         return state.getPlayers()
             .stream()

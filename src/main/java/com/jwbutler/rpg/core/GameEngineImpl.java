@@ -8,7 +8,6 @@ import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.geometry.Rect;
 import com.jwbutler.rpg.players.Faction;
-import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.units.Unit;
@@ -16,47 +15,47 @@ import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.core.GameStateUtils.getHumanPlayer;
+import static com.jwbutler.rpg.core.GameUtils.getHumanPlayer;
 
 final class GameEngineImpl implements GameEngine
 {
     @NonNull
-    private final GameController controller;
+    private final Game game;
     @NonNull
     private final GameRenderer renderer;
     @NonNull
     private final GameWindow window;
     
     GameEngineImpl(
-        @NonNull GameController controller,
+        @NonNull Game game,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )
     {
-        this.controller = controller;
+        this.game = game;
         this.renderer = renderer;
         this.window = window;
     }
 
     @Override
-    public void update(@NonNull GameState state)
+    public void update(@NonNull Game game)
     {
-        for (var unit : state.getCurrentLevel().getUnits())
+        for (var unit : game.getCurrentLevel().getUnits())
         {
             unit.update();
         }
     }
 
     @Override
-    public void render(@NonNull GameState state)
+    public void render(@NonNull Game game)
     {
-        renderer.render(state);
+        renderer.render(game);
     }
 
     @Override
     public void moveCamera(@NonNull Direction direction)
     {
-        var player = getHumanPlayer(controller.getState());
+        var player = getHumanPlayer(game);
         var camera = player.getCamera();
         camera.move(direction);
     }
@@ -70,9 +69,8 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void moveOrAttack(@NonNull Coordinates coordinates)
     {
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
-        var level = state.getCurrentLevel();
+        var humanPlayer = getHumanPlayer(game);
+        var level = game.getCurrentLevel();
 
         if (level.containsCoordinates(coordinates))
         {
@@ -98,29 +96,28 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void setMouseCoordinates(@NonNull Coordinates coordinates)
     {
-        var humanPlayer = getHumanPlayer(controller.getState());
+        var humanPlayer = getHumanPlayer(game);
         humanPlayer.setMouseCoordinates(coordinates);
     }
 
     @Override
     public void startSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = getHumanPlayer(controller.getState());
+        var humanPlayer = getHumanPlayer(game);
         humanPlayer.setSelectionStart(pixel);
     }
     
     @Override
     public void updateSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = getHumanPlayer(controller.getState());
+        var humanPlayer = getHumanPlayer(game);
         humanPlayer.setSelectionEnd(pixel);
     }
 
     @Override
     public void finishSelectionRect(@NonNull Pixel pixel)
     {
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
+        var humanPlayer = getHumanPlayer(game);
         var selectionStart = humanPlayer.getSelectionStart();
         if (selectionStart == null)
         {
@@ -137,10 +134,9 @@ final class GameEngineImpl implements GameEngine
     @NonNull
     private Set<Unit> _getUnitsInSelectionRect(@NonNull Rect rect)
     {
-        var state = controller.getState();
-        var humanPlayer = getHumanPlayer(state);
+        var humanPlayer = getHumanPlayer(game);
         var camera = humanPlayer.getCamera();
-        return state.getCurrentLevel()
+        return game.getCurrentLevel()
             .getUnits()
             .stream()
             .filter(u -> u.getPlayer() == humanPlayer)

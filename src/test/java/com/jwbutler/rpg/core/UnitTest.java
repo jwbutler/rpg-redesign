@@ -21,7 +21,7 @@ public final class UnitTest
     @Test
     public void testUpdate()
     {
-        var state = GameState.create();
+        var state = Game.create();
         var controller = GameController.create(state);
         var player = new HumanPlayer(controller, "test_player", Coordinates.zero());
         controller.addPlayer(player);
