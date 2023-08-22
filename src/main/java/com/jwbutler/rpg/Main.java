@@ -1,6 +1,8 @@
 package com.jwbutler.rpg;
 
 import java.time.Duration;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.jwbutler.rpg.core.Game;
 import com.jwbutler.rpg.core.GameEngine;
@@ -85,24 +87,22 @@ public class Main
 
         var inputHandler = new InputHandler(session, engine);
         registerInputListeners(inputHandler, window);
+        
+        var executor = Executors.newScheduledThreadPool(8);
 
-        while (true)
+        executor.scheduleAtFixedRate(() ->
         {
-            long startTime = System.nanoTime();
-            engine.update(game);
-            
-            while (System.nanoTime() < startTime + (Duration.ofMillis(FRAME_FREQUENCY_MILLIS).toNanos()))
+            synchronized (game)
+            {
+                engine.update(game);
+            }
+        }, 0, FRAME_FREQUENCY_MILLIS, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(() ->
+        {
+            synchronized (game)
             {
                 engine.render(game);
-                try
-                {
-                    Thread.sleep(RENDER_FREQUENCY_MILLIS);
-                }
-                catch (InterruptedException e)
-                {
-                    throw new RuntimeException(e);
-                }
             }
-        }
+        }, 0, RENDER_FREQUENCY_MILLIS, TimeUnit.MILLISECONDS);
     }
 }
