@@ -31,7 +31,7 @@ public final class GameWindow
     @NonNull
     private final BufferedImage image;
 
-    private final double ZOOM_RATIO = 2.0;
+    private static final double ZOOM_RATIO = 4.0;
 
     public GameWindow()
     {

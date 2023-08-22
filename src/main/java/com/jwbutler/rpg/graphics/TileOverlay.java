@@ -7,13 +7,14 @@ import org.jspecify.annotations.NonNull;
 
 public enum TileOverlay
 {
-    PLAYER_ACTIVE(Colors.DARK_GREEN, Colors.CYAN),
+    PLAYER_ACTIVE(Colors.TEAL, Colors.CYAN),
     PLAYER_INACTIVE(Colors.DARK_GREEN, Colors.DARK_GREEN),
     ENEMY_TARGETED(Colors.DARK_RED, Colors.RED),
     ENEMY_MOUSEOVER(Colors.RED, Colors.YELLOW),
     ENEMY_INACTIVE(Colors.DARK_RED, Colors.DARK_RED),
     TILE_TARGETED(Colors.DARK_BLUE, Colors.BLUE),
-    TILE_MOUSEOVER(Colors.DARK_BLUE, Colors.DARK_BLUE);
+    TILE_MOUSEOVER(Colors.DARK_BLUE, Colors.DARK_BLUE),
+    TILE_GRID(Colors.WHITE, Colors.TRANSPARENT_BLACK);
 
     @NonNull
     private final Color outerColor;

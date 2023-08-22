@@ -1,5 +1,6 @@
 package com.jwbutler.rpg.core;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,8 +16,13 @@ import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
 
+import static java.util.Collections.emptySet;
+
 final class GameEngineImpl implements GameEngine
 {
+    private static final int SELECTION_RECT_THRESHOLD = 100;
+    private static final int SELECTION_RECT_MIN_AREA = 9;
+
     @NonNull
     private final Game game;
     @NonNull
@@ -121,7 +127,19 @@ final class GameEngineImpl implements GameEngine
             return;
         }
         var rect = Rect.between(selectionStart, pixel);
-        Set<Unit> selectedUnits = _getUnitsInSelectionRect(rect);
+
+        final Set<Unit> selectedUnits;
+        if (rect.area() > SELECTION_RECT_MIN_AREA)
+        {
+            selectedUnits = _getUnitsInSelectionRect(rect);
+        }
+        else
+        {
+            var coordinates = session.getCamera().pixelToCoordinates(pixel);
+            var unit = game.getCurrentLevel().getUnit(coordinates);
+            selectedUnits = (unit != null) ? Set.of(unit) : emptySet();
+        }
+
         session.setSelectionStart(null);
         session.setSelectionEnd(null);
         session.setSelectedUnits(selectedUnits);
@@ -135,7 +153,7 @@ final class GameEngineImpl implements GameEngine
             .getUnits()
             .stream()
             .filter(u -> u.getPlayer() == session.getPlayer())
-            .filter(u -> rect.getIntersection(camera.coordinatesToPixelRect(u.getCoordinates())).area() >= 100) // arbitrary threshold
+            .filter(u -> rect.getIntersection(camera.coordinatesToPixelRect(u.getCoordinates())).area() >= SELECTION_RECT_THRESHOLD) // arbitrary threshold
             .collect(Collectors.toSet());
     }
 }
