@@ -23,16 +23,6 @@ import static org.testng.Assert.assertTrue;
 public final class UnitUtilsTest
 {
     @Test
-    public void testAddLevel()
-    {
-        var game = Game.create();
-        var level = LevelFactory.TEST_LEVEL.get();
-
-        game.addLevel(level);
-        assertEquals(game.getLevel(level.getId()), level);
-    }
-
-    @Test
     public void testAddUnit()
     {
         var game = Game.create();
@@ -70,7 +60,7 @@ public final class UnitUtilsTest
         var enemyPlayer = new EnemyPlayer(game, "enemy_player");
         game.addPlayer(enemyPlayer);
         var enemy = UnitFactory.createEvilPlayerUnit(game, "targeting_unit", 10, enemyPlayer, level, new Coordinates(3, 3));
-        UnitUtils.addUnit(unit, game);
+        UnitUtils.addUnit(enemy, game);
         enemy.setCommand(new AttackCommand(unit));
 
         UnitUtils.removeUnit(unit, game);

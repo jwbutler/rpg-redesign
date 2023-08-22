@@ -6,6 +6,7 @@ import com.jwbutler.rpg.levels.LevelFactory;
 import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.UnitFactory;
+import com.jwbutler.rpg.units.UnitUtils;
 import com.jwbutler.rpg.units.commands.DefendCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.testng.annotations.Test;
@@ -29,7 +30,7 @@ public final class UnitTest
         game.setCurrentLevel(level);
 
         var unit = UnitFactory.createPlayerUnit(game, "test_unit", 10, player, level, Coordinates.zero());
-        game.addUnit(unit);
+        UnitUtils.addUnit(unit, game);
 
         assertEquals(unit.getActivity(), Activity.STANDING);
         assertEquals(unit.getDirection(), Direction.SE);
