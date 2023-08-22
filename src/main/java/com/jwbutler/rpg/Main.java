@@ -36,13 +36,13 @@ public class Main
         var game = Game.create();
         var window = new GameWindow();
 
-        var level = LevelFactory.LEVEL_ONE.get();
-
-        game.addLevel(level);
-        game.setCurrentLevel(level);
         var humanPlayer = Player.create(game, "human_player", Faction.PLAYER);
-        var camera = new Camera(game, new Coordinates(5, 5));
+        var camera = new Camera(new Coordinates(5, 5));
         var session = create(humanPlayer, camera);
+
+        var level = LevelFactory.LEVEL_ONE.get();
+        game.addLevel(level);
+        session.setCurrentLevel(level);
         game.addPlayer(humanPlayer);
         var renderer = GameRenderer.create(window, session);
         for (int i = 1; i <= 10; i++)

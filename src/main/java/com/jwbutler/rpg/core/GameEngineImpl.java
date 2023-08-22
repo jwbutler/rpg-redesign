@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.core;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -48,7 +47,7 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void update(@NonNull Game game)
     {
-        for (var unit : game.getCurrentLevel().getUnits())
+        for (var unit : session.getCurrentLevel().getUnits())
         {
             unit.update();
         }
@@ -64,7 +63,12 @@ final class GameEngineImpl implements GameEngine
     public void moveCamera(@NonNull Direction direction)
     {
         var camera = session.getCamera();
-        camera.move(direction);
+        var coordinates = camera.getCoordinates().plus(direction);
+        var level = session.getCurrentLevel();
+        if (level.containsCoordinates(coordinates))
+        {
+            camera.setCoordinates(coordinates);
+        }
     }
 
     @Override
@@ -76,7 +80,7 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void moveOrAttack(@NonNull Coordinates coordinates)
     {
-        var level = game.getCurrentLevel();
+        var level = session.getCurrentLevel();
 
         if (level.containsCoordinates(coordinates))
         {
@@ -136,7 +140,7 @@ final class GameEngineImpl implements GameEngine
         else
         {
             var coordinates = session.getCamera().pixelToCoordinates(pixel);
-            var unit = game.getCurrentLevel().getUnit(coordinates);
+            var unit = session.getCurrentLevel().getUnit(coordinates);
             selectedUnits = (unit != null) ? Set.of(unit) : emptySet();
         }
 
@@ -149,7 +153,7 @@ final class GameEngineImpl implements GameEngine
     private Set<Unit> _getUnitsInSelectionRect(@NonNull Rect rect)
     {
         var camera = session.getCamera();
-        return game.getCurrentLevel()
+        return session.getCurrentLevel()
             .getUnits()
             .stream()
             .filter(u -> u.getPlayer() == session.getPlayer())

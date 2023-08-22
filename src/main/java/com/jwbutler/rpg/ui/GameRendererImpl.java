@@ -44,16 +44,16 @@ final class GameRendererImpl implements GameRenderer
             graphics.setColor(Colors.BLACK);
             graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             graphics.setColor(Colors.WHITE);
-            _drawGrid(game, graphics);
-            _drawTileOverlays(game, graphics);
-            _drawUnits(game, graphics);
+            _drawGrid(graphics);
+            _drawTileOverlays(graphics);
+            _drawUnits(graphics);
             _drawUiOverlays(graphics);
         });
     }
 
-    private void _drawGrid(@NonNull Game game, @NonNull Graphics2D graphics)
+    private void _drawGrid(@NonNull Graphics2D graphics)
     {
-        var level = game.getCurrentLevel();
+        var level = session.getCurrentLevel();
 
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
@@ -69,11 +69,10 @@ final class GameRendererImpl implements GameRenderer
     }
 
     private void _drawTileOverlays(
-        @NonNull Game game,
         @NonNull Graphics2D graphics
     )
     {
-        for (var coordinates : game.getCurrentLevel().getAllCoordinates())
+        for (var coordinates : session.getCurrentLevel().getAllCoordinates())
         {
             _drawTileOverlay(TileOverlay.TILE_GRID, graphics, coordinates);
         }
@@ -95,9 +94,9 @@ final class GameRendererImpl implements GameRenderer
         }
     }
 
-    private void _drawUnits(@NonNull Game game, @NonNull Graphics2D graphics)
+    private void _drawUnits(@NonNull Graphics2D graphics)
     {
-        var level = game.getCurrentLevel();
+        var level = session.getCurrentLevel();
 
         for (int y = 0; y < level.getDimensions().height(); y++)
         {

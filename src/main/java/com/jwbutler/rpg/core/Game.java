@@ -31,11 +31,6 @@ public interface Game
      */
     @NonNull
     Level getLevel(@NonNull UUID id);
-    
-    @NonNull
-    Level getCurrentLevel();
-
-    void setCurrentLevel(@NonNull Level currentLevel);
 
     /**
      * @throws IllegalArgumentException if we already have a unit with the specified id

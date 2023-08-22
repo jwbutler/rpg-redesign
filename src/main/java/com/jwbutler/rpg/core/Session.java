@@ -5,6 +5,7 @@ import java.util.Set;
 import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 import org.jspecify.annotations.NonNull;
@@ -23,6 +24,10 @@ public interface Session
 
     @NonNull
     Player getPlayer();
+
+    @NonNull Level getCurrentLevel();
+
+    void setCurrentLevel(@NonNull Level currentLevel);
     
     @NonNull
     SessionState getState();
@@ -51,7 +56,7 @@ public interface Session
     Coordinates getMouseCoordinates();
 
     void setMouseCoordinates(@Nullable Coordinates mouseCoordinates);
-
+    
     @NonNull
     static Session create(@NonNull Player player, @NonNull Camera camera)
     {

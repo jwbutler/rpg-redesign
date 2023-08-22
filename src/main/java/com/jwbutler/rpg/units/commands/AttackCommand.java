@@ -29,7 +29,7 @@ implements Command
         }
         else
         {
-            var level = unit.getGame().getCurrentLevel();
+            var level = unit.getLevel();
             var candidates = level.getAllCoordinates()
                 .stream()
                 .filter(coordinates -> level.getUnit(coordinates) == null && !level.getTile(coordinates).isBlocking())

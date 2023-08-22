@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.geometry;
 
-import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
@@ -11,29 +10,22 @@ import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
 public final class Camera
 {
     @NonNull
-    private final Game game;
-    @NonNull
     private Coordinates coordinates;
 
-    public Camera(@NonNull Game game, @NonNull Coordinates coordinates)
+    public Camera(@NonNull Coordinates coordinates)
     {
-        this.game = game;
         this.coordinates = coordinates;
+    }
+    
+    @NonNull
+    public Coordinates getCoordinates()
+    {
+        return coordinates;
     }
 
     public void setCoordinates(@NonNull Coordinates coordinates)
     {
         this.coordinates = coordinates;
-    }
-
-    public void move(@NonNull Direction direction)
-    {
-        var coordinates = this.coordinates.plus(direction);
-        var level = game.getCurrentLevel();
-        if (level.containsCoordinates(coordinates))
-        {
-            this.coordinates = coordinates;
-        }
     }
 
     /**

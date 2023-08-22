@@ -25,15 +25,11 @@ final class GameImpl implements Game
     @NonNull
     private final Map<UUID, Unit> unitsById;
 
-    @Nullable
-    private Level currentLevel;
-
     GameImpl()
     {
         playersById = new HashMap<>();
         levelsById = new HashMap<>();
         unitsById = new HashMap<>();
-        currentLevel = null;
     }
 
     @Override
@@ -75,20 +71,6 @@ final class GameImpl implements Game
         var level = levelsById.get(id);
         checkArgument(level != null);
         return level;
-    }
-
-    @NonNull
-    @Override
-    public Level getCurrentLevel()
-    {
-        checkState(currentLevel != null);
-        return currentLevel;
-    }
-
-    @Override
-    public void setCurrentLevel(@NonNull Level currentLevel)
-    {
-        this.currentLevel = currentLevel;
     }
 
     @Override

@@ -6,15 +6,20 @@ import java.util.Set;
 import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import static com.jwbutler.rpg.util.Preconditions.checkState;
+
 final class SessionImpl implements Session
 {
     @NonNull
     private final Player player;
+    @Nullable
+    private Level currentLevel;
     @NonNull
     private final Camera camera;
     @NonNull
@@ -32,6 +37,7 @@ final class SessionImpl implements Session
     {
         this.player = player;
         this.camera = camera;
+        this.currentLevel = null;
         this.state = SessionState.TITLE_SCREEN;
         this.selectedUnits = new HashSet<>();
         this.selectionStart = null;
@@ -44,6 +50,20 @@ final class SessionImpl implements Session
     public Player getPlayer()
     {
         return player;
+    }
+
+    @Override
+    @NonNull
+    public Level getCurrentLevel()
+    {
+        checkState(currentLevel != null);
+        return currentLevel;
+    }
+
+    @Override
+    public void setCurrentLevel(@NonNull Level currentLevel)
+    {
+        this.currentLevel = currentLevel;
     }
 
     @Override

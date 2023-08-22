@@ -117,7 +117,7 @@ public final class InputHandler
             return;
         }
 
-        var level = game.getCurrentLevel();
+        var level = session.getCurrentLevel();
         var coordinates = session.getCamera().pixelToCoordinates(pixel);
 
         if (level.containsCoordinates(coordinates))
