@@ -14,7 +14,7 @@ public enum TileOverlay
     ENEMY_INACTIVE(Colors.DARK_RED, Colors.DARK_RED),
     TILE_TARGETED(Colors.DARK_BLUE, Colors.BLUE),
     TILE_MOUSEOVER(Colors.DARK_BLUE, Colors.DARK_BLUE),
-    TILE_GRID(Colors.WHITE, Colors.TRANSPARENT_BLACK);
+    TILE_GRID(Colors.BLACK, Colors.TRANSPARENT_BLACK);
 
     @NonNull
     private final Color outerColor;
