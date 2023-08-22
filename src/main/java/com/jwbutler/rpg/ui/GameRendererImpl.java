@@ -15,6 +15,7 @@ import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
 
+import static com.jwbutler.rpg.core.GameStateUtils.getHumanPlayer;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
 import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
@@ -47,7 +48,7 @@ final class GameRendererImpl implements GameRenderer
     private static void _drawGrid(@NonNull GameState state, @NonNull Graphics2D graphics)
     {
         var level = state.getCurrentLevel();
-        var humanPlayer = state.getHumanPlayer();
+        var humanPlayer = getHumanPlayer(state);
 
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
@@ -67,7 +68,7 @@ final class GameRendererImpl implements GameRenderer
         @NonNull Graphics2D graphics
     )
     {
-        var humanPlayer = state.getHumanPlayer();
+        var humanPlayer = getHumanPlayer(state);
 
         if (humanPlayer.getMouseCoordinates() != null)
         {
@@ -109,7 +110,7 @@ final class GameRendererImpl implements GameRenderer
         @NonNull Unit unit
     )
     {
-        var humanPlayer = state.getHumanPlayer();
+        var humanPlayer = getHumanPlayer(state);
         var coordinates = unit.getCoordinates();
         var frame = unit.getSprite().getFrame(unit);
         var image = frame.image();
@@ -170,7 +171,7 @@ final class GameRendererImpl implements GameRenderer
     {
         var unit = equipment.getUnit();
         var coordinates = unit.getCoordinates();
-        var humanPlayer = state.getHumanPlayer();
+        var humanPlayer = getHumanPlayer(state);
         var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
         var frame = equipment.getSprite().getFrame(equipment);
         var image = frame.image();
@@ -188,7 +189,7 @@ final class GameRendererImpl implements GameRenderer
         @NonNull Coordinates coordinates
     )
     {
-        var humanPlayer = state.getHumanPlayer();
+        var humanPlayer = getHumanPlayer(state);
         var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
         var image = overlay.getImage();
         graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
@@ -196,7 +197,7 @@ final class GameRendererImpl implements GameRenderer
 
     private static void _drawUiOverlays(@NonNull GameState state, @NonNull Graphics2D graphics)
     {
-        var humanPlayer = state.getHumanPlayer();
+        var humanPlayer = getHumanPlayer(state);
         var start = humanPlayer.getSelectionStart();
         var end = humanPlayer.getSelectionEnd();
         if (start != null && end != null)

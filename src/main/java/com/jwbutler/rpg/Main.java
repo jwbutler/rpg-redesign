@@ -3,6 +3,7 @@ package com.jwbutler.rpg;
 import java.time.Duration;
 
 import com.jwbutler.rpg.core.GameController;
+import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.core.GameState;
 import com.jwbutler.rpg.equipment.EquipmentFactory;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -13,6 +14,8 @@ import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
 import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
+
+import static com.jwbutler.rpg.core.GameStateUtils.addUnit;
 
 public class Main
 {
@@ -34,10 +37,10 @@ public class Main
 
         var level = LevelFactory.LEVEL_ONE.get();
 
-        controller.addLevel(level);
+        state.addLevel(level);
         state.setCurrentLevel(level);
         var humanPlayer = new HumanPlayer(controller, "human_player", new Coordinates(5, 5));
-        controller.addPlayer(humanPlayer);
+        state.addPlayer(humanPlayer);
         for (int i = 1; i <= 10; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
@@ -48,7 +51,7 @@ public class Main
                 level,
                 new Coordinates(i - 1, 0)
             );
-            controller.addUnit(playerUnit);
+            addUnit(playerUnit, state);
             var sword = EquipmentFactory.createNoobSword(controller, playerUnit);
             playerUnit.addEquipment(sword);
             var shield = EquipmentFactory.createShield(controller, playerUnit);
@@ -56,7 +59,8 @@ public class Main
         }
 
         var enemyPlayer = new EnemyPlayer(controller, "enemy_player");
-        controller.addPlayer(enemyPlayer);
+        state.addPlayer(enemyPlayer);
+
         for (int i = 1; i <= 10; i++)
         {
             var enemyUnit = UnitFactory.createEvilPlayerUnit(
@@ -67,13 +71,15 @@ public class Main
                 level,
                 new Coordinates(2 + i, 5)
             );
-            controller.addUnit(enemyUnit);
+            addUnit(enemyUnit, state);
         }
 
         humanPlayer.setState(HumanPlayer.State.GAME);
-        renderer.render(state);
 
-        var inputHandler = new InputHandler(controller, window);
+        var engine = GameEngine.create(controller, renderer, window);
+        engine.render(state);
+
+        var inputHandler = new InputHandler(controller, engine);
         window.addKeyboardListener(inputHandler::handleKeyDown);
         window.addMouseDownListener(inputHandler::handleMouseDown);
         window.addMouseUpListener(inputHandler::handleMouseUp);
@@ -82,13 +88,11 @@ public class Main
         while (true)
         {
             long startTime = System.nanoTime();
-            for (var unit : state.getCurrentLevel().getUnits())
-            {
-                unit.update();
-            }
+            engine.update(state);
+            
             while (System.nanoTime() < startTime + (Duration.ofMillis(FRAME_FREQUENCY_MILLIS).toNanos()))
             {
-                renderer.render(state);
+                engine.render(state);
                 try
                 {
                     Thread.sleep(RENDER_FREQUENCY_MILLIS);

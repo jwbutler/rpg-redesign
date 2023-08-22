@@ -1,7 +1,9 @@
 package com.jwbutler.rpg.core;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.jspecify.annotations.Nullable;
@@ -53,12 +55,18 @@ final class GameStateImpl implements GameState
         checkArgument(player != null);
         return player;
     }
-
+    
     @NonNull
     @Override
-    public HumanPlayer getHumanPlayer()
+    public Set<Player> getPlayers()
     {
-        return playersById.values()
+        return new HashSet<>(playersById.values());
+    }
+
+    @NonNull
+    public HumanPlayer getHumanPlayer(@NonNull GameState state)
+    {
+        return state.getPlayers()
             .stream()
             .filter(player -> player.getFaction() == Faction.PLAYER)
             .filter(HumanPlayer.class::isInstance)

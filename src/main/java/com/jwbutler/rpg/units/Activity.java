@@ -4,6 +4,7 @@ import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.units.commands.DieCommand;
 
+import static com.jwbutler.rpg.core.GameStateUtils.removeUnit;
 import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 public enum Activity
@@ -54,7 +55,7 @@ public enum Activity
         public void onComplete(@NonNull Unit unit)
         {
             var controller = unit.getController();
-            controller.removeUnit(unit);
+            removeUnit(unit, controller.getState());
         }
     };
 

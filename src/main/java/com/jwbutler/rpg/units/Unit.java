@@ -16,6 +16,9 @@ import com.jwbutler.rpg.units.commands.Command;
 
 public interface Unit
 {
+    /**
+     * TODO this does not make a lot of sense
+     */
     @NonNull
     GameController getController();
 
