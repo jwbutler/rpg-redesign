@@ -15,12 +15,12 @@ import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.core.GameUtils.getHumanPlayer;
-
 final class GameEngineImpl implements GameEngine
 {
     @NonNull
     private final Game game;
+    @NonNull
+    private final Session session;
     @NonNull
     private final GameRenderer renderer;
     @NonNull
@@ -28,11 +28,13 @@ final class GameEngineImpl implements GameEngine
     
     GameEngineImpl(
         @NonNull Game game,
+        @NonNull Session session,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )
     {
         this.game = game;
+        this.session = session;
         this.renderer = renderer;
         this.window = window;
     }
@@ -55,7 +57,7 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void moveCamera(@NonNull Direction direction)
     {
-        var player = getHumanPlayer(game);
+        var player = session.getPlayer();
         var camera = player.getCamera();
         camera.move(direction);
     }
@@ -69,7 +71,7 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void moveOrAttack(@NonNull Coordinates coordinates)
     {
-        var humanPlayer = getHumanPlayer(game);
+        var humanPlayer = session.getPlayer();
         var level = game.getCurrentLevel();
 
         if (level.containsCoordinates(coordinates))
@@ -96,28 +98,28 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void setMouseCoordinates(@NonNull Coordinates coordinates)
     {
-        var humanPlayer = getHumanPlayer(game);
+        var humanPlayer = session.getPlayer();
         humanPlayer.setMouseCoordinates(coordinates);
     }
 
     @Override
     public void startSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = getHumanPlayer(game);
+        var humanPlayer = session.getPlayer();
         humanPlayer.setSelectionStart(pixel);
     }
     
     @Override
     public void updateSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = getHumanPlayer(game);
+        var humanPlayer = session.getPlayer();
         humanPlayer.setSelectionEnd(pixel);
     }
 
     @Override
     public void finishSelectionRect(@NonNull Pixel pixel)
     {
-        var humanPlayer = getHumanPlayer(game);
+        var humanPlayer = session.getPlayer();
         var selectionStart = humanPlayer.getSelectionStart();
         if (selectionStart == null)
         {
@@ -134,7 +136,7 @@ final class GameEngineImpl implements GameEngine
     @NonNull
     private Set<Unit> _getUnitsInSelectionRect(@NonNull Rect rect)
     {
-        var humanPlayer = getHumanPlayer(game);
+        var humanPlayer = session.getPlayer();
         var camera = humanPlayer.getCamera();
         return game.getCurrentLevel()
             .getUnits()

@@ -10,8 +10,6 @@ import org.jspecify.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.levels.Level;
-import com.jwbutler.rpg.players.Faction;
-import com.jwbutler.rpg.players.HumanPlayer;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 
@@ -61,18 +59,6 @@ final class GameImpl implements Game
     public Set<Player> getPlayers()
     {
         return new HashSet<>(playersById.values());
-    }
-
-    @NonNull
-    public HumanPlayer getHumanPlayer(@NonNull Game state)
-    {
-        return state.getPlayers()
-            .stream()
-            .filter(player -> player.getFaction() == Faction.PLAYER)
-            .filter(HumanPlayer.class::isInstance)
-            .map(HumanPlayer.class::cast)
-            .findFirst()
-            .orElseThrow(IllegalStateException::new);
     }
 
     @Override

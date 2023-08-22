@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.core.Game;
+import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.equipment.EquipmentFactory;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.LevelFactory;
@@ -31,14 +32,15 @@ public class Main
 
         var game = Game.create();
         var window = new GameWindow();
-        var renderer = GameRenderer.create(window);
 
         var level = LevelFactory.LEVEL_ONE.get();
 
         game.addLevel(level);
         game.setCurrentLevel(level);
         var humanPlayer = new HumanPlayer(game, "human_player", new Coordinates(5, 5));
+        var session = Session.create(humanPlayer);
         game.addPlayer(humanPlayer);
+        var renderer = GameRenderer.create(window, session);
         for (int i = 1; i <= 10; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
@@ -74,10 +76,10 @@ public class Main
 
         humanPlayer.setState(HumanPlayer.State.GAME);
 
-        var engine = GameEngine.create(game, renderer, window);
+        var engine = GameEngine.create(game, session, renderer, window);
         engine.render(game);
 
-        var inputHandler = new InputHandler(game, engine);
+        var inputHandler = new InputHandler(game, session, engine);
         window.addKeyboardListener(inputHandler::handleKeyDown);
         window.addMouseDownListener(inputHandler::handleMouseDown);
         window.addMouseUpListener(inputHandler::handleMouseUp);
