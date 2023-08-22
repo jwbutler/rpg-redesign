@@ -16,6 +16,9 @@ import com.jwbutler.rpg.units.UnitFactory;
 
 public class Main
 {
+    public static final int FRAME_FREQUENCY_MILLIS = 100;
+    public static final int RENDER_FREQUENCY_MILLIS = 20;
+
     public static void main(String[] args)
     {
         Thread.setDefaultUncaughtExceptionHandler((Thread t, Throwable e) -> {
@@ -83,12 +86,12 @@ public class Main
             {
                 unit.update();
             }
-            while (System.nanoTime() < startTime + (Duration.ofMillis(150).toNanos()))
+            while (System.nanoTime() < startTime + (Duration.ofMillis(FRAME_FREQUENCY_MILLIS).toNanos()))
             {
                 renderer.render(state);
                 try
                 {
-                    Thread.sleep(20);
+                    Thread.sleep(RENDER_FREQUENCY_MILLIS);
                 }
                 catch (InterruptedException e)
                 {
