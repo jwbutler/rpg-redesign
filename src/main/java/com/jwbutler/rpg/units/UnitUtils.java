@@ -1,7 +1,13 @@
 package com.jwbutler.rpg.units;
 
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.jwbutler.rpg.core.Game;
 import com.jwbutler.rpg.geometry.Coordinates;
+import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.units.commands.DieCommand;
 import org.jspecify.annotations.NonNull;
@@ -56,5 +62,20 @@ public final class UnitUtils
         {
             target.setCommand(new DieCommand());
         }
+    }
+    
+    @NonNull
+    public static Set<Unit> getAdjacentUnits(@NonNull Unit unit)
+    {
+        return Arrays.stream(Direction.values())
+            .map(unit.getCoordinates()::plus)
+            .map(unit.getLevel()::getUnit)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+    }
+    
+    public static boolean isHostileToward(@NonNull Unit source, @NonNull Unit target)
+    {
+        return source.getPlayer().getFaction().isHostileToward(target.getPlayer().getFaction());
     }
 }
