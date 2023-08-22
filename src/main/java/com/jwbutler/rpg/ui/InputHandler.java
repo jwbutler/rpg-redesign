@@ -3,7 +3,6 @@ package com.jwbutler.rpg.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import com.jwbutler.rpg.core.Game;
 import com.jwbutler.rpg.core.GameEngine;
 import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.geometry.Direction;
@@ -17,19 +16,15 @@ import static com.jwbutler.rpg.ui.SwingUtils.isRightButton;
 public final class InputHandler
 {
     @NonNull
-    private final Game game;
-    @NonNull
     private final Session session;
     @NonNull
     private final GameEngine engine;
     
     public InputHandler(
-        @NonNull Game game,
         @NonNull Session session,
         @NonNull GameEngine engine
     )
     {
-        this.game = game;
         this.session = session;
         this.engine = engine;
     }

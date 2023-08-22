@@ -30,7 +30,7 @@ final class SessionImpl implements Session
     private Pixel selectionStart;
     @Nullable
     private Pixel selectionEnd;
-    @NonNull
+    @Nullable
     private Coordinates mouseCoordinates;
     
     SessionImpl(@NonNull Player player, @NonNull Camera camera)
@@ -80,28 +80,33 @@ final class SessionImpl implements Session
     }
 
     @NonNull
+    @Override
     public Camera getCamera()
     {
         return camera;
     }
     
     @Nullable
+    @Override
     public Pixel getSelectionStart()
     {
         return selectionStart;
     }
 
+    @Override
     public void setSelectionStart(@Nullable Pixel pixel)
     {
         selectionStart = pixel;
     }
 
     @Nullable
+    @Override
     public Pixel getSelectionEnd()
     {
         return selectionEnd;
     }
 
+    @Override
     public void setSelectionEnd(@Nullable Pixel pixel)
     {
         if (selectionStart == null)
@@ -112,22 +117,27 @@ final class SessionImpl implements Session
     }
 
     @NonNull
+    @Override
     public Set<Unit> getSelectedUnits()
     {
         return selectedUnits;
     }
 
+    @Override
     public void setSelectedUnits(@NonNull Set<Unit> units)
     {
         selectedUnits.clear();
         selectedUnits.addAll(units);
     }
+
     @Nullable
+    @Override
     public Coordinates getMouseCoordinates()
     {
         return mouseCoordinates;
     }
 
+    @Override
     public void setMouseCoordinates(@Nullable Coordinates mouseCoordinates)
     {
         this.mouseCoordinates = mouseCoordinates;

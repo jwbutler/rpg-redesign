@@ -23,8 +23,6 @@ final class GameEngineImpl implements GameEngine
     private static final int SELECTION_RECT_MIN_AREA = 9;
 
     @NonNull
-    private final Game game;
-    @NonNull
     private final Session session;
     @NonNull
     private final GameRenderer renderer;
@@ -32,13 +30,11 @@ final class GameEngineImpl implements GameEngine
     private final GameWindow window;
     
     GameEngineImpl(
-        @NonNull Game game,
         @NonNull Session session,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )
     {
-        this.game = game;
         this.session = session;
         this.renderer = renderer;
         this.window = window;

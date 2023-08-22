@@ -36,7 +36,7 @@ public class Main
         var game = Game.create();
         var window = new GameWindow();
 
-        var humanPlayer = Player.create(game, "human_player", Faction.PLAYER);
+        var humanPlayer = Player.create("human_player", Faction.PLAYER);
         var camera = new Camera(new Coordinates(5, 5));
         var session = create(humanPlayer, camera);
 
@@ -62,7 +62,7 @@ public class Main
             playerUnit.addEquipment(shield);
         }
 
-        var enemyPlayer = Player.create(game, "enemy_player", Faction.ENEMY);
+        var enemyPlayer = Player.create("enemy_player", Faction.ENEMY);
         game.addPlayer(enemyPlayer);
 
         for (int i = 1; i <= 10; i++)
@@ -80,10 +80,10 @@ public class Main
 
         session.setState(SessionState.GAME);
 
-        var engine = GameEngine.create(game, session, renderer, window);
+        var engine = GameEngine.create(session, renderer, window);
         engine.render(game);
 
-        var inputHandler = new InputHandler(game, session, engine);
+        var inputHandler = new InputHandler(session, engine);
         registerInputListeners(inputHandler, window);
 
         while (true)

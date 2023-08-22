@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.jwbutler.rpg.core.Game;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.units.Unit;
@@ -14,8 +13,6 @@ import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 final class PlayerImpl implements Player
 {
     @NonNull
-    private final Game game;
-    @NonNull
     private final UUID id;
     @NonNull
     private final String name;
@@ -24,9 +21,8 @@ final class PlayerImpl implements Player
     @NonNull
     private final Set<Unit> units;
 
-    PlayerImpl(@NonNull Game game, @NonNull String name, @NonNull Faction faction)
+    PlayerImpl(@NonNull String name, @NonNull Faction faction)
     {
-        this.game = game;
         this.id = UUID.randomUUID();
         this.name = name;
         this.faction = faction;
