@@ -29,12 +29,11 @@ public interface GameEngine
     
     @NonNull
     static GameEngine create(
-        @NonNull Game game,
         @NonNull Session session,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )
     {
-        return new GameEngineImpl(game, session, renderer, window);
+        return new GameEngineImpl(session, renderer, window);
     }
 }

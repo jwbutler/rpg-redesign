@@ -37,24 +37,23 @@ final class GameRendererImpl implements GameRenderer
     }
 
     @Override
-    public void render(@NonNull Game state)
+    public void render(@NonNull Game game)
     {
         window.render(graphics ->
         {
             graphics.setColor(Colors.BLACK);
             graphics.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             graphics.setColor(Colors.WHITE);
-            _drawGrid(state, graphics);
+            _drawGrid(graphics);
             _drawTileOverlays(graphics);
-            _drawUnits(state, graphics);
+            _drawUnits(graphics);
             _drawUiOverlays(graphics);
         });
     }
 
-    private void _drawGrid(@NonNull Game state, @NonNull Graphics2D graphics)
+    private void _drawGrid(@NonNull Graphics2D graphics)
     {
-        var level = state.getCurrentLevel();
-        var humanPlayer = session.getPlayer();
+        var level = session.getCurrentLevel();
 
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
@@ -63,7 +62,7 @@ final class GameRendererImpl implements GameRenderer
                 var coordinates = new Coordinates(x, y);
                 var tile = level.getTile(coordinates);
                 var frame = tile.getFrame();
-                var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+                var tileRect = session.getCamera().coordinatesToPixelRect(coordinates);
                 graphics.drawImage(frame.image(), tileRect.left(), tileRect.top(), null);
             }
         }
@@ -73,13 +72,17 @@ final class GameRendererImpl implements GameRenderer
         @NonNull Graphics2D graphics
     )
     {
-        var humanPlayer = session.getPlayer();
-
-        if (humanPlayer.getMouseCoordinates() != null)
+        for (var coordinates : session.getCurrentLevel().getAllCoordinates())
         {
-            _drawTileOverlay(TileOverlay.TILE_MOUSEOVER, graphics, humanPlayer.getMouseCoordinates());
+            _drawTileOverlay(TileOverlay.TILE_GRID, graphics, coordinates);
+        }
+        
+        if (session.getMouseCoordinates() != null)
+        {
+            _drawTileOverlay(TileOverlay.TILE_MOUSEOVER, graphics, session.getMouseCoordinates());
         }
 
+        var humanPlayer = session.getPlayer();
         for (var playerUnit : humanPlayer.getUnits())
         {
             switch (playerUnit.getLatestCommand())
@@ -91,9 +94,9 @@ final class GameRendererImpl implements GameRenderer
         }
     }
 
-    private void _drawUnits(@NonNull Game state, @NonNull Graphics2D graphics)
+    private void _drawUnits(@NonNull Graphics2D graphics)
     {
-        var level = state.getCurrentLevel();
+        var level = session.getCurrentLevel();
 
         for (int y = 0; y < level.getDimensions().height(); y++)
         {
@@ -122,7 +125,7 @@ final class GameRendererImpl implements GameRenderer
         {
             case PLAYER ->
             {
-                if (humanPlayer.getSelectedUnits().contains(unit))
+                if (session.getSelectedUnits().contains(unit))
                 {
                     yield TileOverlay.PLAYER_ACTIVE;
                 }
@@ -143,7 +146,7 @@ final class GameRendererImpl implements GameRenderer
             }
         };
         _drawTileOverlay(overlay, graphics, coordinates);
-        var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+        var tileRect = session.getCamera().coordinatesToPixelRect(coordinates);
         var topLeft = new Pixel(
             tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
             tileRect.top() + (TILE_WIDTH / 2) - image.getHeight()
@@ -174,8 +177,7 @@ final class GameRendererImpl implements GameRenderer
     {
         var unit = equipment.getUnit();
         var coordinates = unit.getCoordinates();
-        var humanPlayer = session.getPlayer();
-        var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+        var tileRect = session.getCamera().coordinatesToPixelRect(coordinates);
         var frame = equipment.getSprite().getFrame(equipment);
         var image = frame.image();
         var topLeft = new Pixel(
@@ -191,17 +193,15 @@ final class GameRendererImpl implements GameRenderer
         @NonNull Coordinates coordinates
     )
     {
-        var humanPlayer = session.getPlayer();
-        var tileRect = humanPlayer.getCamera().coordinatesToPixelRect(coordinates);
+        var tileRect = session.getCamera().coordinatesToPixelRect(coordinates);
         var image = overlay.getImage();
         graphics.drawImage(image, tileRect.left(), tileRect.top(), null);
     }
 
     private void _drawUiOverlays(@NonNull Graphics2D graphics)
     {
-        var humanPlayer = session.getPlayer();
-        var start = humanPlayer.getSelectionStart();
-        var end = humanPlayer.getSelectionEnd();
+        var start = session.getSelectionStart();
+        var end = session.getSelectionEnd();
         if (start != null && end != null)
         {
             graphics.setColor(Colors.CYAN);

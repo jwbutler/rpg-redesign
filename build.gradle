@@ -20,10 +20,12 @@ java {
 
 application {
     mainClass = 'com.jwbutler.rpg.Main'
+    applicationName 'RPG 2023'
 }
 
 tasks.named('test') {
     useTestNG()
+    systemProperty 'java.awt.headless', 'true'
 }
 
 // https://dev.to/sualeh/how-to-create-platform-specific-installers-for-your-java-applications-from-github-actions-2c15

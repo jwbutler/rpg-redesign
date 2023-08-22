@@ -29,7 +29,7 @@ implements Command
         }
         else
         {
-            var level = unit.getGame().getCurrentLevel();
+            var level = unit.getLevel();
             var candidates = level
                 .getAllCoordinates()
                 .stream()

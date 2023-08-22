@@ -6,7 +6,7 @@ import org.jspecify.annotations.NonNull;
 
 public interface GameRenderer
 {
-    void render(@NonNull Game state);
+    void render(@NonNull Game game);
     
     @NonNull
     static GameRenderer create(@NonNull GameWindow window, @NonNull Session session)
