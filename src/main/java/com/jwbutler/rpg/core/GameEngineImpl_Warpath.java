@@ -17,20 +17,20 @@ import org.jspecify.annotations.NonNull;
 
 import static java.util.Collections.emptySet;
 
-final class GameEngineImpl implements GameEngine
+final class GameEngineImpl_Warpath implements GameEngine_Warpath
 {
     private static final int SELECTION_RECT_THRESHOLD = 100;
     private static final int SELECTION_RECT_MIN_AREA = 9;
 
     @NonNull
-    private final Session session;
+    private final Session_Warpath session;
     @NonNull
     private final GameRenderer renderer;
     @NonNull
     private final GameWindow window;
     
-    GameEngineImpl(
-        @NonNull Session session,
+    GameEngineImpl_Warpath(
+        @NonNull Session_Warpath session,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )

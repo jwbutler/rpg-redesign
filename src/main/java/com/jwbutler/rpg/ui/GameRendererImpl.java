@@ -3,11 +3,10 @@ package com.jwbutler.rpg.ui;
 import java.awt.Graphics2D;
 
 import com.jwbutler.rpg.core.Game;
-import com.jwbutler.rpg.core.Session;
+import com.jwbutler.rpg.core.Session_Shining;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
-import com.jwbutler.rpg.geometry.Rect;
 import com.jwbutler.rpg.graphics.Colors;
 import com.jwbutler.rpg.graphics.Layer;
 import com.jwbutler.rpg.graphics.TileOverlay;
@@ -25,11 +24,11 @@ final class GameRendererImpl implements GameRenderer
     @NonNull
     private final GameWindow window;
     @NonNull
-    private final Session session;
+    private final Session_Shining session;
     
     GameRendererImpl(
         @NonNull GameWindow window,
-        @NonNull Session session
+        @NonNull Session_Shining session
     )
     {
         this.window = window;
@@ -125,7 +124,7 @@ final class GameRendererImpl implements GameRenderer
         {
             case PLAYER ->
             {
-                if (session.getSelectedUnits().contains(unit))
+                if (unit == session.getActiveUnit())
                 {
                     yield TileOverlay.PLAYER_ACTIVE;
                 }
@@ -136,6 +135,10 @@ final class GameRendererImpl implements GameRenderer
             }
             case ENEMY, NEUTRAL -> // NEUTRAL doesn't really make sense, oh well
             {
+                if (unit == session.getActiveUnit())
+                {
+                    yield TileOverlay.ENEMY_ACTIVE;
+                }
                 if (humanPlayer.getUnits()
                     .stream()
                     .anyMatch(playerUnit -> playerUnit.getCommand() instanceof AttackCommand ac && ac.target() == unit))
@@ -200,13 +203,5 @@ final class GameRendererImpl implements GameRenderer
 
     private void _drawUiOverlays(@NonNull Graphics2D graphics)
     {
-        var start = session.getSelectionStart();
-        var end = session.getSelectionEnd();
-        if (start != null && end != null)
-        {
-            graphics.setColor(Colors.CYAN);
-            var rect = Rect.between(start, end);
-            graphics.drawRect(rect.left(), rect.top(), rect.width(), rect.height());
-        }
     }
 }

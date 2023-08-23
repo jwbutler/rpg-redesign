@@ -1,10 +1,7 @@
 package com.jwbutler.rpg.core;
 
-import java.util.Set;
-
 import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
-import com.jwbutler.rpg.geometry.Pixel;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
@@ -14,7 +11,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * With an eye toward multiplayer support - this is a container for player-specific data
  */
-public interface Session
+public interface Session_Shining
 {
     enum SessionState
     {
@@ -38,28 +35,21 @@ public interface Session
     Camera getCamera();
 
     @Nullable
-    Pixel getSelectionStart();
-
-    void setSelectionStart(@Nullable Pixel pixel);
-
-    @Nullable
-    Pixel getSelectionEnd();
-
-    void setSelectionEnd(@Nullable Pixel pixel);
-    
-    @NonNull
-    Set<Unit> getSelectedUnits();
-
-    void setSelectedUnits(@NonNull Set<Unit> units);
-    
-    @Nullable
     Coordinates getMouseCoordinates();
 
     void setMouseCoordinates(@Nullable Coordinates mouseCoordinates);
+
+    /**
+     * null if state != GAME, I guess
+     */
+    @Nullable
+    Unit getActiveUnit();
+    
+    void selectNextUnit();
     
     @NonNull
-    static Session create(@NonNull Player player, @NonNull Camera camera)
+    static Session_Shining create(@NonNull Game game, @NonNull Player player, @NonNull Camera camera)
     {
-        return new SessionImpl(player, camera);
+        return new SessionImpl_Shining(game, player, camera);
     }
 }

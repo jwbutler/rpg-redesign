@@ -14,7 +14,7 @@ import org.jspecify.annotations.Nullable;
 
 import static com.jwbutler.rpg.util.Preconditions.checkState;
 
-final class SessionImpl implements Session
+final class SessionImpl_Warpath implements Session_Warpath
 {
     @NonNull
     private final Player player;
@@ -33,7 +33,7 @@ final class SessionImpl implements Session
     @Nullable
     private Coordinates mouseCoordinates;
     
-    SessionImpl(@NonNull Player player, @NonNull Camera camera)
+    SessionImpl_Warpath(@NonNull Player player, @NonNull Camera camera)
     {
         this.player = player;
         this.camera = camera;
