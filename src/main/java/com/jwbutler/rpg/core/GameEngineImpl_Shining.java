@@ -5,7 +5,12 @@ import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
+import com.jwbutler.rpg.units.Unit;
+import com.jwbutler.rpg.units.commands.Command;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
+import static java.util.Objects.requireNonNull;
 
 final class GameEngineImpl_Shining implements GameEngine_Shining
 {
@@ -15,6 +20,8 @@ final class GameEngineImpl_Shining implements GameEngine_Shining
     private final GameRenderer renderer;
     @NonNull
     private final GameWindow window;
+    
+    
     
     GameEngineImpl_Shining(
         @NonNull Session_Shining session,
@@ -30,10 +37,14 @@ final class GameEngineImpl_Shining implements GameEngine_Shining
     @Override
     public void update(@NonNull Game game)
     {
-        for (var unit : session.getCurrentLevel().getUnits())
+        if (session.getActiveUnit() == null)
         {
-            unit.update();
+            session.selectNextUnit();
         }
+        var activeUnit = session.getActiveUnit();
+        requireNonNull(activeUnit);
+
+        activeUnit.update();
     }
 
     @Override
@@ -71,5 +82,17 @@ final class GameEngineImpl_Shining implements GameEngine_Shining
     {
         session.setCurrentLevel(level);
         session.selectNextUnit();
+    }
+
+    @Override
+    public void queueCommand(@NonNull Unit unit, @NonNull Command command)
+    {
+        
+    }
+
+    @Override
+    public @Nullable Command getQueuedCommand(@Nullable Unit unit)
+    {
+        return null;
     }
 }

@@ -12,7 +12,8 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.units.commands.DieCommand;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
+import static com.jwbutler.rpg.units.commands.CommandUtils.getDefaultCommand;
+import static com.jwbutler.rpg.units.commands.CommandUtils.getTargetUnit;
 
 public final class UnitUtils
 {
@@ -40,9 +41,9 @@ public final class UnitUtils
         // TODO I do not feel good about putting this here
         for (Unit other : unit.getLevel().getUnits())
         {
-            if (other.getCommand().getTargetUnit() == unit)
+            if (getTargetUnit(other.getCommand()) == unit)
             {
-                other.setCommand(defaultCommand());
+                other.setCommand(getDefaultCommand());
             }
         }
     }

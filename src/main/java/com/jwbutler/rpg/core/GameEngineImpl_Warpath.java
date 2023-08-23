@@ -80,16 +80,16 @@ final class GameEngineImpl_Warpath implements GameEngine_Warpath
 
         if (level.containsCoordinates(coordinates))
         {
-            var unit = level.getUnit(coordinates);
+            var targetUnit = level.getUnit(coordinates);
             var selectedUnits = session.getSelectedUnits();
-            if (unit != null && unit.getPlayer().getFaction() == Faction.ENEMY)
+            if (targetUnit != null && targetUnit.getPlayer().getFaction() == Faction.ENEMY)
             {
                 for (var playerUnit : selectedUnits)
                 {
-                    playerUnit.setNextCommand(new AttackCommand(unit));
+                    playerUnit.setNextCommand(new AttackCommand(targetUnit));
                 }
             }
-            else if (unit == null)
+            else if (targetUnit == null)
             {
                 for (var playerUnit : selectedUnits)
                 {

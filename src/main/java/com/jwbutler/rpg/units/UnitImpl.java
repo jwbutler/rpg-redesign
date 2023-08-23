@@ -20,8 +20,8 @@ import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
 
+import static com.jwbutler.rpg.units.commands.CommandUtils.getDefaultCommand;
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
-import static com.jwbutler.rpg.units.commands.Command.defaultCommand;
 
 final class UnitImpl implements Unit
 {
@@ -72,7 +72,7 @@ final class UnitImpl implements Unit
         activity = Activity.STANDING;
         direction = Direction.SE;
         frameNumber = 0;
-        command = defaultCommand();
+        command = getDefaultCommand();
         nextCommand = null;
         this.player = player;
         this.level = level;

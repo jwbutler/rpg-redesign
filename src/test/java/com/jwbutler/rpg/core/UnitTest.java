@@ -1,6 +1,5 @@
 package com.jwbutler.rpg.core;
 
-import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.LevelFactory;

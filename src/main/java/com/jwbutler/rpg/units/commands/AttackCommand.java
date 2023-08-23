@@ -55,18 +55,4 @@ implements Command
             return new ActivityPair(Activity.STANDING, unit.getDirection());
         }
     }
-
-    @NonNull
-    @Override
-    public Unit getTargetUnit()
-    {
-        return target;
-    }
-
-    @Nullable
-    @Override
-    public Coordinates getTargetCoordinates()
-    {
-        return null;
-    }
 }

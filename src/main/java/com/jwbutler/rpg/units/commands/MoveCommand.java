@@ -11,10 +11,7 @@ import com.jwbutler.rpg.geometry.Pathfinder;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 
-public record MoveCommand
-(
-    @NonNull Coordinates target
-)
+public record MoveCommand(@NonNull Coordinates target)
 implements Command
 {
     @Override
@@ -58,19 +55,5 @@ implements Command
 
         // TODO hack hack hack
         return new DefendCommand().getNextActivity(unit);
-    }
-
-    @Nullable
-    @Override
-    public Unit getTargetUnit()
-    {
-        return null;
-    }
-
-    @NonNull
-    @Override
-    public Coordinates getTargetCoordinates()
-    {
-        return target;
     }
 }
