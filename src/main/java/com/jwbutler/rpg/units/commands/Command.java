@@ -9,4 +9,6 @@ permits StayCommand, MoveCommand, AttackCommand, DieCommand, DefendCommand
 {
     @NonNull
     ActivityPair getNextActivity(@NonNull Unit unit);
+    
+    boolean isComplete(@NonNull Unit unit);
 }

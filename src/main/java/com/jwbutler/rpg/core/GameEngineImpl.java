@@ -12,19 +12,17 @@ import org.jspecify.annotations.Nullable;
 
 import static java.util.Objects.requireNonNull;
 
-final class GameEngineImpl_Shining implements GameEngine_Shining
+final class GameEngineImpl implements GameEngine
 {
     @NonNull
-    private final Session_Shining session;
+    private final Session session;
     @NonNull
     private final GameRenderer renderer;
     @NonNull
     private final GameWindow window;
-    
-    
-    
-    GameEngineImpl_Shining(
-        @NonNull Session_Shining session,
+
+    GameEngineImpl(
+        @NonNull Session session,
         @NonNull GameRenderer renderer,
         @NonNull GameWindow window
     )
@@ -44,7 +42,20 @@ final class GameEngineImpl_Shining implements GameEngine_Shining
         var activeUnit = session.getActiveUnit();
         requireNonNull(activeUnit);
 
+        if (activeUnit.getCommand() == null)
+        {
+            var command = getQueuedCommand(activeUnit);
+            if (command != null)
+            {
+                activeUnit.setCommand(command);
+            }
+        }
         activeUnit.update();
+        if (activeUnit.getCommand() != null && activeUnit.getCommand().isComplete(activeUnit))
+        {
+            activeUnit.setCommand(null);
+            session.selectNextUnit();
+        }
     }
 
     @Override
@@ -87,12 +98,21 @@ final class GameEngineImpl_Shining implements GameEngine_Shining
     @Override
     public void queueCommand(@NonNull Unit unit, @NonNull Command command)
     {
-        
+        session.queueCommand(unit, command);
     }
 
     @Override
-    public @Nullable Command getQueuedCommand(@Nullable Unit unit)
+    @Nullable
+    public Command getQueuedCommand(@NonNull Unit unit)
     {
-        return null;
+        var queuedCommand = session.getQueuedCommand(unit);
+        session.clearQueuedCommand(unit);
+        return queuedCommand;
+    }
+
+    @Override
+    public void clearQueuedCommand(@NonNull Unit unit)
+    {
+        session.clearQueuedCommand(unit);
     }
 }

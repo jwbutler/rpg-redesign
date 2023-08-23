@@ -8,6 +8,7 @@ import org.jspecify.annotations.NonNull;
 public enum TileOverlay
 {
     PLAYER_ACTIVE(Colors.TEAL, Colors.CYAN),
+    PLAYER_TARGETED(Colors.TEAL, Colors.CYAN),
     PLAYER_INACTIVE(Colors.DARK_GREEN, Colors.DARK_GREEN),
     ENEMY_ACTIVE(Colors.DARK_RED, Colors.RED),
     ENEMY_TARGETED(Colors.DARK_RED, Colors.RED),

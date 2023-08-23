@@ -3,8 +3,8 @@ package com.jwbutler.rpg;
 import java.time.Duration;
 
 import com.jwbutler.rpg.core.Game;
-import com.jwbutler.rpg.core.GameEngine_Shining;
-import com.jwbutler.rpg.core.Session_Shining;
+import com.jwbutler.rpg.core.GameEngine;
+import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.equipment.EquipmentFactory;
 import com.jwbutler.rpg.geometry.Camera;
 import com.jwbutler.rpg.geometry.Coordinates;
@@ -13,11 +13,10 @@ import com.jwbutler.rpg.players.Faction;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
-import com.jwbutler.rpg.ui.InputHandler_Shining;
+import com.jwbutler.rpg.ui.InputHandler;
 import com.jwbutler.rpg.units.UnitFactory;
 
-import static com.jwbutler.rpg.core.Session_Shining.SessionState;
-import static com.jwbutler.rpg.core.Session_Shining.create;
+import static com.jwbutler.rpg.core.Session.SessionState;
 import static com.jwbutler.rpg.ui.InputUtils.registerInputListeners;
 import static com.jwbutler.rpg.units.UnitUtils.addUnit;
 
@@ -39,7 +38,7 @@ public class Main
 
         var humanPlayer = Player.create("human_player", Faction.PLAYER);
         var camera = new Camera(new Coordinates(5, 5));
-        var session = Session_Shining.create(game, humanPlayer, camera);
+        var session = Session.create(humanPlayer, camera);
 
         var level = LevelFactory.LEVEL_ONE.get();
         game.addLevel(level);
@@ -81,11 +80,11 @@ public class Main
 
         session.setState(SessionState.GAME);
 
-        var engine = GameEngine_Shining.create(session, renderer, window);
+        var engine = GameEngine.create(session, renderer, window);
         engine.loadLevel(level);
         engine.render(game);
 
-        var inputHandler = new InputHandler_Shining(session, engine);
+        var inputHandler = InputHandler.create(session, engine);
         registerInputListeners(inputHandler, window);
 
         int ticks = 0;
@@ -93,11 +92,6 @@ public class Main
         {
             long startTime = System.nanoTime();
             engine.update(game);
-            
-            if (ticks % 20 == 0)
-            {
-                session.selectNextUnit();
-            }
             
             while (System.nanoTime() < startTime + (Duration.ofMillis(FRAME_FREQUENCY_MILLIS).toNanos()))
             {

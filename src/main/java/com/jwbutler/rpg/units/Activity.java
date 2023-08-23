@@ -7,7 +7,6 @@ import com.jwbutler.rpg.units.commands.DieCommand;
 import static com.jwbutler.rpg.units.UnitUtils.dealDamage;
 import static com.jwbutler.rpg.units.UnitUtils.moveUnit;
 import static com.jwbutler.rpg.units.UnitUtils.removeUnit;
-import static com.jwbutler.rpg.units.commands.CommandUtils.getDefaultCommand;
 
 public enum Activity
 {
@@ -45,7 +44,7 @@ public enum Activity
                 if (target.getLife() <= 0)
                 {
                     target.setCommand(new DieCommand());
-                    unit.setCommand(getDefaultCommand());
+                    unit.setCommand(null);
                 }
             }
         }

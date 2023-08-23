@@ -5,13 +5,14 @@ import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
+import com.jwbutler.rpg.units.commands.Command;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 /**
  * With an eye toward multiplayer support - this is a container for player-specific data
  */
-public interface Session_Shining
+public interface Session
 {
     enum SessionState
     {
@@ -46,10 +47,17 @@ public interface Session_Shining
     Unit getActiveUnit();
     
     void selectNextUnit();
+
+    void queueCommand(@NonNull Unit unit, @NonNull Command command);
+
+    @Nullable
+    Command getQueuedCommand(@NonNull Unit unit);
+
+    void clearQueuedCommand(@NonNull Unit unit);
     
     @NonNull
-    static Session_Shining create(@NonNull Game game, @NonNull Player player, @NonNull Camera camera)
+    static Session create(@NonNull Player player, @NonNull Camera camera)
     {
-        return new SessionImpl_Shining(game, player, camera);
+        return new SessionImpl(player, camera);
     }
 }

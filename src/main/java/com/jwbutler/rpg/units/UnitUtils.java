@@ -12,9 +12,6 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.units.commands.DieCommand;
 import org.jspecify.annotations.NonNull;
 
-import static com.jwbutler.rpg.units.commands.CommandUtils.getDefaultCommand;
-import static com.jwbutler.rpg.units.commands.CommandUtils.getTargetUnit;
-
 public final class UnitUtils
 {
     private UnitUtils() {}
@@ -37,15 +34,6 @@ public final class UnitUtils
         game.removeUnit(unit);
         unit.getLevel().removeUnit(unit);
         unit.getPlayer().removeUnit(unit);
-
-        // TODO I do not feel good about putting this here
-        for (Unit other : unit.getLevel().getUnits())
-        {
-            if (getTargetUnit(other.getCommand()) == unit)
-            {
-                other.setCommand(getDefaultCommand());
-            }
-        }
     }
 
     public static void moveUnit(@NonNull Unit unit, @NonNull Level level, @NonNull Coordinates coordinates)

@@ -13,4 +13,10 @@ public record DieCommand() implements Command
     {
         return new ActivityPair(Activity.FALLING, unit.getDirection());
     }
+
+    @Override
+    public boolean isComplete(@NonNull Unit unit)
+    {
+        return true;
+    }
 }

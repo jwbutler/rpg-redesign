@@ -56,4 +56,10 @@ implements Command
         // TODO hack hack hack
         return new DefendCommand().getNextActivity(unit);
     }
+
+    @Override
+    public boolean isComplete(@NonNull Unit unit)
+    {
+        return unit.getCoordinates().equals(target);
+    }
 }

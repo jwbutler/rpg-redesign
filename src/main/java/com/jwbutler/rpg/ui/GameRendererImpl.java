@@ -3,7 +3,7 @@ package com.jwbutler.rpg.ui;
 import java.awt.Graphics2D;
 
 import com.jwbutler.rpg.core.Game;
-import com.jwbutler.rpg.core.Session_Shining;
+import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.equipment.Equipment;
 import com.jwbutler.rpg.geometry.Coordinates;
 import com.jwbutler.rpg.geometry.Pixel;
@@ -14,6 +14,7 @@ import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
@@ -24,11 +25,11 @@ final class GameRendererImpl implements GameRenderer
     @NonNull
     private final GameWindow window;
     @NonNull
-    private final Session_Shining session;
+    private final Session session;
     
     GameRendererImpl(
         @NonNull GameWindow window,
-        @NonNull Session_Shining session
+        @NonNull Session session
     )
     {
         this.window = window;
@@ -81,14 +82,18 @@ final class GameRendererImpl implements GameRenderer
             _drawTileOverlay(TileOverlay.TILE_MOUSEOVER, graphics, session.getMouseCoordinates());
         }
 
-        var humanPlayer = session.getPlayer();
-        for (var playerUnit : humanPlayer.getUnits())
+        var activeUnit = session.getActiveUnit();
+        if (activeUnit != null)
         {
-            switch (playerUnit.getLatestCommand())
+            var command = activeUnit.getCommand();
+            if (command != null)
             {
-                case MoveCommand mc -> _drawTileOverlay(TileOverlay.TILE_TARGETED, graphics, mc.target());
-                case AttackCommand ac -> _drawTileOverlay(TileOverlay.TILE_TARGETED, graphics, ac.target().getCoordinates());
-                default -> {}
+                switch (command)
+                {
+                    case MoveCommand moveCommand -> _drawTileOverlay(TileOverlay.TILE_TARGETED, graphics, moveCommand.target());
+                    case AttackCommand attackCommand -> _drawTileOverlay(TileOverlay.TILE_TARGETED, graphics, attackCommand.target().getCoordinates());
+                    default -> {}
+                }
             }
         }
     }
@@ -116,7 +121,6 @@ final class GameRendererImpl implements GameRenderer
         @NonNull Unit unit
     )
     {
-        var humanPlayer = session.getPlayer();
         var coordinates = unit.getCoordinates();
         var frame = unit.getSprite().getFrame(unit);
         var image = frame.image();
@@ -127,6 +131,12 @@ final class GameRendererImpl implements GameRenderer
                 if (unit == session.getActiveUnit())
                 {
                     yield TileOverlay.PLAYER_ACTIVE;
+                }
+                else if (session.getCurrentLevel().getUnits()
+                    .stream()
+                    .anyMatch(otherUnit -> otherUnit.getCommand() instanceof AttackCommand attackCommand && attackCommand.target() == unit))
+                {
+                    yield TileOverlay.PLAYER_TARGETED;
                 }
                 else
                 {
@@ -139,9 +149,9 @@ final class GameRendererImpl implements GameRenderer
                 {
                     yield TileOverlay.ENEMY_ACTIVE;
                 }
-                if (humanPlayer.getUnits()
+                if (session.getCurrentLevel().getUnits()
                     .stream()
-                    .anyMatch(playerUnit -> playerUnit.getCommand() instanceof AttackCommand ac && ac.target() == unit))
+                    .anyMatch(playerUnit -> playerUnit.getCommand() instanceof AttackCommand attackCommand && attackCommand.target() == unit))
                 {
                     yield TileOverlay.ENEMY_TARGETED;
                 }

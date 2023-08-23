@@ -3,25 +3,31 @@ package com.jwbutler.rpg.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import com.jwbutler.rpg.core.GameEngine_Shining;
-import com.jwbutler.rpg.core.Session_Shining;
+import com.jwbutler.rpg.core.GameEngine;
+import com.jwbutler.rpg.core.Session;
 import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.geometry.Pixel;
+import com.jwbutler.rpg.logging.Logger;
+import com.jwbutler.rpg.logging.Logger.Level;
+import com.jwbutler.rpg.units.commands.AttackCommand;
+import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
 
+import static com.jwbutler.rpg.logging.Logger.log;
 import static com.jwbutler.rpg.ui.SwingUtils.isLeftButton;
 import static com.jwbutler.rpg.ui.SwingUtils.isRightButton;
+import static com.jwbutler.rpg.units.UnitUtils.isHostileToward;
 
-public final class InputHandler_Shining implements InputHandler
+final class InputHandlerImpl implements InputHandler
 {
     @NonNull
-    private final Session_Shining session;
+    private final Session session;
     @NonNull
-    private final GameEngine_Shining engine;
+    private final GameEngine engine;
     
-    public InputHandler_Shining(
-        @NonNull Session_Shining session,
-        @NonNull GameEngine_Shining engine
+    InputHandlerImpl(
+        @NonNull Session session,
+        @NonNull GameEngine engine
     )
     {
         this.session = session;
@@ -81,7 +87,7 @@ public final class InputHandler_Shining implements InputHandler
     public void handleMouseMove(@NonNull MouseEvent event)
     {
         var pixel = new Pixel(event.getX(), event.getY());
-        if (session.getState() != Session_Shining.SessionState.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
@@ -97,7 +103,7 @@ public final class InputHandler_Shining implements InputHandler
 
     private void _handleRightUp(@NonNull Pixel pixel)
     {
-        if (session.getState() != Session_Shining.SessionState.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
@@ -106,7 +112,7 @@ public final class InputHandler_Shining implements InputHandler
 
     private void _handleLeftDown(@NonNull Pixel pixel)
     {
-        if (session.getState() != Session_Shining.SessionState.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
         }
@@ -114,9 +120,30 @@ public final class InputHandler_Shining implements InputHandler
 
     private void _handleLeftUp(@NonNull Pixel pixel)
     {
-        if (session.getState() != Session_Shining.SessionState.GAME)
+        if (session.getState() != Session.SessionState.GAME)
         {
             return;
+        }
+        
+        var targetCoordinates = session.getCamera().pixelToCoordinates(pixel);
+        var currentLevel = session.getCurrentLevel();
+        var activeUnit = session.getActiveUnit();
+        if (activeUnit == null)
+        {
+            log("I don't think activeUnit should be null here", Level.WARN);
+            return;
+        }
+        if (currentLevel.containsCoordinates(targetCoordinates))
+        {
+            var targetUnit = currentLevel.getUnit(targetCoordinates);
+            if (targetUnit != null && isHostileToward(activeUnit, targetUnit))
+            {
+                engine.queueCommand(activeUnit, new AttackCommand(targetUnit));
+            }
+            else if (targetUnit == null)
+            {
+                engine.queueCommand(activeUnit, new MoveCommand(targetCoordinates));
+            }
         }
     }
 }

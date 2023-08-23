@@ -20,7 +20,6 @@ import com.jwbutler.rpg.sprites.AnimatedSprite;
 import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
 
-import static com.jwbutler.rpg.units.commands.CommandUtils.getDefaultCommand;
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
 
 final class UnitImpl implements Unit
@@ -40,7 +39,7 @@ final class UnitImpl implements Unit
     @NonNull
     private Direction direction;
     private int frameNumber;
-    @NonNull
+    @Nullable
     private Command command;
     @Nullable
     private Command nextCommand;
@@ -72,7 +71,7 @@ final class UnitImpl implements Unit
         activity = Activity.STANDING;
         direction = Direction.SE;
         frameNumber = 0;
-        command = getDefaultCommand();
+        command = null;
         nextCommand = null;
         this.player = player;
         this.level = level;
@@ -149,29 +148,9 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    public void setCommand(@NonNull Command command)
+    public void setCommand(@Nullable Command command)
     {
         this.command = command;
-    }
-
-    @Nullable
-    @Override
-    public Command getNextCommand()
-    {
-        return nextCommand;
-    }
-
-    @Override
-    public void setNextCommand(@Nullable Command command)
-    {
-        nextCommand = command;
-    }
-
-    @Override
-    @NonNull
-    public Command getLatestCommand()
-    {
-        return (nextCommand != null) ? nextCommand : command;
     }
 
     @NonNull
@@ -248,18 +227,27 @@ final class UnitImpl implements Unit
     public void update()
     {
         frameNumber++;
-        if (frameNumber > _getMaxFrameNumber())
+        if (isAnimationComplete())
         {
             activity.onComplete(this);
             command = (nextCommand != null) ? nextCommand : command;
             nextCommand = null;
-            var activityPair = command.getNextActivity(this);
-            startActivity(activityPair.activity(), activityPair.direction());
+            if (command != null)
+            {
+                var activityPair = command.getNextActivity(this);
+                startActivity(activityPair.activity(), activityPair.direction());
+            }
+            else
+            {
+                startActivity(Activity.STANDING, getDirection());
+            }
         }
     }
-
-    private int _getMaxFrameNumber()
+    
+    @Override
+    public boolean isAnimationComplete()
     {
-        return sprite.getAnimation(this).frames().size() - 1;
+        int maxFrameNumber = sprite.getAnimation(this).frames().size() - 1;
+        return frameNumber > maxFrameNumber;
     }
 }

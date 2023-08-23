@@ -31,4 +31,10 @@ public record DefendCommand() implements Command
         }
         return new ActivityPair(Activity.STANDING, unit.getDirection());
     }
+
+    @Override
+    public boolean isComplete(@NonNull Unit unit)
+    {
+        return true;
+    }
 }
