@@ -19,8 +19,7 @@ public record DefendCommand() implements Command
     @NonNull
     public ActivityPair getNextActivity(@NonNull Unit unit)
     {
-        var adjacentEnemies = getAdjacentUnits(unit)
-            .stream()
+        var adjacentEnemies = getAdjacentUnits(unit).stream()
             .filter(adjacentUnit -> isHostileToward(unit, adjacentUnit))
             .collect(Collectors.toSet());
 
@@ -33,17 +32,9 @@ public record DefendCommand() implements Command
         return new ActivityPair(Activity.STANDING, unit.getDirection());
     }
 
-    @Nullable
     @Override
-    public Unit getTargetUnit()
+    public boolean isComplete(@NonNull Unit unit)
     {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public Coordinates getTargetCoordinates()
-    {
-        return null;
+        return true;
     }
 }

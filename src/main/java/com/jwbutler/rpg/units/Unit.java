@@ -39,21 +39,10 @@ public interface Unit
 
     void startActivity(@NonNull Activity activity, @NonNull Direction direction);
 
-    @NonNull
+    @Nullable
     Command getCommand();
 
-    void setCommand(@NonNull Command command);
-
-    @Nullable
-    Command getNextCommand();
-
-    void setNextCommand(@Nullable Command command);
-
-    /**
-     * @return "next command" if it exists, else "current command"
-     */
-    @NonNull
-    Command getLatestCommand();
+    void setCommand(@Nullable Command command);
 
     @NonNull
     Player getPlayer();
@@ -81,4 +70,6 @@ public interface Unit
     void takeDamage(int amount);
 
     void update();
+    
+    boolean isAnimationComplete();
 }

@@ -11,10 +11,7 @@ import com.jwbutler.rpg.geometry.Pathfinder;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 
-public record MoveCommand
-(
-    @NonNull Coordinates target
-)
+public record MoveCommand(@NonNull Coordinates target)
 implements Command
 {
     @Override
@@ -60,17 +57,9 @@ implements Command
         return new DefendCommand().getNextActivity(unit);
     }
 
-    @Nullable
     @Override
-    public Unit getTargetUnit()
+    public boolean isComplete(@NonNull Unit unit)
     {
-        return null;
-    }
-
-    @NonNull
-    @Override
-    public Coordinates getTargetCoordinates()
-    {
-        return target;
+        return unit.getCoordinates().equals(target);
     }
 }

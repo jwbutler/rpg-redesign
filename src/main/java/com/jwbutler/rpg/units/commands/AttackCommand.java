@@ -13,19 +13,41 @@ import com.jwbutler.rpg.units.Unit;
 
 import static com.jwbutler.rpg.geometry.GeometryUtils.isDirectlyAdjacent;
 
-public record AttackCommand
-(
-    @NonNull Unit target
-)
+public final class AttackCommand
 implements Command
 {
+    @NonNull
+    private final Unit target;
+
+    private boolean startedAttacking;
+    private boolean finishedAttacking;
+
+    public AttackCommand(@NonNull Unit target)
+    {
+        this.target = target;
+        this.startedAttacking = false;
+        this.finishedAttacking = false;
+    }
+    
+    @NonNull
+    public Unit target()
+    {
+        return target;
+    }
+    
     @Override
     @NonNull
     public ActivityPair getNextActivity(@NonNull Unit unit)
     {
-        if (isDirectlyAdjacent(unit.getCoordinates(), target.getCoordinates()))
+        if (!startedAttacking && isDirectlyAdjacent(unit.getCoordinates(), target.getCoordinates()))
         {
+            startedAttacking = true;
             return new ActivityPair(Activity.ATTACKING, Direction.between(unit.getCoordinates(), target.getCoordinates()));
+        }
+        else if (startedAttacking)
+        {
+            finishedAttacking = true;
+            return new ActivityPair(Activity.STANDING, unit.getDirection());
         }
         else
         {
@@ -56,17 +78,9 @@ implements Command
         }
     }
 
-    @NonNull
     @Override
-    public Unit getTargetUnit()
+    public boolean isComplete(@NonNull Unit unit)
     {
-        return target;
-    }
-
-    @Nullable
-    @Override
-    public Coordinates getTargetCoordinates()
-    {
-        return null;
+        return finishedAttacking;
     }
 }
