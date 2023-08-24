@@ -8,7 +8,6 @@ import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.UnitFactory;
 import com.jwbutler.rpg.units.UnitUtils;
-import com.jwbutler.rpg.units.commands.DefendCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.testng.annotations.Test;
 
@@ -35,8 +34,7 @@ public final class UnitTest
         assertEquals(unit.getActivity(), Activity.STANDING);
         assertEquals(unit.getDirection(), Direction.SE);
         assertEquals(unit.getFrameNumber(), 0);
-        assertEquals(unit.getCommand(), new DefendCommand());
-        assertNull(unit.getNextCommand());
+        assertNull(unit.getCommand());
 
         for (int i = 1; i <= 3; i++)
         {
@@ -45,12 +43,11 @@ public final class UnitTest
             assertEquals(unit.getActivity(), Activity.STANDING);
             assertEquals(unit.getDirection(), Direction.SE);
             assertEquals(unit.getFrameNumber(), 0);
-            assertEquals(unit.getCommand(), new DefendCommand());
-            assertNull(unit.getNextCommand());
+            assertNull(unit.getCommand());
         }
 
         var moveCommand = new MoveCommand(new Coordinates(0, 2));
-        unit.setNextCommand(moveCommand);
+        unit.setCommand(moveCommand);
 
         for (int i = 0; i <= 1; i++)
         {
@@ -60,7 +57,6 @@ public final class UnitTest
             assertEquals(unit.getDirection(), Direction.S);
             assertEquals(unit.getFrameNumber(), i);
             assertEquals(unit.getCommand(), moveCommand);
-            assertNull(unit.getNextCommand());
         }
 
         for (int i = 0; i <= 1; i++)
@@ -72,7 +68,6 @@ public final class UnitTest
             assertEquals(unit.getDirection(), Direction.S);
             assertEquals(unit.getFrameNumber(), i);
             assertEquals(unit.getCommand(), moveCommand);
-            assertNull(unit.getNextCommand());
         }
     }
 }
