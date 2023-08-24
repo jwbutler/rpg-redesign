@@ -129,12 +129,9 @@ final class SessionImpl implements Session
     @Nullable
     public Command getQueuedCommand(@NonNull Unit unit)
     {
-        if (queuedCommand != null)
+        if (queuedCommand != null && queuedCommand.second() != unit)
         {
-            if (queuedCommand.second() != unit)
-            {
-                queuedCommand = null;
-            }
+            queuedCommand = null;
         }
         return $(queuedCommand).map(Pair::first).orElse(null);
     }
