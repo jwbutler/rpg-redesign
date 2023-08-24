@@ -9,10 +9,12 @@ import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.players.Player;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.Command;
+import com.jwbutler.rpg.util.Pair;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import static com.jwbutler.rpg.util.Preconditions.checkState;
+import static com.jwbutler.rpg.util.Symbols.$;
 
 final class SessionImpl implements Session
 {
@@ -30,8 +32,8 @@ final class SessionImpl implements Session
     private Unit activeUnit;
 
     @Nullable
-    private Command queuedCommand;
-    
+    private Pair<Command, Unit> queuedCommand;
+
     SessionImpl(
         @NonNull Player player,
         @NonNull Camera camera
@@ -120,14 +122,21 @@ final class SessionImpl implements Session
     @Override
     public void queueCommand(@NonNull Unit unit, @NonNull Command command)
     {
-        queuedCommand = command;
+        queuedCommand = Pair.of(command, unit);
     }
 
     @Override
     @Nullable
     public Command getQueuedCommand(@NonNull Unit unit)
     {
-        return queuedCommand;
+        if (queuedCommand != null)
+        {
+            if (queuedCommand.second() != unit)
+            {
+                queuedCommand = null;
+            }
+        }
+        return $(queuedCommand).map(Pair::first).orElse(null);
     }
 
     @Override
