@@ -1,5 +1,10 @@
 package com.jwbutler.rpg.logging;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import org.jspecify.annotations.NonNull;
 
 public final class Logger
@@ -13,7 +18,8 @@ public final class Logger
 
     public static void log(@NonNull String message, @NonNull Level level)
     {
-        System.out.printf("[%s] %s\n", level, message);
+        var time = LocalTime.now().format(DateTimeFormatter.ISO_TIME);
+        System.out.printf("[%s] %s %s\n", level, time, message);
     }
     
     public enum Level

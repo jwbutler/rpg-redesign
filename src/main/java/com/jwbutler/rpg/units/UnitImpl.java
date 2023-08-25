@@ -21,6 +21,8 @@ import com.jwbutler.rpg.sprites.Sprite;
 import com.jwbutler.rpg.units.commands.Command;
 
 import static com.jwbutler.rpg.util.Preconditions.checkArgument;
+import static com.jwbutler.rpg.util.Preconditions.checkState;
+import static java.util.UUID.randomUUID;
 
 final class UnitImpl implements Unit
 {
@@ -41,10 +43,8 @@ final class UnitImpl implements Unit
     private int frameNumber;
     @Nullable
     private Command command;
-    @Nullable
-    private Command nextCommand;
     @NonNull
-    private Player player;
+    private final Player player;
     @NonNull
     private Level level;
     @NonNull
@@ -63,7 +63,7 @@ final class UnitImpl implements Unit
     )
     {
         this.game = game;
-        this.id = UUID.randomUUID();
+        this.id = randomUUID();
         this.name = name;
         this.life = life;
         this.maxLife = life;
@@ -72,7 +72,6 @@ final class UnitImpl implements Unit
         direction = Direction.SE;
         frameNumber = 0;
         command = null;
-        nextCommand = null;
         this.player = player;
         this.level = level;
         this.coordinates = coordinates;
@@ -141,7 +140,7 @@ final class UnitImpl implements Unit
     }
 
     @Override
-    @NonNull
+    @Nullable
     public Command getCommand()
     {
         return command;
@@ -222,26 +221,12 @@ final class UnitImpl implements Unit
     {
         life = Math.max(life - amount, 0);
     }
-
+    
     @Override
-    public void update()
+    public void nextFrame()
     {
+        checkState(!isAnimationComplete());
         frameNumber++;
-        if (isAnimationComplete())
-        {
-            activity.onComplete(this);
-            command = (nextCommand != null) ? nextCommand : command;
-            nextCommand = null;
-            if (command != null)
-            {
-                var activityPair = command.getNextActivity(this);
-                startActivity(activityPair.activity(), activityPair.direction());
-            }
-            else
-            {
-                startActivity(Activity.STANDING, getDirection());
-            }
-        }
     }
     
     @Override

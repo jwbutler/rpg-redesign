@@ -69,7 +69,7 @@ public interface Unit
 
     void takeDamage(int amount);
 
-    void update();
-    
+    void nextFrame();
+
     boolean isAnimationComplete();
 }

@@ -5,11 +5,13 @@ import com.jwbutler.rpg.geometry.Direction;
 import com.jwbutler.rpg.levels.Level;
 import com.jwbutler.rpg.ui.GameRenderer;
 import com.jwbutler.rpg.ui.GameWindow;
+import com.jwbutler.rpg.units.Activity;
 import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.Command;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import static com.jwbutler.rpg.logging.Logger.log;
 import static java.util.Objects.requireNonNull;
 
 final class GameEngineImpl implements GameEngine
@@ -35,6 +37,8 @@ final class GameEngineImpl implements GameEngine
     @Override
     public void update(@NonNull Game game)
     {
+        // Make sure we have an active unit
+        
         if (session.getActiveUnit() == null)
         {
             session.selectNextUnit();
@@ -42,6 +46,8 @@ final class GameEngineImpl implements GameEngine
         var activeUnit = session.getActiveUnit();
         requireNonNull(activeUnit);
 
+        // Poll for queued commands
+        
         if (activeUnit.getCommand() == null)
         {
             var command = getQueuedCommand(activeUnit);
@@ -50,11 +56,24 @@ final class GameEngineImpl implements GameEngine
                 activeUnit.setCommand(command);
             }
         }
-        activeUnit.update();
-        if (activeUnit.getCommand() != null && activeUnit.getCommand().isComplete(activeUnit))
+        else if (!activeUnit.isAnimationComplete())
         {
-            activeUnit.setCommand(null);
-            session.selectNextUnit();
+            activeUnit.nextFrame();
+            if (activeUnit.isAnimationComplete())
+            {
+                activeUnit.getActivity().onComplete(activeUnit);
+                if (activeUnit.getCommand().isComplete(activeUnit))
+                {
+                    activeUnit.setCommand(null);
+                    activeUnit.startActivity(Activity.STANDING, Direction.SE);
+                    session.selectNextUnit();
+                }
+                else
+                {
+                    var activityPair = activeUnit.getCommand().getNextActivity(activeUnit);
+                    activeUnit.startActivity(activityPair.activity(), activityPair.direction());
+                }
+            }
         }
     }
 
