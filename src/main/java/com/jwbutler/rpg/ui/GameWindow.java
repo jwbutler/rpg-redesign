@@ -18,6 +18,7 @@ import org.jspecify.annotations.NonNull;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
+import static com.jwbutler.rpg.geometry.GeometryConstants.ZOOM_RATIO;
 
 /**
  * Wrapper for Swing components, e.g. {@link JFrame}, which handles both rendering and input handling.
@@ -30,8 +31,6 @@ public final class GameWindow
     private final JPanel panel;
     @NonNull
     private final BufferedImage image;
-
-    private static final double ZOOM_RATIO = 4.0;
 
     public GameWindow()
     {

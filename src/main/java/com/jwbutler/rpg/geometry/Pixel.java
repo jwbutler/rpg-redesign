@@ -6,14 +6,15 @@ public record Pixel
 (
     int x,
     int y
-) implements Point
+)
+implements Point
 {
     private static final Pixel ZERO = new Pixel(0, 0);
 
     @NonNull
-    public Pixel plus(int dx, int dy)
+    public Pixel plus(@NonNull Offsets offsets)
     {
-        return new Pixel(x + dx, y + dy);
+        return new Pixel(x + offsets.dx(), y + offsets.dy());
     }
 
     @NonNull

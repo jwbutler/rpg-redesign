@@ -161,8 +161,8 @@ final class GameRendererImpl implements GameRenderer
         _drawTileOverlay(overlay, graphics, coordinates);
         var tileRect = session.getCamera().coordinatesToPixelRect(coordinates);
         var topLeft = new Pixel(
-            tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
-            tileRect.top() + (TILE_WIDTH / 2) - image.getHeight()
+            tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2 + frame.offsets().dx(),
+            tileRect.top() + (TILE_WIDTH / 2) - image.getHeight() + frame.offsets().dy()
         );
 
         for (var equipment : unit.getEquipment())
@@ -194,8 +194,8 @@ final class GameRendererImpl implements GameRenderer
         var frame = equipment.getSprite().getFrame(equipment);
         var image = frame.image();
         var topLeft = new Pixel(
-            tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2,
-            tileRect.top() + (TILE_WIDTH / 2) - image.getHeight()
+            tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2 + frame.offsets().dx(),
+            tileRect.top() + (TILE_WIDTH / 2) - image.getHeight() + frame.offsets().dy()
         );
         graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
     }

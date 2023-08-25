@@ -1,6 +1,8 @@
 package com.jwbutler.rpg.levels;
 
 import java.awt.Color;
+
+import com.jwbutler.rpg.geometry.Offsets;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.graphics.ImageBuilder;
@@ -10,9 +12,9 @@ import com.jwbutler.rpg.sprites.animations.Frame;
 
 public enum TileType
 {
-    GRASS("grass_24x12_1"),
-    DIRT("dirt_24x12_1"),
-    WALL("floor_24x12_stone_1");
+    GRASS("grass_48x24"),
+    DIRT("grass_48x24"),
+    WALL("grass_48x24");
 
     @NonNull
     private final Frame frame;
@@ -24,7 +26,7 @@ public enum TileType
             .transparentColor(Color.WHITE)
             .cache(ImageCache.INSTANCE)
             .build();
-        frame = new Frame(image, filename, Layer.TILE);
+        frame = new Frame(image, filename, Layer.TILE, Offsets.zero());
     }
 
     @NonNull

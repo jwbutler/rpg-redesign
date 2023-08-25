@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import com.jwbutler.rpg.geometry.Offsets;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Direction;
@@ -19,6 +21,8 @@ public record SwordAnimations
 )
 implements AnimationPack
 {
+    private static final Offsets OFFSETS = PlayerAnimations.OFFSETS;
+
     @NonNull
     @Override
     public Animation getAnimation(@NonNull Activity activity, @NonNull Direction direction)
@@ -71,7 +75,8 @@ implements AnimationPack
         return new Frame(
             image,
             filename,
-            filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER
+            filename.endsWith(SpriteUtils.BEHIND_SUFFIX) ? Layer.EQUIPMENT_UNDER : Layer.EQUIPMENT_OVER,
+            OFFSETS
         );
     }
 

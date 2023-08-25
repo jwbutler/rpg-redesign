@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+
+import com.jwbutler.rpg.geometry.Offsets;
 import org.jspecify.annotations.NonNull;
 
 import com.jwbutler.rpg.geometry.Direction;
@@ -18,6 +20,9 @@ public record PlayerAnimations
 )
 implements AnimationPack
 {
+    // TODO why isn't this (0, -12)? I think because we're doing some weird center-align
+    public static final Offsets OFFSETS = new Offsets(0, -6);
+
     @NonNull
     @Override
     public Animation getAnimation(@NonNull Activity activity, @NonNull Direction direction)
@@ -58,7 +63,7 @@ implements AnimationPack
             .paletteSwaps(paletteSwaps)
             .cache(ImageCache.INSTANCE)
             .build();
-        return new Frame(image, filename, Layer.UNIT);
+        return new Frame(image, filename, Layer.UNIT, OFFSETS);
     }
 
     @NonNull
