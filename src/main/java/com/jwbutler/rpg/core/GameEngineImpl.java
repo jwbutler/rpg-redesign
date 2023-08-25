@@ -62,16 +62,24 @@ final class GameEngineImpl implements GameEngine
             if (activeUnit.isAnimationComplete())
             {
                 activeUnit.getActivity().onComplete(activeUnit);
-                if (activeUnit.getCommand().isComplete(activeUnit))
+                var command = activeUnit.getCommand();
+                if (command != null)
                 {
-                    activeUnit.setCommand(null);
-                    activeUnit.startActivity(Activity.STANDING, Direction.SE);
-                    session.selectNextUnit();
+                    if (command.isComplete(activeUnit))
+                    {
+                        activeUnit.setCommand(null);
+                        activeUnit.startActivity(Activity.STANDING, Direction.SE);
+                        session.selectNextUnit();
+                    }
+                    else
+                    {
+                        var activityPair = command.getNextActivity(activeUnit);
+                        activeUnit.startActivity(activityPair.activity(), activityPair.direction());
+                    }
                 }
                 else
                 {
-                    var activityPair = activeUnit.getCommand().getNextActivity(activeUnit);
-                    activeUnit.startActivity(activityPair.activity(), activityPair.direction());
+                    activeUnit.startActivity(Activity.STANDING, Direction.SE);
                 }
             }
         }

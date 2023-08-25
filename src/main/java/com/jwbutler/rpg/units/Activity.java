@@ -44,7 +44,6 @@ public enum Activity
                 if (target.getLife() <= 0)
                 {
                     target.setCommand(new DieCommand());
-                    unit.setCommand(null);
                 }
             }
         }

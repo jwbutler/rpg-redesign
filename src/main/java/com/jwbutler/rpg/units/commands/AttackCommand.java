@@ -81,6 +81,7 @@ implements Command
     @Override
     public boolean isComplete(@NonNull Unit unit)
     {
+        System.out.println(this + " startedAttacking=" + startedAttacking + ", finishedAttacking=" + finishedAttacking);
         return finishedAttacking;
     }
 }

@@ -117,6 +117,9 @@ final class SessionImpl implements Session
         var index = units.indexOf(activeUnit); // I think this is null-safe
         var nextIndex = (index + 1) % units.size();
         activeUnit = units.get(nextIndex);
+        
+        // Should this go in some other function?
+        camera.setCoordinates(activeUnit.getCoordinates());
     }
 
     @Override

@@ -45,12 +45,12 @@ public class Main
         game.addPlayer(humanPlayer);
         var renderer = GameRenderer.create(window, session);
 
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 5; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
                 game,
                 "test_unit_" + i,
-                100,
+                20,
                 humanPlayer,
                 level,
                 new Coordinates(i - 1, 0)
@@ -65,12 +65,12 @@ public class Main
         var enemyPlayer = Player.create("enemy_player", Faction.ENEMY);
         game.addPlayer(enemyPlayer);
 
-        for (int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 5; i++)
         {
             var enemyUnit = UnitFactory.createEvilPlayerUnit(
                 game,
                 "enemy_unit",
-                100,
+                20,
                 enemyPlayer,
                 level,
                 new Coordinates(2 + i, 5)
