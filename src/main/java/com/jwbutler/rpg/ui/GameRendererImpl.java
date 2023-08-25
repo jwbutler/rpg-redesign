@@ -18,6 +18,7 @@ import org.jspecify.annotations.Nullable;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
+import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
 
 final class GameRendererImpl implements GameRenderer
@@ -161,8 +162,8 @@ final class GameRendererImpl implements GameRenderer
         _drawTileOverlay(overlay, graphics, coordinates);
         var tileRect = session.getCamera().coordinatesToPixelRect(coordinates);
         var topLeft = new Pixel(
-            tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2 + frame.offsets().dx(),
-            tileRect.top() + (TILE_WIDTH / 2) - image.getHeight() + frame.offsets().dy()
+            tileRect.left() + frame.offsets().dx(),
+            tileRect.top() + frame.offsets().dy()
         );
 
         for (var equipment : unit.getEquipment())
@@ -194,8 +195,8 @@ final class GameRendererImpl implements GameRenderer
         var frame = equipment.getSprite().getFrame(equipment);
         var image = frame.image();
         var topLeft = new Pixel(
-            tileRect.left() + (TILE_WIDTH - image.getWidth()) / 2 + frame.offsets().dx(),
-            tileRect.top() + (TILE_WIDTH / 2) - image.getHeight() + frame.offsets().dy()
+            tileRect.left() + frame.offsets().dx(),
+            tileRect.top() + frame.offsets().dy()
         );
         graphics.drawImage(image, topLeft.x(), topLeft.y(), null);
     }

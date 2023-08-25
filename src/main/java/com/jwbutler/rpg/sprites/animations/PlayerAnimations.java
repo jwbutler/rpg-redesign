@@ -20,8 +20,7 @@ public record PlayerAnimations
 )
 implements AnimationPack
 {
-    // TODO why isn't this (0, -12)? I think because we're doing some weird center-align
-    public static final Offsets OFFSETS = new Offsets(0, -6);
+    public static final Offsets OFFSETS = new Offsets(4, -24);
 
     @NonNull
     @Override
