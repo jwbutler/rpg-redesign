@@ -46,7 +46,7 @@ public interface Level
      */
     @Nullable Unit getUnit(@NonNull Coordinates coordinates);
 
-    @NonNull Set<Unit> getUnits();
+    @NonNull Set<Unit> getAllUnits();
     /**
      * @throws IllegalArgumentException if the unit is not in this level
      */

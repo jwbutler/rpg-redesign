@@ -148,7 +148,7 @@ final class SessionImpl implements Session
     @NonNull
     private List<Unit> _getSortedUnits(@NonNull Level level)
     {
-        return level.getUnits()
+        return level.getAllUnits()
             .stream()
             .sorted(Comparator.comparing(unit -> unit.getId().toString()))
             .toList();

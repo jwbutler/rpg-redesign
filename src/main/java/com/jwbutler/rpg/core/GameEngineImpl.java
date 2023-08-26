@@ -43,43 +43,46 @@ final class GameEngineImpl implements GameEngine
         {
             session.selectNextUnit();
         }
-        var activeUnit = session.getActiveUnit();
-        requireNonNull(activeUnit);
+        requireNonNull(session.getActiveUnit());
 
         // Poll for queued commands
-        
-        if (activeUnit.getCommand() == null)
+
+        var level = session.getCurrentLevel();
+        for (var unit : level.getAllUnits())
         {
-            var command = getQueuedCommand(activeUnit);
-            if (command != null)
+            if (unit == session.getActiveUnit() && unit.getCommand() == null)
             {
-                activeUnit.setCommand(command);
-            }
-        }
-        else if (!activeUnit.isAnimationComplete())
-        {
-            activeUnit.nextFrame();
-            if (activeUnit.isAnimationComplete())
-            {
-                activeUnit.getActivity().onComplete(activeUnit);
-                var command = activeUnit.getCommand();
+                var command = getQueuedCommand(unit);
                 if (command != null)
                 {
-                    if (command.isComplete(activeUnit))
+                    unit.setCommand(command);
+                }
+            }
+            else if (!unit.isAnimationComplete())
+            {
+                unit.nextFrame();
+                if (unit.isAnimationComplete())
+                {
+                    unit.getActivity().onComplete(unit);
+                    var command = unit.getCommand();
+                    if (command != null)
                     {
-                        activeUnit.setCommand(null);
-                        activeUnit.startActivity(Activity.STANDING, Direction.SE);
-                        session.selectNextUnit();
+                        if (command.isComplete(unit))
+                        {
+                            unit.setCommand(null);
+                            unit.startActivity(Activity.STANDING, Direction.SE);
+                            session.selectNextUnit();
+                        }
+                        else
+                        {
+                            var activityPair = command.getNextActivity(unit);
+                            unit.startActivity(activityPair.activity(), activityPair.direction());
+                        }
                     }
                     else
                     {
-                        var activityPair = command.getNextActivity(activeUnit);
-                        activeUnit.startActivity(activityPair.activity(), activityPair.direction());
+                        unit.startActivity(Activity.STANDING, Direction.SE);
                     }
-                }
-                else
-                {
-                    activeUnit.startActivity(Activity.STANDING, Direction.SE);
                 }
             }
         }

@@ -45,7 +45,8 @@ public class Main
         game.addPlayer(humanPlayer);
         var renderer = GameRenderer.create(window, session);
 
-        for (int i = 1; i <= 5; i++)
+        int numUnits = 1;
+        for (int i = 1; i <= numUnits; i++)
         {
             var playerUnit = UnitFactory.createPlayerUnit(
                 game,
@@ -65,7 +66,7 @@ public class Main
         var enemyPlayer = Player.create("enemy_player", Faction.ENEMY);
         game.addPlayer(enemyPlayer);
 
-        for (int i = 1; i <= 5; i++)
+        for (int i = 1; i <= numUnits; i++)
         {
             var enemyUnit = UnitFactory.createEvilPlayerUnit(
                 game,

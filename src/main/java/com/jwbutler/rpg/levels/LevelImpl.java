@@ -110,7 +110,7 @@ final class LevelImpl implements Level
 
     @NonNull
     @Override
-    public Set<Unit> getUnits()
+    public Set<Unit> getAllUnits()
     {
         return new HashSet<>(coordinatesToUnit.values());
     }

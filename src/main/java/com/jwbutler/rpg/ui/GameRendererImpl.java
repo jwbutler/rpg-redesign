@@ -14,12 +14,9 @@ import com.jwbutler.rpg.units.Unit;
 import com.jwbutler.rpg.units.commands.AttackCommand;
 import com.jwbutler.rpg.units.commands.MoveCommand;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_HEIGHT;
 import static com.jwbutler.rpg.geometry.GeometryConstants.GAME_WIDTH;
-import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_HEIGHT;
-import static com.jwbutler.rpg.geometry.GeometryConstants.TILE_WIDTH;
 
 final class GameRendererImpl implements GameRenderer
 {
@@ -133,7 +130,7 @@ final class GameRendererImpl implements GameRenderer
                 {
                     yield TileOverlay.PLAYER_ACTIVE;
                 }
-                else if (session.getCurrentLevel().getUnits()
+                else if (session.getCurrentLevel().getAllUnits()
                     .stream()
                     .anyMatch(otherUnit -> otherUnit.getCommand() instanceof AttackCommand attackCommand && attackCommand.target() == unit))
                 {
@@ -150,7 +147,7 @@ final class GameRendererImpl implements GameRenderer
                 {
                     yield TileOverlay.ENEMY_ACTIVE;
                 }
-                if (session.getCurrentLevel().getUnits()
+                if (session.getCurrentLevel().getAllUnits()
                     .stream()
                     .anyMatch(playerUnit -> playerUnit.getCommand() instanceof AttackCommand attackCommand && attackCommand.target() == unit))
                 {
