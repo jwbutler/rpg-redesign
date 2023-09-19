@@ -6,11 +6,13 @@ name: Build Executables
 on:
   push:
     branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 env:
   # OSX complains if it's 0.x.x
   APP_VERSION: 1.0.0
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   JAVA_DISTRIBUTION: zulu
 
 jobs:
